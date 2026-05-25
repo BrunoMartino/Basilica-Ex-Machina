@@ -1,0 +1,26 @@
+---
+description: Read harness docs before architectural, testing, deployment, or domain changes
+alwaysApply: true
+---
+
+# Harness Documentation Gate
+
+Before making **architectural**, **testing**, **deployment**, or **domain** changes, read the relevant project docs:
+
+| Change type | Read |
+|-------------|------|
+| Architecture | `docs/harness/architecture_rules.md` |
+| Coding style / conventions | `docs/harness/coding_convention.md` |
+| Anti-patterns | `docs/harness/forbidden_patterns.md` |
+| Tests | `docs/harness/testing_expectation.md` |
+| Deployment | `docs/harness/deployment_rules.md` |
+| Domain logic | `docs/harness/domain_invariantes.md` |
+| Operations | `docs/harness/operational_constraints.md` |
+
+## Workflow
+
+1. Identify which change categories the task touches.
+2. Read every listed doc for those categories before planning or editing.
+3. Apply the constraints from those docs in the implementation.
+
+If a doc is missing, say so and proceed only with what is available — do not invent project rules.

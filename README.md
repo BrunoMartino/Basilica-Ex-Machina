@@ -14,7 +14,10 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 |-------|--------|
 | `tester` | TDD: testes a falhar primeiro, depois código mínimo (unitários e integração) |
 | `code-commenter` | Comentários e documentação em bloco para lógica não trivial |
+| `design-docs-creator` | TDD técnico: specs, RFCs e propostas de arquitetura via descoberta interactiva |
+| `coupling-analizer` | Análise de acoplamento entre módulos (força, distância, volatilidade) |
 | `legacy-explainer` | Mapeamento de codebase legado (Graphify) e preenchimento dos docs harness |
+| `update-my-graph` | Actualiza/reinstala Graphify e `graphify-out/`; encadeia `legacy-explainer` para harness docs |
 | `get-that-task` | Consulta Jira: issues abertas do utilizador e não atribuídas |
 | `dependency-guardsman` | Segurança e licenças em dependências npm (Trivy, allow/block list) |
 | `data-guardsman` | Criptografia, classificação de dados e boas práticas de segredos |
@@ -62,7 +65,9 @@ Estes documentos são a **fonte de verdade** que skills como `tester`, `audit-gu
 
 4. **Opcional — projeto legado**: invoque `legacy-explainer` para gerar documentação inicial a partir do código existente.
 
-5. **Mantenha** `docs/harness/` atualizado quando mudar arquitetura, testes ou regras de domínio; a rule `harness-docs` depende disso.
+5. **Opcional — decisões de arquitectura**: invoque `design-docs-creator` antes de features significativas; use `coupling-analizer` para avaliar acoplamento entre módulos.
+
+6. **Mantenha** `docs/harness/` e o grafo actualizados quando mudar código, arquitetura ou regras de domínio — invoque `update-my-graph` após alterações relevantes; a rule `harness-docs` depende disso.
 
 ## Estrutura do repositório
 

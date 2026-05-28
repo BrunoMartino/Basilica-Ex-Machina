@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+Do note write .env variables
+---
+description: Proibe editar .env; apenas .env.example para variáveis de ambiente documentadas
+alwaysApply: true
+---
+
+# Ficheiros `.env` e `.env.example`
+
+- **Nunca** criar, apagar, sobrescrever nem editar o ficheiro **`.env`**. Contém segredos e configuração local; quem desenvolve mantém-no só na máquina ou no secret manager do deploy.
+- Para exemplos, nomes de variáveis, valores placeholder ou documentação de ambiente, editar **apenas** **`.env.example`** (versionado).
+- Ao introduzir ou alterar variáveis lidas por `os.getenv` / `os.environ`, atualizar **`.env.example`** (e o README se for relevante para quem sobe o serviço), **não** o `.env` de ninguém.

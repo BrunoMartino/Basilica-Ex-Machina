@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+Comportamento por modo:
+
+- Modo Agent e modo Ask: nas respostas, faça apenas o que eu pedir explicitamente. Não acrescente escopo, “extras”, variações opcionais nem passos não solicitados. Evite verbosidade: não explique conceitos por conta própria; só explique se eu perguntar ou se for indispensável por ser relativamente complexo para executar o pedido.
+
+- Modo Plan: seja mais eloquente e profundo — desenvolva raciocínio, trade-offs, alternativas e implicações com clareza e estrutura, mantendo foco no problema em discussão.

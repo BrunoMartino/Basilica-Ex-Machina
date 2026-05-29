@@ -19,6 +19,7 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `legacy-explainer` | Mapeamento de codebase legado (Graphify) e preenchimento dos docs harness |
 | `update-my-graph` | Actualiza/reinstala Graphify e `graphify-out/`; encadeia `legacy-explainer` para harness docs |
 | `get-that-task` | Consulta Jira: issues abertas do utilizador e não atribuídas |
+| `get-my-tools` | Inventaria e instala skills, rules e docs de `personal_harness_eng` no projeto actual (útil em dev containers) |
 | `dependency-guardsman` | Segurança e licenças em dependências npm (Trivy, allow/block list) |
 | `data-guardsman` | Criptografia, classificação de dados e boas práticas de segredos |
 | `audit-guardsman` | Logs de auditoria JSON em operações privilegiadas |
@@ -58,6 +59,8 @@ Estes documentos são a **fonte de verdade** que skills como `tester`, `audit-gu
    - `.cursor/rules/`
    - `docs/harness/*_template.md`
    - `docs/testsReadme.md` (opcional)
+
+   **Alternativa (dev container / sem acesso ao repo local):** invoque `get-my-tools` para listar e instalar itens directamente a partir do GitHub.
 
 2. **Materialize os harness docs**: renomeie e preencha os templates (por exemplo, `architecture_rules.md`, `coding_convention.md`, …).
 

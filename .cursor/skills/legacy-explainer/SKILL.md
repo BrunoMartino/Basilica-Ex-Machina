@@ -103,10 +103,10 @@ graphify cluster-only .
 
 **Only after Step 3.** Full replace (not append) every run:
 
-- [`docs/harness/architeture_rules_template.md`](../../../docs/harness/architeture_rules_template.md)
-- [`docs/harness/coding_conventions_template.md`](../../../docs/harness/coding_conventions_template.md)
-- [`docs/harness/domain_invariants_template.md`](../../../docs/harness/domain_invariants_template.md)
-- [`docs/harness/operational_constraints_template.md`](../../../docs/harness/operational_constraints_template.md)
+- [`docs/harness/architeture_rules_template.md`](../../../docs/harness/architeture_rules.md)
+- [`docs/harness/coding_conventions_template.md`](../../../docs/harness/coding_conventions.md)
+- [`docs/harness/domain_invariants_template.md`](../../../docs/harness/domain_invariants.md)
+- [`docs/harness/operational_constraints_template.md`](../../../docs/harness/operational_constraints.md)
 
 Generate **`docs/<project-name>_legacy.md`** only if the user **explicitly** asks for that extra narrative.
 

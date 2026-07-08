@@ -1,0 +1,33 @@
+---
+description: Consultar o Graphify antes de inferir sobre o código lendo a base diretamente
+alwaysApply: true
+---
+
+# Graphify First
+
+Antes de qualquer inferência sobre o código (arquitetura, fluxos, dependências, onde algo está definido/usado), consulte o Graphify **primeiro**:
+
+1. Leia `graphify-out/GRAPH_REPORT.md` e/ou rode:
+
+```bash
+graphify query "<pergunta>" --graph graphify-out/graph.json
+```
+
+2. Só então abra ficheiros-fonte para confirmar o que o grafo apontou.
+
+## Quando inferir direto da base (sem grafo)
+
+Apenas se:
+
+- O Graphify não retornou referências para a pergunta;
+- O Graphify não está instalado ou `graphify-out/graph.json` não existe;
+- O usuário mandar explicitamente ignorar o grafo.
+
+## Graphify indisponível
+
+Se o CLI ou `graphify-out/` não existirem, **pergunte sempre ao usuário** antes de prosseguir: instalar/gerar o grafo (via skill `legacy-explainer`) ou seguir com leitura direta da base. Nunca decida sozinho.
+
+## Economia de tokens
+
+- Prefira `graphify query` a varreduras amplas (grep/reads em massa) na base.
+- Leia apenas os ficheiros que o grafo indicou como relevantes.

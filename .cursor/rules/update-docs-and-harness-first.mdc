@@ -1,0 +1,12 @@
+---
+description: Toda implementação ou mudança começa pelos docs/harness, depois código
+alwaysApply: true
+---
+
+# Update Docs and Harness First
+
+Fluxo obrigatório para qualquer implementação ou mudança: **docs → código → graphify**.
+
+1. Refletir a mudança primeiro em `docs/harness/` e na documentação relevante.
+2. Só depois gerar/alterar o código, derivado da documentação atualizada.
+3. Nunca ajustar a documentação a partir do código; o código nasce dos docs.

@@ -1,0 +1,28 @@
+---
+description: Testes existentes são imutáveis pelo agente; novos cobrem mudanças; obsoletos só o utilizador remove
+alwaysApply: true
+---
+
+# Persisted Tester
+
+Testes já presentes no repositório **não podem ser removidos nem alterados** pelo agente — inclui editar asserts, renomear, mover, comentar, desativar ou apagar ficheiros de teste.
+
+## Quando a mudança exige cobertura
+
+1. Escreva **novos** testes que cubram o comportamento atualizado.
+2. Mantenha os testes antigos intactos, mesmo que falhem após a alteração de produção.
+3. Informe o utilizador, de forma explícita, quais testes ficaram **obsoletos** e devem ser **removidos manualmente** por ele (caminho + motivo breve).
+
+## Exceções
+
+- Só pode tocar em testes existentes se o utilizador **pedir explicitamente** na conversa atual (ex.: "remove este teste", "atualiza o assert em X").
+- Criar ficheiros ou suites de teste **novos** continua permitido.
+
+## Exemplo
+
+```
+❌ Reescrever ou apagar `tests/test_checkout.py::test_old_flow` porque o fluxo mudou.
+
+✅ Adicionar `tests/test_checkout.py::test_new_flow`; avisar:
+   "Obsoleto (remover manualmente): tests/test_checkout.py::test_old_flow — fluxo substituído por X."
+```

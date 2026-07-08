@@ -1,11 +1,11 @@
 ---
-description: Read harness docs before architectural, testing, deployment, or domain changes
+description: Harness docs are binding — read and follow docs/harness/ before architectural, testing, deployment, or domain changes
 alwaysApply: true
 ---
 
 # Harness Documentation Gate
 
-Before making **architectural**, **testing**, **deployment**, or **domain** changes, read the relevant project docs:
+This rule is installed together with the `docs/harness/` documents (created by the `harness-create` skill, or by `legacy-explainer` for brownfield projects). When this rule and harness docs exist, **the project follows the harness docs — they are binding, not suggestions.**
 
 | Change type | Read |
 |-------------|------|
@@ -20,7 +20,12 @@ Before making **architectural**, **testing**, **deployment**, or **domain** chan
 ## Workflow
 
 1. Identify which change categories the task touches.
-2. Read every listed doc for those categories before planning or editing.
+2. Read every listed doc for those categories **before** planning or editing.
 3. Apply the constraints from those docs in the implementation.
 
-If a doc is missing, say so and proceed only with what is available — do not invent project rules.
+## Enforcement
+
+- If a generic "best practice" conflicts with a harness doc, **the harness doc wins**. Deviate only when the user explicitly overrides it in the current conversation — and say that you are deviating.
+- Do not weaken, ignore, or silently rewrite harness constraints (invariants, forbidden patterns, testing expectations). Changes to `docs/harness/*` require explicit user request.
+- If a doc is missing, say so and proceed only with what is available — do not invent project rules.
+- If the task violates a harness constraint and the user has not overridden it, stop and report the conflict instead of implementing.

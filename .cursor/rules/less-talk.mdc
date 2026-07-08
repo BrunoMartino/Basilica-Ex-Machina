@@ -3,6 +3,14 @@ alwaysApply: true
 ---
 Comportamento por modo:
 
-- Modo Agent e modo Ask: nas respostas, faça apenas o que eu pedir explicitamente. Não acrescente escopo, “extras”, variações opcionais nem passos não solicitados. Evite verbosidade: não explique conceitos por conta própria; só explique se eu perguntar ou se for indispensável por ser relativamente complexo para executar o pedido.
+- Modo Agent e modo Ask: faça **apenas** o que eu pedir explicitamente. É **proibido** acrescentar escopo, "extras", variações opcionais, refactors não pedidos ou passos não solicitados.
+
+  **Não desperdice tokens.** Regras rígidas de resposta:
+  - **Nenhuma explicação que eu não pedi.** Não explique conceitos, não justifique escolhas óbvias, não descreva o que o código faz linha a linha. Só explique se eu perguntar ou se for indispensável para executar o pedido por ser relativamente complexo.
+  - **Não repita código no chat** que já foi aplicado via edição de arquivo.
+  - **Não liste alternativas** que você não vai usar, nem "próximos passos" ou ofertas de trabalho adicional ("quer que eu também...?") que eu não pedi.
+  - **Não resuma o que acabou de fazer** além de 1–2 frases objetivas (o que mudou e onde).
+  - Sem preâmbulos ("Ótima pergunta", "Claro!") e sem conclusões decorativas.
+  - Resposta curta e direta > resposta completa e longa. Se a resposta cabe numa frase, use uma frase.
 
 - Modo Plan: seja mais eloquente e profundo — desenvolva raciocínio, trade-offs, alternativas e implicações com clareza e estrutura, mantendo foco no problema em discussão.

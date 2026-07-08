@@ -267,4 +267,4 @@ Add a section on performance requirements
 
 ## References
 
-Industry patterns and links are listed in [`SKILL.md`](SKILL.md#references).
+Industry patterns followed: [Google Engineering Practices](https://google.github.io/eng-practices/), [Google SRE Book](https://sre.google/sre-book/table-of-contents/), [OWASP Top 10](https://owasp.org/www-project-top-ten/), [Architecture Decision Records](https://adr.github.io/).

@@ -12,7 +12,7 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 
 | Skill | Função |
 |-------|--------|
-| `harness-create` | Cria os docs harness interactivamente (perguntas só para o que falta) e instala a rule `harness-docs` |
+| `harness-create` | Cria os docs harness interactivamente (perguntas só para o que falta) e instala a rule `all-for-harness` |
 | `tester` | TDD: testes a falhar primeiro, depois código mínimo; triangulação em 4 eixos (happy, boundary, negative, adversarial) |
 | `code-commenter` | Comentários e documentação em bloco para lógica não trivial |
 | `design-docs-creator` | TDD técnico: specs, RFCs e propostas de arquitetura via descoberta interactiva; fases de implementação em Red/Green |
@@ -41,7 +41,7 @@ Cada skill vive numa pasta com `SKILL.md` (e, quando aplicável, `examples.md`).
 
 Regras sempre ativas que orientam o comportamento do agente:
 
-- **`harness-docs.mdc`** — os docs em `docs/harness/` são vinculativos: o agente lê-os antes de alterações de arquitetura, testes, deploy ou domínio e segue-os em caso de conflito com "best practices" genéricas. É instalada junto com os docs pela skill `harness-create`.
+- **`all-for-harness.mdc`** — os docs em `docs/harness/` são vinculativos: o agente lê-os antes de alterações de arquitetura, testes, deploy ou domínio, segue-os em caso de conflito com "best practices" genéricas e aplica o fluxo obrigatório docs → código → graphify. É instalada junto com os docs pela skill `harness-create`.
 - **`less-talk.mdc`** — proíbe explicações não pedidas, extras de escopo e desperdício de tokens em modo Agent/Ask; modo Plan mantém profundidade.
 - **`dont-write-env.mdc`** — nunca editar `.env`; apenas `.env.example`.
 
@@ -75,7 +75,7 @@ Estes documentos são a **fonte de verdade** que skills como `tester`, `audit-gu
 
    **Alternativa (dev container / sem acesso ao repo local):** invoque `get-my-tools` para listar e instalar itens directamente a partir do GitHub.
 
-2. **Materialize os harness docs**: invoque `harness-create` (greenfield — faz perguntas e gera cada doc a partir dos templates, instalando a rule `harness-docs`), ou renomeie e preencha os templates manualmente.
+2. **Materialize os harness docs**: invoque `harness-create` (greenfield — faz perguntas e gera cada doc a partir dos templates, instalando a rule `all-for-harness`), ou renomeie e preencha os templates manualmente.
 
 3. **Ajuste** skills e rules ao stack do projeto (Jira, npm, Graphify, etc.) — muitas skills assumem integrações MCP (Atlassian, Snyk, etc.).
 
@@ -83,7 +83,7 @@ Estes documentos são a **fonte de verdade** que skills como `tester`, `audit-gu
 
 5. **Opcional — decisões de arquitectura**: invoque `design-docs-creator` antes de features significativas; use `coupling-analizer` para avaliar acoplamento entre módulos.
 
-6. **Mantenha** `docs/harness/` e o grafo actualizados quando mudar código, arquitetura ou regras de domínio — invoque `legacy-explainer` após alterações relevantes (actualiza o grafo e refresca os docs); a rule `harness-docs` depende disso.
+6. **Mantenha** `docs/harness/` e o grafo actualizados quando mudar código, arquitetura ou regras de domínio — invoque `legacy-explainer` após alterações relevantes (actualiza o grafo e refresca os docs); a rule `all-for-harness` depende disso.
 
 ## Estrutura do repositório
 

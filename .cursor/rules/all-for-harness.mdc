@@ -1,0 +1,32 @@
+---
+description: Harness docs são vinculantes — ler docs/harness/ antes de planejar/editar; fluxo obrigatório docs → código → graphify
+alwaysApply: true
+---
+
+# All for Harness
+
+Esta rule é instalada junto com os documentos `docs/harness/` (criados pela skill `harness-create`, ou pela `legacy-explainer` em projetos brownfield). Quando existem, **o projeto segue os harness docs — são vinculantes, não sugestões.**
+
+| Tipo de mudança | Ler |
+|-----------------|-----|
+| Arquitetura | `docs/harness/architecture_rules.md` |
+| Estilo / convenções de código | `docs/harness/coding_convention.md` |
+| Anti-padrões | `docs/harness/forbidden_patterns.md` |
+| Testes | `docs/harness/testing_expectation.md` |
+| Deployment | `docs/harness/deployment_rules.md` |
+| Lógica de domínio | `docs/harness/domain_invariantes.md` |
+| Operações | `docs/harness/operational_constraints.md` |
+
+## Workflow (docs → código → graphify)
+
+1. Identifique quais categorias de mudança a tarefa toca e leia **antes** de planejar ou editar todos os docs listados para essas categorias.
+2. Reflita a mudança primeiro em `docs/harness/` e na documentação relevante.
+3. Só depois gere/altere o código, derivado da documentação atualizada, aplicando as constraints dos docs.
+4. Nunca ajuste a documentação a partir do código; o código nasce dos docs.
+
+## Enforcement
+
+- Se uma "best practice" genérica conflitar com um harness doc, **o harness doc vence**. Desvie apenas se o usuário sobrescrever explicitamente na conversa atual — e diga que está desviando.
+- Não enfraqueça, ignore nem reescreva silenciosamente constraints do harness (invariantes, forbidden patterns, expectativas de teste). Mudanças em `docs/harness/*` exigem pedido explícito do usuário.
+- Se um doc estiver faltando, diga isso e prossiga só com o que existe — não invente regras de projeto.
+- Se a tarefa violar uma constraint do harness e o usuário não tiver sobrescrito, pare e reporte o conflito em vez de implementar.

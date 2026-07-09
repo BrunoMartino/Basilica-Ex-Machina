@@ -11,17 +11,17 @@ Invocation patterns, permission prompts, and sample output. Source repo: [BrunoM
 - "Bring tester and code-commenter into this project"
 - "Install all rules from personal_harness_eng"
 - "Bootstrap Cursor config in this dev container"
-- "Copy harness templates and harness-docs rule from GitHub"
+- "Copy harness templates and all-for-harness rule from GitHub"
 
 ---
 
 ## Skip listing (user named items)
 
-User: **"Install tester, code-commenter, and the harness-docs rule."**
+User: **"Install tester, code-commenter, and the all-for-harness rule."**
 
 Agent:
 
-1. Resolve: `tester/`, `code-commenter/`, `.cursor/rules/harness-docs.mdc`
+1. Resolve: `tester/`, `code-commenter/`, `.cursor/rules/all-for-harness.mdc`
 2. Check for existing paths → permission if conflicts
 3. Fetch and write — **no full catalog**
 
@@ -42,7 +42,7 @@ Agent presents:
 | … | … |
 
 ### Rules
-- `harness-docs.mdc`
+- `all-for-harness.mdc`
 - `less-talk.mdc`
 - `dont-write-env.mdc`
 
@@ -64,7 +64,7 @@ Then ask: **Which items should I install?** (multi-select or bundle OK)
 Ask before writing when targets already exist:
 
 - `.cursor/skills/tester/` already exists. **Skip, overwrite, or abort?**
-- `harness-docs.mdc` and `less-talk.mdc` would overwrite local rules. **Overwrite both, skip existing, or abort?**
+- `all-for-harness.mdc` and `less-talk.mdc` would overwrite local rules. **Overwrite both, skip existing, or abort?**
 - Installing **full kit** would touch 12 paths; 3 already exist. **Skip existing only, overwrite all, or abort?**
 
 If the user declines, stop and offer manual raw URLs or:
@@ -93,7 +93,7 @@ gh api repos/BrunoMartino/personal_harness_eng/contents/.cursor/skills/tester \
 **Installed**
 - `tester` → `.cursor/skills/tester/` (SKILL.md, examples.md)
 - `code-commenter` → `.cursor/skills/code-commenter/`
-- `harness-docs.mdc` → `.cursor/rules/harness-docs.mdc`
+- `all-for-harness.mdc` → `.cursor/rules/all-for-harness.mdc`
 
 **Skipped**
 - `less-talk.mdc` (already present; user chose skip)

@@ -5,7 +5,7 @@ description: >-
   conventions, forbidden patterns, testing expectations, deployment rules,
   domain invariants, operational constraints) from the personal_harness_eng
   templates, asking the user only for what the prompt context does not
-  provide, and installs the harness-docs rule alongside them. Use when
+  provide, and installs the all-for-harness rule alongside them. Use when
   starting a new project, bootstrapping docs/harness/, or when the user asks
   to create or fill harness docs.
 disable-model-invocation: true
@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 # Harness Create
 
-Builds the `docs/harness/` documents for a project **step by step**, one doc at a time, and finishes by installing the `harness-docs` rule so the project is bound to them.
+Builds the `docs/harness/` documents for a project **step by step**, one doc at a time, and finishes by installing the `all-for-harness` rule so the project is bound to them.
 
 For **brownfield** projects with existing code, prefer [`legacy-explainer`](../legacy-explainer/SKILL.md) (evidence from Graphify). This skill is for **greenfield** or docs-first setups.
 
@@ -39,7 +39,7 @@ Copy and track progress:
 - [ ] Step 1: Extract known context from the prompt/conversation
 - [ ] Step 2: Ask ONLY for missing information (AskQuestion)
 - [ ] Step 3: Generate each harness doc, one at a time, confirming with the user
-- [ ] Step 4: Install .cursor/rules/harness-docs.mdc in the project
+- [ ] Step 4: Install .cursor/rules/all-for-harness.mdc in the project
 - [ ] Step 5: Summary — docs written, open placeholders left for the user
 ```
 
@@ -81,9 +81,9 @@ For each document, in the table order:
 3. Replace only what is known; leave unanswered fields as explicit placeholders (`TBD:` + what is needed).
 4. Show the doc (or a diff) and confirm before moving to the next one. If the user says "generate all without confirming", proceed straight through.
 
-### Step 4 — Install the harness-docs rule
+### Step 4 — Install the all-for-harness rule
 
-Write `.cursor/rules/harness-docs.mdc` into the target project (copy from this kit's `.cursor/rules/harness-docs.mdc`). This rule makes the docs **binding**: agents must read and follow them before architectural, testing, deployment, or domain changes.
+Write `.cursor/rules/all-for-harness.mdc` into the target project (copy from this kit's `.cursor/rules/all-for-harness.mdc`). This rule makes the docs **binding**: agents must read and follow them before architectural, testing, deployment, or domain changes.
 
 The rule and the docs are a unit — never leave the docs without the rule.
 
@@ -93,7 +93,7 @@ Report:
 
 - Docs written (paths)
 - Placeholders / open questions left (`TBD:` items per doc)
-- Rule installed at `.cursor/rules/harness-docs.mdc`
+- Rule installed at `.cursor/rules/all-for-harness.mdc`
 
 ## Guardrails
 

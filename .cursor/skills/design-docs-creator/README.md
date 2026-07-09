@@ -191,7 +191,7 @@ Use alongside other harness skills depending on the TDD topic:
 | [`legacy-explainer`](../legacy-explainer/SKILL.md) | Brownfield context before writing a migration/refactor TDD |
 | [`get-that-task`](../get-that-task/SKILL.md) | Linking Epic/Ticket metadata to Jira issues |
 
-The harness docs gate (`.cursor/rules/harness-docs.mdc`) applies: for architecture or domain changes documented in a TDD, align with `docs/harness/` when those files exist in the project.
+The harness docs gate (`.cursor/rules/all-for-harness.mdc`) applies: for architecture or domain changes documented in a TDD, align with `docs/harness/` when those files exist in the project.
 
 ## Integration with External Tools
 

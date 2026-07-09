@@ -15,7 +15,7 @@ disable-model-invocation: true
 - Apply **only when the user explicitly invokes this skill**, unless the same message says otherwise.
 - Use when the user wants to **install or bring** skills, rules, or docs from [personal_harness_eng](https://github.com/BrunoMartino/personal_harness_eng) into the **current project**.
 - Use in **dev containers** or environments without access to a local clone or WSL terminal.
-- Use when the user names specific items to install (e.g. `tester`, `harness-docs`, `all rules`) — in that case **skip listing** and install directly.
+- Use when the user names specific items to install (e.g. `tester`, `all-for-harness`, `all rules`) — in that case **skip listing** and install directly.
 
 **Out of scope**: editing harness docs in place, generating project-specific content, or installing into `~/.cursor/skills-cursor/` (Cursor internal).
 
@@ -41,7 +41,7 @@ Determine whether the user already named what to install.
 **Skip listing** when the message includes concrete targets, for example:
 
 - Skill names: `tester`, `code-commenter`, `get-that-task`
-- Rule stems: `harness-docs`, `less-talk`, `dont-write-env`
+- Rule stems: `all-for-harness`, `less-talk`, `dont-write-env`
 - Doc paths or bundles: `harness templates`, `all rules`, `docs/testsReadme.md`
 
 **Show catalog first** when the user invokes the skill without naming items (e.g. "get my tools", "what can I install from personal_harness_eng?").
@@ -126,8 +126,8 @@ Rules:
 **Single file (raw):**
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/BrunoMartino/personal_harness_eng/main/.cursor/rules/harness-docs.mdc" \
-  -o ".cursor/rules/harness-docs.mdc"
+curl -fsSL "https://raw.githubusercontent.com/BrunoMartino/personal_harness_eng/main/.cursor/rules/all-for-harness.mdc" \
+  -o ".cursor/rules/all-for-harness.mdc"
 ```
 
 **Skill folder (gh api + raw, or sparse clone):**

@@ -4,7 +4,8 @@ description: >-
   Write failing tests first, then minimal production code (TDD). Covers unit
   and integration tests with AAA structure, four-axis triangulation (happy,
   boundary, negative, adversarial), safe test isolation, mocks/spies, and
-  test run documentation. Use before implementing new features, in greenfield
+  test run documentation, and Green-phase handoff docs (faseN.md +
+  faseNTask.md). Use before implementing new features, in greenfield
   projects, or when the user asks for TDD, unit tests, or integration tests.
 disable-model-invocation: true
 ---
@@ -30,11 +31,48 @@ Copy and track progress:
 
 - [ ] Detect project language and test runner/framework; confirm deps. Install or add tooling **only after user approval**.
 - [ ] Write **exactly one** new failing unit or integration test (Red).
-- [ ] Implement the **minimal** production code needed to turn it green (Green).
+- [ ] Repeat Red until the triangulation matrix for the phase slice is covered.
+- [ ] Run the new test(s); confirm **Red** (failing as expected); report command and outcome.
+- [ ] Create Green handoff docs for this phase (see below) — **mandatory before any production code**.
+- [ ] Implement the **minimal** production code needed to turn tests green (Green) — own session or follow-up; use `fase{N}Task.md` as checklist.
 - [ ] Refactor if needed without changing observable behavior (Refactor).
-- [ ] Repeat until the triangulation matrix for the slice is covered.
-- [ ] Run the new test(s); report the command and outcome.
 - [ ] Append a row to [`docs/testsReadme.md`](../../../docs/testsReadme.md) (suite/name, purpose, path, isolated run command).
+
+## Green handoff docs (mandatory after Red)
+
+When Red for an **implementation phase** is done, always create **both** files under `docs/tdd/` before writing production code:
+
+| File | Purpose |
+|------|---------|
+| `docs/tdd/fase{N}.md` | Passo a passo detalhado: código mínimo para Green |
+| `docs/tdd/fase{N}Task.md` | Mesmo plano em checkboxes — controle de execução |
+
+**`N`**: número da fase de implementação em que a skill foi invocada (TDD/design doc). Se não houver fase explícita, use o próximo inteiro livre em `docs/tdd/` (ex.: já existem `fase1*` → use `2`).
+
+### `fase{N}.md` — conteúdo mínimo
+
+1. **Contexto** — fase, slice, testes Red escritos (paths).
+2. **Comando Red** — como correr só estes testes e confirmar falha esperada.
+3. **Passos Green** — ordem numerada: ficheiros a criar/alterar, símbolos, lógica mínima por passo; o que **não** implementar ainda.
+4. **Verificação** — comando para confirmar Green; critério de done.
+
+### `fase{N}Task.md` — conteúdo mínimo
+
+Checkboxes espelhando os passos de `fase{N}.md`, uma linha acionável cada:
+
+```markdown
+# Fase {N} — Green
+
+- [ ] …
+- [ ] …
+- [ ] Testes da fase passam: `<comando>`
+```
+
+Regras:
+
+- **Nunca** implementar produção na mesma resposta em que termina Red **sem** ter criado os dois ficheiros (salvo se o utilizador pedir Green explicitamente na mesma mensagem — mesmo assim, criar os docs **antes** do código).
+- Ao implementar Green (mesma sessão ou outra), marcar checkboxes em `fase{N}Task.md` conforme avança.
+- Se Red for só um incremento dentro de uma fase maior, actualizar os docs existentes da fase em vez de criar duplicados.
 
 ## Three laws (TDD)
 
@@ -109,4 +147,4 @@ Full TypeScript-heavy examples remain **guides only**. Use this repository's lan
 
 ## Reporting
 
-Always state what automated tests ran and anything **not** run (e.g. full suite omitted for time), plus which triangulation axes were skipped and why. Respect project harness agent rules ("report what ran and did not run").
+Always state what automated tests ran and anything **not** run (e.g. full suite omitted for time), which triangulation axes were skipped and why, and the paths `docs/tdd/fase{N}.md` + `docs/tdd/fase{N}Task.md` when Red handoff was produced. Respect project harness agent rules ("report what ran and did not run").

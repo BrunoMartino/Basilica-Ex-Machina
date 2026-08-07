@@ -3,7 +3,7 @@ name: get-my-tools
 description: >-
   Inventories BrunoMartino/Michelangelo-Dev-Toolkit on GitHub and installs selected
   skills, rules, and harness docs into the current project. Use when the user
-  asks to bring/install harness tools, bootstrap Cursor config in a dev
+  asks to bring/install harness tools, bootstrap Claude Code config in a dev
   container, or names specific skills/rules/docs to copy from Michelangelo-Dev-Toolkit.
 disable-model-invocation: true
 ---
@@ -17,9 +17,9 @@ disable-model-invocation: true
 - Use in **dev containers** or environments without access to a local clone or WSL terminal.
 - Use when the user names specific items to install (e.g. `tester`, `all-for-harness`, `all rules`) — in that case **skip listing** and install directly.
 
-**Out of scope**: editing harness docs in place, generating project-specific content, or installing into `~/.cursor/skills-cursor/` (Cursor internal).
+**Out of scope**: editing harness docs in place, generating project-specific content, or installing into Claude Code's bundled/internal skills.
 
-Follow always-apply project rules (including harness gates under `.cursor/rules/`).
+Follow always-apply project rules (including harness gates under `.claude/rules/`).
 
 ## Execution order (mandatory)
 
@@ -67,14 +67,14 @@ Do **not** write files during inventory.
 
 | Category | Remote path | Local destination |
 |----------|-------------|-------------------|
-| Skills | `.cursor/skills/<name>/` | `.cursor/skills/<name>/` |
-| Rules | `.cursor/rules/*.mdc` | `.cursor/rules/` |
+| Skills | `.claude/skills/<name>/` | `.claude/skills/<name>/` |
+| Rules | `.claude/rules/*.md` | `.claude/rules/` |
 | Harness templates | `docs/harness/*_template.md` | `docs/harness/` |
 | Test catalog | `docs/testsReadme.md` | `docs/` |
 
 For each skill folder, read `SKILL.md` frontmatter and include the `description` in the catalog when available.
 
-If inventory finds `.cursor/hooks/` or other dev-toolkit paths, list them under an **Other** category. Do **not** list `drafts/` or repo-only content unrelated to the kit.
+If inventory finds `.claude/hooks/` or other dev-toolkit paths, list them under an **Other** category. Do **not** list `drafts/` or repo-only content unrelated to the kit.
 
 ## Step 3 — Present catalog or resolve selection
 
@@ -111,7 +111,7 @@ If the user **declines**: stop; report what would have been installed and the re
 
 ## Step 5 — Install
 
-Copy from the remote repo into the **current project** (default). Use personal paths (`~/.cursor/skills/`) **only** if the user explicitly asks.
+Copy from the remote repo into the **current project** (default). Use personal paths (`~/.claude/skills/`) **only** if the user explicitly asks.
 
 Rules:
 
@@ -126,20 +126,20 @@ Rules:
 **Single file (raw):**
 
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/BrunoMartino/Michelangelo-Dev-Toolkit/main/.cursor/rules/all-for-harness.mdc" \
-  -o ".cursor/rules/all-for-harness.mdc"
+curl -fsSL "https://raw.githubusercontent.com/BrunoMartino/Michelangelo-Dev-Toolkit/main/.claude/rules/all-for-harness.md" \
+  -o ".claude/rules/all-for-harness.md"
 ```
 
 **Skill folder (gh api + raw, or sparse clone):**
 
 ```bash
-mkdir -p ".cursor/skills/tester"
-curl -fsSL "https://raw.githubusercontent.com/BrunoMartino/Michelangelo-Dev-Toolkit/main/.cursor/skills/tester/SKILL.md" \
-  -o ".cursor/skills/tester/SKILL.md"
+mkdir -p ".claude/skills/tester"
+curl -fsSL "https://raw.githubusercontent.com/BrunoMartino/Michelangelo-Dev-Toolkit/main/.claude/skills/tester/SKILL.md" \
+  -o ".claude/skills/tester/SKILL.md"
 # repeat for examples.md and other files in the folder
 ```
 
-Prefer `gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.cursor/skills` to discover skill folder contents before fetching each file.
+Prefer `gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.claude/skills` to discover skill folder contents before fetching each file.
 
 ## Step 6 — Output contract
 
@@ -155,8 +155,8 @@ Examples: [examples.md](examples.md).
 
 ## Guardrails
 
-- **Never** install into `~/.cursor/skills-cursor/`.
+- **Never** install into Claude Code's bundled/internal skills; personal `~/.claude/skills/` only on explicit request.
 - **Never** edit `.env`; only `.env.example` when explicitly requested.
-- Default destination is **project** `.cursor/` and `docs/`, not personal skills, unless the user says otherwise.
+- Default destination is **project** `.claude/` and `docs/`, not personal skills, unless the user says otherwise.
 - If GitHub is unreachable or auth fails, report in **one sentence** and stop.
 - Do **not** invent catalog entries — only install paths confirmed by inventory.

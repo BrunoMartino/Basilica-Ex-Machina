@@ -21,7 +21,7 @@ disable-model-invocation: true
 - Most invocations do both: update the graph, then re-explain (overwrite harness templates).
 - **Out of scope**: explaining a single small function without a project-wide pass; deleting `graphify-out/` (`graphify uninstall --purge` only on explicit request).
 
-Follow always-apply project rules (including harness gates under `.cursor/rules/`).
+Follow always-apply project rules (including harness gates under `.claude/rules/`).
 
 ## Execution order (mandatory)
 

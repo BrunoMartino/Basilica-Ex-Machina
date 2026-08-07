@@ -1,0 +1,38 @@
+---
+description: Require uv as the Python package and environment manager
+alwaysApply: true
+---
+
+# Python Uses UV
+
+For this project, always use `uv` for Python package and environment management.
+
+## Required
+
+- Use `uv add` to install dependencies.
+- Use `uv remove` to uninstall dependencies.
+- Use `uv sync` to install from lock/config state.
+- Use `uv run` to execute Python tools and scripts.
+- Use `uv venv` for virtual environment creation when needed.
+
+## Do Not Use
+
+- Do not use `pip install` directly.
+- Do not use `python -m pip ...`.
+- Do not use `pipenv`, `poetry`, or `conda` in this repository.
+
+## Examples
+
+```bash
+# ✅ Correct
+uv add fastapi pydantic
+uv remove requests
+uv sync
+uv run pytest
+uv run python main.py
+
+# ❌ Incorrect
+pip install fastapi
+python -m pip install pydantic
+poetry add fastapi
+```

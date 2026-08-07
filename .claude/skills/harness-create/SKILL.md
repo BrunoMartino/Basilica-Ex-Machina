@@ -43,7 +43,7 @@ Copy and track progress:
 - [ ] Step 3: Generate each harness doc, one at a time, confirming with the user
 - [ ] Step 3b: Map features — ask the 4 questions per feature, one feature-{name}.md each
 - [ ] Step 3c: Validate feature files (4 user answers, dependencies, acceptance criteria)
-- [ ] Step 4: Install .cursor/rules/all-for-harness.mdc in the project
+- [ ] Step 4: Install .claude/rules/all-for-harness.md in the project
 - [ ] Step 5: Summary — docs written, features mapped/pending, open placeholders left for the user
 ```
 
@@ -109,7 +109,7 @@ Files failing validation go to the pending list — do not silently fill the gap
 
 ### Step 4 — Install the all-for-harness rule
 
-Write `.cursor/rules/all-for-harness.mdc` into the target project (copy from this kit's `.cursor/rules/all-for-harness.mdc`). This rule makes the docs **binding**: agents must read and follow them before architectural, testing, deployment, or domain changes.
+Write `.claude/rules/all-for-harness.md` into the target project (copy from this kit's `.claude/rules/all-for-harness.md`). This rule makes the docs **binding**: agents must read and follow them before architectural, testing, deployment, or domain changes.
 
 The rule and the docs are a unit — never leave the docs without the rule.
 
@@ -120,7 +120,7 @@ Report:
 - Docs written (paths)
 - Features mapped (`docs/harness/features/feature-{name}.md`) and features **pending** user answers
 - Placeholders / open questions left (`TBD:` items per doc)
-- Rule installed at `.cursor/rules/all-for-harness.mdc`
+- Rule installed at `.claude/rules/all-for-harness.md`
 
 ## Guardrails
 

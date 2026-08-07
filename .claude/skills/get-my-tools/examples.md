@@ -10,7 +10,7 @@ Invocation patterns, permission prompts, and sample output. Source repo: [BrunoM
 - "Install harness skills from Michelangelo-Dev-Toolkit"
 - "Bring tester and code-commenter into this project"
 - "Install all rules from Michelangelo-Dev-Toolkit"
-- "Bootstrap Cursor config in this dev container"
+- "Bootstrap Claude Code config in this dev container"
 - "Copy harness templates and all-for-harness rule from GitHub"
 
 ---
@@ -21,7 +21,7 @@ User: **"Install tester, code-commenter, and the all-for-harness rule."**
 
 Agent:
 
-1. Resolve: `tester/`, `code-commenter/`, `.cursor/rules/all-for-harness.mdc`
+1. Resolve: `tester/`, `code-commenter/`, `.claude/rules/all-for-harness.md`
 2. Check for existing paths → permission if conflicts
 3. Fetch and write — **no full catalog**
 
@@ -42,9 +42,9 @@ Agent presents:
 | … | … |
 
 ### Rules
-- `all-for-harness.mdc`
-- `less-talk.mdc`
-- `dont-write-env.mdc`
+- `all-for-harness.md`
+- `less-talk.md`
+- `dont-write-env.md`
 
 ### Harness templates
 - `architeture_rules_template.md`
@@ -63,14 +63,14 @@ Then ask: **Which items should I install?** (multi-select or bundle OK)
 
 Ask before writing when targets already exist:
 
-- `.cursor/skills/tester/` already exists. **Skip, overwrite, or abort?**
-- `all-for-harness.mdc` and `less-talk.mdc` would overwrite local rules. **Overwrite both, skip existing, or abort?**
+- `.claude/skills/tester/` already exists. **Skip, overwrite, or abort?**
+- `all-for-harness.md` and `less-talk.md` would overwrite local rules. **Overwrite both, skip existing, or abort?**
 - Installing **full kit** would touch 12 paths; 3 already exist. **Skip existing only, overwrite all, or abort?**
 
 If the user declines, stop and offer manual raw URLs or:
 
 ```bash
-gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.cursor/skills/tester \
+gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.claude/skills/tester \
   --jq '.[].name'
 ```
 
@@ -80,8 +80,8 @@ gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.cursor/skills/teste
 
 | User says | Resolves to |
 |-----------|-------------|
-| `all skills` | Every folder under `.cursor/skills/` |
-| `all rules` | Every `.mdc` under `.cursor/rules/` |
+| `all skills` | Every folder under `.claude/skills/` |
+| `all rules` | Every `.md` under `.claude/rules/` |
 | `harness templates` | `docs/harness/*_template.md` |
 | `full kit` | All skills + rules + harness templates + `docs/testsReadme.md` |
 
@@ -91,12 +91,12 @@ gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.cursor/skills/teste
 
 ```markdown
 **Installed**
-- `tester` → `.cursor/skills/tester/` (SKILL.md, examples.md)
-- `code-commenter` → `.cursor/skills/code-commenter/`
-- `all-for-harness.mdc` → `.cursor/rules/all-for-harness.mdc`
+- `tester` → `.claude/skills/tester/` (SKILL.md, examples.md)
+- `code-commenter` → `.claude/skills/code-commenter/`
+- `all-for-harness.md` → `.claude/rules/all-for-harness.md`
 
 **Skipped**
-- `less-talk.mdc` (already present; user chose skip)
+- `less-talk.md` (already present; user chose skip)
 
 **Next**
 - Rename and fill harness templates under `docs/harness/` when ready.

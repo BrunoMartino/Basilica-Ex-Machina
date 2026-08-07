@@ -1,6 +1,6 @@
 # Technical Design Doc Creator
 
-A Cursor skill that guides agents to create comprehensive **Technical Design Documents (TDDs)** through interactive discovery, following industry standards (Google Design Docs, RFC, ADR, SRE, OWASP, PCI DSS).
+A Claude Code skill that guides agents to create comprehensive **Technical Design Documents (TDDs)** through interactive discovery, following industry standards (Google Design Docs, RFC, ADR, SRE, OWASP, PCI DSS).
 
 **Skill file:** [`SKILL.md`](SKILL.md)
 
@@ -194,7 +194,7 @@ Use alongside other harness skills depending on the TDD topic:
 | [`legacy-explainer`](../legacy-explainer/SKILL.md) | Brownfield context before writing a migration/refactor TDD |
 | [`get-that-task`](../get-that-task/SKILL.md) | Linking Epic/Ticket metadata to Jira issues |
 
-The harness docs gate (`.cursor/rules/all-for-harness.mdc`) applies: for architecture or domain changes documented in a TDD, align with `docs/harness/` when those files exist in the project.
+The harness docs gate (`.claude/rules/all-for-harness.md`) applies: for architecture or domain changes documented in a TDD, align with `docs/harness/` when those files exist in the project.
 
 ## Integration with External Tools
 

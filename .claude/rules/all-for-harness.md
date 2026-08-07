@@ -1,8 +1,3 @@
----
-description: Harness docs são vinculantes — ler docs/harness/ antes de planejar/editar; fluxo obrigatório docs → código → graphify
-alwaysApply: true
----
-
 # All for Harness
 
 Esta rule é instalada junto com os documentos `docs/harness/` (criados pela skill `harness-create`, ou pela `legacy-explainer` em projetos brownfield). Quando existem, **o projeto segue os harness docs — são vinculantes, não sugestões.**

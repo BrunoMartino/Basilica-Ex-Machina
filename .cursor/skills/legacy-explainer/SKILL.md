@@ -116,6 +116,7 @@ Skeletons: [examples.md](examples.md).
 ## Guardrails
 
 - Never run `graphify uninstall --purge` unless explicitly requested.
+- When overwriting harness templates, always keep the unidirectional data flow rule (data cycles/loops only when the alternatives are more complex, more abstract, or require significantly more code, or on explicit user request). Cycles found in the graph are documented as violations or justified exceptions — never as grounds to remove or weaken the rule.
 - Never install tooling or write to `graphify-out/` / `docs/harness/` before the permission gate.
 - If the user only wants a graph refresh without docs, skip Step 6 and say so; if they only want docs and the graph is current, start at Step 6.
 

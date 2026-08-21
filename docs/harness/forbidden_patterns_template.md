@@ -44,6 +44,16 @@ These patterns may be valid in other contexts, but they are not default choices 
 - Relying on timestamps alone for critical ordering.
 - Mixing tenant/customer data without explicit scoping.
 
+## Forbidden Data Flow Patterns
+
+- Non-unidirectional data flow: data must always flow in one direction through the application.
+- Data cycles and loops between modules, layers, or services.
+
+Exceptions — cycles/loops are only allowed when:
+
+1. The alternatives to avoid them are more complex, more abstract, or require significantly more code.
+2. The user explicitly requests the loop.
+
 ## Forbidden Error Patterns
 
 - Catching errors and returning success.

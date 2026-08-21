@@ -65,6 +65,18 @@ DDD/Clean Architecture must not be introduced globally without explicit approval
 - Avoid unnecessary layering.
 - Avoid abstractions that do not serve current complexity.
 
+## Data Flow
+
+- Data flow must always be unidirectional.
+- Avoid data cycles and loops inside the application (between modules, layers, or services) as much as possible.
+
+Data cycles/loops are only allowed in two situations:
+
+1. When the alternatives to avoid them are more complex, more abstract, or require significantly more code.
+2. When the user explicitly requests the loop.
+
+Any allowed cycle must be justified against one of these two situations.
+
 ## Dependency Rules
 
 Allowed:

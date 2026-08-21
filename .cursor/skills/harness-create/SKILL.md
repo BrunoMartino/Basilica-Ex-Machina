@@ -128,5 +128,6 @@ Report:
 - Never write a `feature-{name}.md` with invented answers to the 4 questions — only the user answers them.
 - Never consolidate features into a single monolithic file; always one file per feature inside `docs/harness/features/`.
 - Do not enable DDD/Clean/Hexagonal in `architecture_rules.md` unless the user explicitly requested it.
+- Always preserve the unidirectional data flow rule in generated `architecture_rules.md` and `forbidden_patterns.md`: data cycles/loops are only allowed when the alternatives are more complex, more abstract, or require significantly more code, or when the user explicitly requests the loop. Never drop or weaken this rule.
 - Do not overwrite an existing filled harness doc without confirmation; offer a diff first.
 - Keep each generated doc at or below the template's size — the value is in precision, not volume.

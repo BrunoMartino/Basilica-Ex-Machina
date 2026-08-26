@@ -4,7 +4,7 @@
 #
 # Usage: check.sh diagram.svg
 #
-# Checks: node kinds, duplicate ids, node box overlap (min 8px clear gap),
+# Checks: node kinds, data-node-status, data-parent-id, duplicate ids, node box overlap (min 8px clear gap),
 # edge from/to referencing existing data-node-id, edge endpoints touching the
 # node boxes (12px tolerance; vertical lifeline hits are allowed for sequence
 # diagrams), loose labels overlapping nodes, and --step presence when
@@ -75,6 +75,7 @@ function warn(msg) { W[++nw] = msg }
 
 BEGIN {
   KINDS = " frontend backend database cloud security messagebus external "
+  STATUSES = " live orphan dead edge-case "
   TOL = 12; GAP = 8
   nn = 0; nedge = 0; ne = 0; nw = 0; nlab = 0
   nodeId = ""; nodeDepth = 0; edgeOpen = 0; edgeDepth = 0
@@ -115,6 +116,8 @@ BEGIN {
     if (nid != "") {
       nn++
       id[nn] = nid; kind[nn] = getattr(tag, "data-node-kind")
+      status[nn] = getattr(tag, "data-node-status")
+      parent[nn] = getattr(tag, "data-parent-id")
       nx[nn] = ""; hasTyped[nn] = 0
       nodeId = nid; nodeIdx = nn; nodeDepth = 1
       nodeAnim[nn] = 0; nodeStep[nn] = "none"
@@ -184,9 +187,18 @@ BEGIN {
 }
 END {
   if (nn == 0) err("no nodes with data-node-id")
-  for (i = 1; i <= nn; i++)
+  for (i = 1; i <= nn; i++) {
     if (nx[i] == "" || nx2[i] <= nx[i] || ny2[i] <= ny[i])
       err("node " id[i] ": empty box")
+    st = status[i]
+    if (st != "" && index(STATUSES, " " st " ") == 0)
+      err("node " id[i] ": data-node-status=\"" st "\" invalid")
+    pid = parent[i]
+    if (pid != "") {
+      if (!(pid in seen)) err("node " id[i] ": data-parent-id=\"" pid "\" missing node")
+      else if (pid == id[i]) err("node " id[i] ": data-parent-id points to itself")
+    }
+  }
 
   for (i = 1; i <= nn; i++)
     for (j = i + 1; j <= nn; j++) {

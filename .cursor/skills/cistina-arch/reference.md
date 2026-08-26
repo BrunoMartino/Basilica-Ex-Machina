@@ -22,6 +22,21 @@ Read this after choosing a diagram type. Do not inline colors; classes come from
 
 Every node: mask rect, then typed rect (`stroke-width="1.5"`, `rx="6"`).
 
+### Status (`data-node-status`) — not a kind
+
+Keep `data-node-kind` semantic. Mark anomalies on the node:
+
+| Value | Use |
+|---|---|
+| *(omit)* or `live` | Reachable from an entry |
+| `orphan` | No edges, or on disk and missing from the graph |
+| `dead` | Exists but no entry reaches it |
+| `edge-case` | Error / flag / exception / test-only branch |
+
+Child excerpts and extra-depth symbols set `data-parent-id` to the parent file's `data-node-id`.
+
+Default map: files and **complex excerpts are visible** (no `data-detail`). Optional extra-depth symbols may use `data-detail="fine"`.
+
 ### Text (`t-*`)
 
 `t-primary` title · `t-muted` sublabel · `t-dim` faint · `t-frontend|backend|database|cloud|security|messagebus|external` accent (tags, boundary labels).
@@ -65,9 +80,15 @@ Side branches may share a nearby step or omit `data-animate`. Respect that `pref
 
 ### Architecture (default mirror)
 
-Left-to-right: external → edge/frontend → backend → data. Region wraps internals. Security-group wraps the trust boundary. Main path on one horizontal rail; cache/queue as vertical side branches from the API node.
+**Do not** draw a 4-box LTR stack (`Users → Web → API → DB`) unless those are the only artefacts in the workspace.
 
-Node size typical: `120×60` (external/simple), `130×60` (services). Gap between neighbors ≥ 16px (clear gap, not center distance).
+- One **boundary** (`c-region` / `c-lane`) per real directory or package. Label = folder path.
+- Inside each band: a **grid of file nodes** (one node per source file). Typical size `110×44`. Gap between neighbors ≥ 16px (clear gap, not center distance).
+- **Complex excerpts** (branching handlers, high-degree functions, state machines, atypical links): child nodes `90×32` beside or below the parent file, `data-parent-id` set, **no** `data-detail`. Always visible.
+- Grow viewBox with the grid: minimum `0 0 1000 680`; width ≈ `max(1000, 40 + cols × 126)`, height ≈ `max(680, 40 + rows × 60)` plus island and excerpt rows.
+- External actors and imported third-party packages (exact names) sit outside directory bands.
+- **Unreferenced / dead island**: a separate `c-region` to the right or below, not wired to the main path. Put `orphan` and `dead` nodes there. `edge-case` nodes stay near their parent file with `a-dashed` or `a-security` edges.
+- Main reachable path uses `a-emphasis`. Do not drop edges to tidy the drawing.
 
 ### Workflow
 
@@ -98,21 +119,39 @@ Main rail = phases columns `0..4`. Waiting/retry/terminal in rows below. Recover
 
 ## Guided views JSON
 
-Optional `--views`. Replaces `<!-- ARCHIFY:GUIDED_VIEWS_DATA -->` with:
+Required for `architecture`. Optional for other types. Replaces `<!-- ARCHIFY:GUIDED_VIEWS_DATA -->` with:
 
 ```html
 <script id="archify-guided-views-data" type="application/json">[...]</script>
 ```
 
-Shape (max 5):
+Shape (max 16). Architecture must include at least:
+
+1. path from entry points
+2. orphans & dead
+3. edge cases
+
+Extra chapters per dense directory are allowed.
 
 ```json
 [
   {
-    "id": "request-path",
-    "label": "Primary request path",
-    "focus": ["users", "api", "db"],
-    "note": "Follow the authored customer request to durable state."
+    "id": "entry-path",
+    "label": "Entry path",
+    "focus": ["cli", "app-py", "create-order"],
+    "note": "Reachable path from the authored entry to durable work."
+  },
+  {
+    "id": "orphans-dead",
+    "label": "Orphans and dead code",
+    "focus": ["unused-mod"],
+    "note": "Artefacts on disk with no inbound reach from an entry."
+  },
+  {
+    "id": "edge-cases",
+    "label": "Edge cases",
+    "focus": ["retry-handler"],
+    "note": "Exception, flag, or recovery branches found in source."
   }
 ]
 ```
@@ -138,7 +177,12 @@ Put supporting detail and **source paths** here. Dot classes: `cyan` `emerald` `
 </div>
 ```
 
-Always include one card stating evidence mode: `graph` (`graphify-out/`) or `workspace-scan`.
+Always include:
+
+- one card stating evidence mode: `graph` (`graphify-out/`) or `workspace-scan`
+- one **census** card with counts: live / orphan / dead / edge-case, plus paths for anomalies
+
+Cards do not replace nodes or edges.
 
 ## SVG defs (required in every fragment)
 

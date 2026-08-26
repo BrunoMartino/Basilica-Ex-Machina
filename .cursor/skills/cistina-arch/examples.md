@@ -1,6 +1,6 @@
 # Cistina Arch — SVG shape examples
 
-Use these for **markup shape only**. Replace ids, labels, and coordinates with evidence from the project. Do not copy these facts into a real map.
+Use these for **markup shape only**. Replace ids, labels, and coordinates with evidence from the project. Do not copy these facts into a real map. The short fragments below are field shape, not a cap on node count.
 
 ## Architecture fragment
 
@@ -177,6 +177,105 @@ Use these for **markup shape only**. Replace ids, labels, and coordinates with e
     <rect x="595" y="70" width="90" height="54" rx="6" class="c-database" data-animate="node" style="--step:3" stroke-width="1.5"/>
     <text x="640" y="92" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">DB</text>
     <text x="640" y="108" class="t-muted" font-size="9" text-anchor="middle">store</text>
+  </g>
+</svg>
+```
+
+## Default map fragment (files + visible complex excerpts)
+
+Shape only. Real maps grow the viewBox and add every source file. Complex excerpts have `data-parent-id` and no `data-detail`. Orphans sit in a separate region.
+
+```svg
+<svg viewBox="0 0 720 260" role="img" aria-label="File-level architecture" data-preset="classic">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+    </marker>
+    <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+    </marker>
+    <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+    </marker>
+    <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+    </marker>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid)" />
+
+  <rect x="48" y="50" width="268" height="142" rx="12" class="c-region" stroke-width="1"/>
+  <text x="60" y="68" class="t-cloud" font-size="10" font-weight="600">src/api</text>
+
+  <rect x="348" y="50" width="134" height="142" rx="12" class="c-region" stroke-width="1"/>
+  <text x="360" y="68" class="t-cloud" font-size="10" font-weight="600">src/worker</text>
+
+  <rect x="528" y="50" width="134" height="94" rx="12" class="c-region" stroke-width="1"/>
+  <text x="540" y="68" class="t-security" font-size="10" font-weight="600">unreferenced</text>
+
+  <path data-edge-from="routes-py" data-edge-to="app-py" data-edge-label="import"
+        data-edge-key="0" data-edge-id="routes-to-app"
+        d="M 190 102 L 170 102" class="a-emphasis" stroke-width="1.8"
+        marker-end="url(#arrowhead-emphasis)"/>
+  <path data-edge-from="app-py" data-edge-to="create-order" data-edge-label="defines"
+        data-edge-key="1" data-edge-id="app-to-create-order"
+        d="M 115 124 L 115 140" class="a-default" stroke-width="1.5"
+        marker-end="url(#arrowhead)"/>
+  <path data-edge-from="jobs-py" data-edge-to="retry-job" data-edge-label="on failure"
+        data-edge-key="2" data-edge-id="jobs-to-retry"
+        d="M 405 124 L 405 140" class="a-dashed" stroke-width="1.5"
+        marker-end="url(#arrowhead-dashed)"/>
+
+  <g id="node-app-py" data-node-id="app-py" data-node-kind="backend"
+     data-node-label="app.py" data-node-sublabel="src/api"
+     tabindex="0" role="button" aria-pressed="false">
+    <rect x="60" y="80" width="110" height="44" rx="6" class="c-mask"/>
+    <rect x="60" y="80" width="110" height="44" rx="6" class="c-backend" stroke-width="1.5"/>
+    <text x="115" y="97" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">app.py</text>
+    <text x="115" y="113" class="t-muted" font-size="9" text-anchor="middle">src/api</text>
+  </g>
+  <g id="node-routes-py" data-node-id="routes-py" data-node-kind="backend"
+     data-node-label="routes.py" data-node-sublabel="src/api"
+     tabindex="0" role="button" aria-pressed="false">
+    <rect x="190" y="80" width="110" height="44" rx="6" class="c-mask"/>
+    <rect x="190" y="80" width="110" height="44" rx="6" class="c-backend" stroke-width="1.5"/>
+    <text x="245" y="97" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">routes.py</text>
+    <text x="245" y="113" class="t-muted" font-size="9" text-anchor="middle">src/api</text>
+  </g>
+  <g id="node-create-order" data-node-id="create-order" data-node-kind="backend"
+     data-node-label="create_order" data-node-sublabel="handler"
+     data-parent-id="app-py"
+     tabindex="0" role="button" aria-pressed="false">
+    <rect x="70" y="140" width="90" height="32" rx="6" class="c-mask"/>
+    <rect x="70" y="140" width="90" height="32" rx="6" class="c-backend" stroke-width="1.5"/>
+    <text x="115" y="160" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">create_order</text>
+  </g>
+  <g id="node-jobs-py" data-node-id="jobs-py" data-node-kind="backend"
+     data-node-label="jobs.py" data-node-sublabel="src/worker"
+     tabindex="0" role="button" aria-pressed="false">
+    <rect x="360" y="80" width="110" height="44" rx="6" class="c-mask"/>
+    <rect x="360" y="80" width="110" height="44" rx="6" class="c-backend" stroke-width="1.5"/>
+    <text x="415" y="97" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">jobs.py</text>
+    <text x="415" y="113" class="t-muted" font-size="9" text-anchor="middle">src/worker</text>
+  </g>
+  <g id="node-retry-job" data-node-id="retry-job" data-node-kind="backend"
+     data-node-label="retry_job" data-node-sublabel="on failure"
+     data-parent-id="jobs-py" data-node-status="edge-case"
+     tabindex="0" role="button" aria-pressed="false">
+    <rect x="370" y="140" width="90" height="32" rx="6" class="c-mask"/>
+    <rect x="370" y="140" width="90" height="32" rx="6" class="c-backend" stroke-width="1.5"/>
+    <text x="415" y="160" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">retry_job</text>
+  </g>
+  <g id="node-unused-py" data-node-id="unused-py" data-node-kind="backend"
+     data-node-label="unused.py" data-node-sublabel="no inbound"
+     data-node-status="orphan"
+     tabindex="0" role="button" aria-pressed="false">
+    <rect x="540" y="80" width="110" height="44" rx="6" class="c-mask"/>
+    <rect x="540" y="80" width="110" height="44" rx="6" class="c-backend" stroke-width="1.5"/>
+    <text x="595" y="97" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">unused.py</text>
+    <text x="595" y="113" class="t-muted" font-size="9" text-anchor="middle">no inbound</text>
   </g>
 </svg>
 ```

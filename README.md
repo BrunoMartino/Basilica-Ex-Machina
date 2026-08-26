@@ -37,6 +37,7 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `design-docs-creator` | TDD técnico: specs, RFCs e propostas de arquitetura via descoberta interactiva; fases de implementação em Red/Green |
 | `coupling-analizer` | Análise de acoplamento entre módulos (força, distância, volatilidade) |
 | `legacy-explainer` | Graphify: explica codebase legado E regenera/actualiza o grafo (`graphify-out/`); preenche os docs harness |
+| `cistina-arch` | Companion do Graphify: HTML interactivo ao nível de ficheiro com trechos complexos visíveis; AskQuestion para mais profundidade; órfãos e dead code no canvas |
 | `get-that-task` | Consulta Jira: issues abertas do utilizador e não atribuídas |
 | `get-my-tools` | Inventaria e instala skills, rules e docs deste toolkit no projeto actual (útil em dev containers) |
 | `dependency-guardsman` | Segurança em dependências npm: scan de vulnerabilidades, supply-chain (typosquatting, install scripts) e licenças |

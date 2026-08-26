@@ -60,13 +60,13 @@ else
   CARDS_FILE=$TMPDIR_W/cards.html
 fi
 
-# Views: optional JSON array with at most 5 chapters.
+# Views: optional JSON array with at most 16 chapters.
 if [ -n "$VIEWS" ]; then
   [ -f "$VIEWS" ] || { echo "error: views file not found: $VIEWS" >&2; exit 1; }
   first=$(sed -n 's/^[[:space:]]*//;/./{p;q;}' "$VIEWS" | cut -c1)
   [ "$first" = "[" ] || { echo "error: views JSON must be an array" >&2; exit 1; }
   ids=$(tr -d ' \t\n' < "$VIEWS" | awk '{n=gsub(/"id":/,""); print n}')
-  [ "${ids:-0}" -le 5 ] || { echo "error: at most 5 guided views (found $ids)" >&2; exit 1; }
+  [ "${ids:-0}" -le 16 ] || { echo "error: at most 16 guided views (found $ids)" >&2; exit 1; }
 fi
 
 OUT_DIR=$(dirname -- "$OUT")

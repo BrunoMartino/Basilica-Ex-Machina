@@ -3939,6 +3939,39 @@
     .c-messagebus { fill: var(--messagebus-fill); stroke: var(--messagebus-stroke); }
     .c-external   { fill: var(--external-fill);   stroke: var(--external-stroke); }
 
+    /* Anomaly status lives on the node (data-node-status). Kind colors stay. */
+    svg [data-node-id][data-node-status="orphan"] { opacity: 0.82; }
+    svg [data-node-id][data-node-status="orphan"] .c-frontend,
+    svg [data-node-id][data-node-status="orphan"] .c-backend,
+    svg [data-node-id][data-node-status="orphan"] .c-database,
+    svg [data-node-id][data-node-status="orphan"] .c-cloud,
+    svg [data-node-id][data-node-status="orphan"] .c-security,
+    svg [data-node-id][data-node-status="orphan"] .c-messagebus,
+    svg [data-node-id][data-node-status="orphan"] .c-external {
+      stroke-dasharray: 4,4;
+    }
+    svg [data-node-id][data-node-status="dead"] { opacity: 0.72; }
+    svg [data-node-id][data-node-status="dead"] .c-frontend,
+    svg [data-node-id][data-node-status="dead"] .c-backend,
+    svg [data-node-id][data-node-status="dead"] .c-database,
+    svg [data-node-id][data-node-status="dead"] .c-cloud,
+    svg [data-node-id][data-node-status="dead"] .c-security,
+    svg [data-node-id][data-node-status="dead"] .c-messagebus,
+    svg [data-node-id][data-node-status="dead"] .c-external {
+      stroke: var(--security-stroke);
+      stroke-dasharray: 3,3;
+    }
+    svg [data-node-id][data-node-status="edge-case"] .c-frontend,
+    svg [data-node-id][data-node-status="edge-case"] .c-backend,
+    svg [data-node-id][data-node-status="edge-case"] .c-database,
+    svg [data-node-id][data-node-status="edge-case"] .c-cloud,
+    svg [data-node-id][data-node-status="edge-case"] .c-security,
+    svg [data-node-id][data-node-status="edge-case"] .c-messagebus,
+    svg [data-node-id][data-node-status="edge-case"] .c-external {
+      stroke: var(--cloud-stroke);
+      stroke-dasharray: 5,4;
+    }
+
     /* Text helpers */
     .t-primary { fill: var(--text); }
     .t-muted   { fill: var(--text-muted); }

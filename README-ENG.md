@@ -37,6 +37,7 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `design-docs-creator` | Technical design docs: specs, RFCs, and architecture proposals via interactive discovery; Red/Green implementation phases |
 | `coupling-analizer` | Module coupling analysis (strength, distance, volatility) |
 | `legacy-explainer` | Graphify: explains a legacy codebase AND regenerates/updates the graph (`graphify-out/`); fills harness docs |
+| `cistina-arch` | Graphify companion: interactive HTML at file level with visible complex excerpts; AskQuestion for extra depth; orphans and dead code on the canvas |
 | `get-that-task` | Jira lookup: open issues assigned to the user and unassigned |
 | `get-my-tools` | Inventories and installs skills, rules, and docs from this toolkit into the current project (useful in dev containers) |
 | `dependency-guardsman` | npm dependency security: vulnerability scan, supply-chain (typosquatting, install scripts), and licenses |

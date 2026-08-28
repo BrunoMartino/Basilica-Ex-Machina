@@ -18,6 +18,10 @@ Builds the `docs/harness/` documents for a project **step by step**, one doc at 
 
 For **brownfield** projects with existing code, prefer [`legacy-explainer`](../legacy-explainer/SKILL.md) (evidence from Graphify). This skill is for **greenfield** or docs-first setups.
 
+## Language
+
+All text and documents this skill creates must be written in **English**, even when the prompt, plan, or source document is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim.
+
 ## Source templates
 
 | Template (this kit) | Target document |

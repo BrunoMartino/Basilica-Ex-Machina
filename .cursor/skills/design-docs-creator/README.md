@@ -67,6 +67,10 @@ The skill runs an **8-step** process:
 
 Mandatory sections **cannot be skipped**. The agent asks clarifying questions instead of guessing.
 
+### Multi-feature runs → implementation waves
+
+When the run covers **more than one** harness feature, the agent also writes `my_docs/implementation.md` (next to the per-feature TDDs): ordered **waves** grouping the features that can be implemented **in parallel by independent agents** — one agent lane per feature with owned paths/modules, dependencies pushing features to later waves, exit criteria per wave, and a Mermaid dependency graph. Two features that write the same file, table or contract are never placed in the same wave.
+
 ### Critical sections by project type
 
 | Project type | Required |

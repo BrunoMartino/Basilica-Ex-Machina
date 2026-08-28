@@ -22,6 +22,10 @@ Never invent topology. Never draw from README-only or guesswork. Never read `tem
 
 Default deliverable is **not** a stack cartoon. It is always **every source file** plus **visible complex excerpts** (branching handlers, high-degree functions, state machines, atypical links). Folders are boundaries, not nodes. Orphans, dead code, and edge cases stay on the canvas.
 
+## Language
+
+All text and documents this skill creates must be written in **English**, even when the prompt, plan, or source document is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim.
+
 ## When to use
 
 Apply **only when the user explicitly invokes this skill**, unless the same message says otherwise.

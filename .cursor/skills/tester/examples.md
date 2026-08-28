@@ -263,7 +263,7 @@ describe("BookingMapper", () => {
     bookingEntity.property.description = "Apartamento moderno";
     bookingEntity.property.maxGuests = 4;
     bookingEntity.property.basePricePerNight = 200;
-    // nunca chama o mapper, nunca faz assert — o teste sempre passa
+    // never calls the mapper, never asserts — the test always passes
   });
 });
 ```
@@ -287,10 +287,69 @@ describe("BookingController", () => {
   });
 
   it("should cancel a booking", async () => {
-    // depende do teste anterior — não cria a reserva aqui
+    // depends on the previous test — does not create the booking here
     const cancelResponse = await request(app).post("/booking/1/cancel");
 
     expect(cancelResponse.status).toBe(200);
   });
 });
 ```
+
+## Principle 1: mirror assertion vs hand-derived literal
+
+```typescript
+// ❌ Mirror assertion: the same builder computes both sides — always true
+const expected = buildSearchQuery({ tag: 'urgent' });
+expect(buildSearchQuery({ tag: 'urgent' })).toBe(expected);
+
+// ✅ Hand-derived literal
+expect(buildSearchQuery({ tag: 'urgent' })).toBe('tag:"urgent"');
+```
+
+## Principle 2: real behavior vs mock existence
+
+```typescript
+// ✅ Real behavior
+expect(screen.getByRole('navigation')).toBeInTheDocument();
+
+// ❌ Mock existence
+expect(screen.getByTestId('sidebar-mock')).toBeInTheDocument();
+```
+
+## Principle 2: mock at the right level
+
+```typescript
+// ❌ The mock swallows the config write that duplicate detection reads
+vi.mock('ToolCatalog', () => ({
+  discoverAndCacheTools: vi.fn().mockResolvedValue(undefined)
+}));
+
+// ✅ Mock only the slow server startup; the config write stays real
+vi.mock('MCPServerManager');
+```
+
+## Principle 2: specific doubles and complete fixtures
+
+```typescript
+// ❌ Fake accepts anything — wrong branch can satisfy the expectation
+const paymentGateway = { charge: vi.fn().mockResolvedValue({ ok: true }) };
+
+// ✅ Complete real-shaped fixture; assert the contract (args + outcome)
+const paymentGateway = {
+  charge: vi.fn().mockResolvedValue({
+    id: 'pay_123',
+    status: 'succeeded',
+    amount: 5000,
+    currency: 'usd',
+    createdAt: '2026-05-01T00:00:00Z',
+  }),
+};
+await service.checkout(cart, paymentGateway);
+expect(paymentGateway.charge).toHaveBeenCalledWith({
+  amount: 5000,
+  currency: 'usd',
+  customerId: 'cus_abc',
+});
+expect(await ledger.balance('cus_abc')).toBe(0);
+```
+

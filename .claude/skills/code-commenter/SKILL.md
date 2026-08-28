@@ -15,6 +15,10 @@ disable-model-invocation: true
 
 Apply **after** the implementation exists: add or refresh comments once the behavior and structure are stable. Do **not** use this skill while writing new code unless the user explicitly asks for simultaneous comments—default is document **after**.
 
+## Language
+
+All comments and documentation this skill creates must be written in **English**, even when the prompt, plan, or source document is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim.
+
 ## Out of scope
 
 - Comments that merely restate obvious code—prefer clearer names instead.
@@ -57,4 +61,4 @@ Concrete JSDoc patterns and good vs bad length examples: see [examples.md](examp
 
 ## Notes
 
-Examples in [examples.md](examples.md) are **guides only**—mirror the same information density and sections for the code at hand, in the correct language and style for the repo.
+Examples in [examples.md](examples.md) are **guides only**—mirror the same information density and sections for the code at hand, in English and the repo's doc style.

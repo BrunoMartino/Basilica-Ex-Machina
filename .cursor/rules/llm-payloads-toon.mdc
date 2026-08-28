@@ -1,0 +1,8 @@
+---
+description: Dados enviados a LLMs devem estar em TOON; sem exceção
+alwaysApply: true
+---
+
+# LLM payloads are TOON
+
+All data passed to LLMs must be formatted as TOONs. No exceptions.

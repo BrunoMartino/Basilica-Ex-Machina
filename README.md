@@ -58,6 +58,25 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 
 Cada skill vive numa pasta com `SKILL.md` (e, quando aplicável, `examples.md`).
 
+### Controspia — bloco de segurança (`.claude/skills/controspia/` ou `.cursor/skills/controspia/`)
+
+Skills de cibersegurança agrupadas num bloco próprio, com **README dedicado** ([PT](.claude/skills/controspia/README.md) · [EN](.claude/skills/controspia/README-ENG.md)) que explica cada skill, quando usar e quando não usar:
+
+| Skill | Função |
+|-------|--------|
+| `owasp-audit` | Auditoria de código pelo OWASP Top 10 (2021), A01–A10, com verificação de correcções em runtime |
+| `api-audit` | OWASP API Security Top 10 (2023) endpoint a endpoint (REST, GraphQL, RPC): BOLA, BFLA, mass assignment, SSRF |
+| `container-audit` | Dockerfile, Helm/Kustomize, manifests Kubernetes e runtime: privilégios, segredos, PSS, network policies, RBAC |
+| `incident-triage` | Resposta a incidentes (NIST SP 800-61): classificação, contenção, preservação de prova, IOCs |
+| `finding-triage` | Um finding → disposição defensável (Fixed / Deferred / Accepted Risk) com plano de mitigação ou risco aceite |
+| `offensive/recon` | Enumeração de superfície de ataque (passiva e activa) em alvos autorizados |
+| `offensive/osint-recon` | Inteligência de fontes abertas: infraestrutura, organização, e-mails, documentos, threat intel |
+| `offensive/web-pentest` | Pentest web black-box / grey-box em 9 fases (Burp Suite / OWASP ZAP) |
+| `offensive/red-legio` | Engajamento de red team autorizado: RoE, assumed breach, emulação ATT&CK, deconflicção, debrief |
+| `report/security-comms` | Traduz trabalho de segurança para board, executivos, engenharia, clientes, legal |
+
+As skills em `offensive/` **exigem autorização explícita do alvo** — abrem com verificação de autorização e recusam alvos ambíguos. Origem: [briiirussell/cybersecurity-skills](https://github.com/briiirussell/cybersecurity-skills) (MIT), com selecção parcial e `red-team-engagement` renomeada para `red-legio`.
+
 ### Agents (`.claude/agents/` ou `.cursor/agents/`)
 
 Subagentes especializados (spawnados pelo agente principal conforme a `description`):
@@ -140,10 +159,11 @@ Mesmos passos, trocando `.claude/` por `.cursor/` e rules `.md` por `.mdc`. A sk
 │   ├── agents/
 │   ├── rules/               # *.md
 │   └── skills/
+│       └── controspia/      # Bloco de segurança (+ offensive/, report/)
 ├── .cursor/                 # Kit Cursor (espelho)
 │   ├── agents/
 │   ├── rules/               # *.mdc
-│   └── skills/
+│   └── skills/              # espelho, inclui controspia/
 ├── docs/
 │   ├── harness/             # Templates (incl. features)
 │   └── testsReadme.md

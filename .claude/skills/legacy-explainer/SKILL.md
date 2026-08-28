@@ -23,6 +23,10 @@ disable-model-invocation: true
 
 Follow always-apply project rules (including harness gates under `.claude/rules/`).
 
+## Language
+
+All text and documents this skill creates must be written in **English**, even when the prompt, plan, or source document is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim.
+
 ## Execution order (mandatory)
 
 ```

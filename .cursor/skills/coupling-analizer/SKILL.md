@@ -23,6 +23,10 @@ A design is **balanced** when:
 - Distant components are loosely coupled (low strength + high distance = loose coupling)
 - Stable components (low volatility) can tolerate stronger coupling
 
+## Language
+
+All text and documents this skill creates must be written in **English**, even when the prompt, plan, or source document is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim.
+
 ## When to Use
 
 Apply this skill when the user:

@@ -58,6 +58,25 @@ Specialized instructions the agent can invoke for concrete tasks:
 
 Each skill lives in a folder with `SKILL.md` (and `examples.md` when applicable).
 
+### Controspia — security block (`.claude/skills/controspia/` or `.cursor/skills/controspia/`)
+
+Cybersecurity skills grouped into their own block, with a **dedicated README** ([PT](.claude/skills/controspia/README.md) · [EN](.claude/skills/controspia/README-ENG.md)) covering each skill, when to use it and when not to:
+
+| Skill | Purpose |
+|-------|---------|
+| `owasp-audit` | Source-code audit against the OWASP Top 10 (2021), A01–A10, with runtime verification of fixes |
+| `api-audit` | OWASP API Security Top 10 (2023) endpoint by endpoint (REST, GraphQL, RPC): BOLA, BFLA, mass assignment, SSRF |
+| `container-audit` | Dockerfiles, Helm/Kustomize, Kubernetes manifests and runtime: privileges, secrets, PSS, network policies, RBAC |
+| `incident-triage` | Incident response (NIST SP 800-61): classification, containment, evidence preservation, IOCs |
+| `finding-triage` | One finding → defensible disposition (Fixed / Deferred / Accepted Risk) with mitigation plan or accepted risk |
+| `offensive/recon` | Attack surface enumeration (passive and active) against authorized targets |
+| `offensive/osint-recon` | Open source intelligence: infrastructure, organization, emails, documents, threat intel |
+| `offensive/web-pentest` | Black-box / grey-box web pentest in 9 phases (Burp Suite / OWASP ZAP) |
+| `offensive/red-legio` | Authorized red-team engagement: RoE, assumed breach, ATT&CK emulation, deconfliction, debrief |
+| `report/security-comms` | Translates security work for the board, executives, engineering, customers, legal |
+
+The `offensive/` skills **require explicit authorization for the target** — they open with an authorization check and refuse ambiguous targets. Upstream: [briiirussell/cybersecurity-skills](https://github.com/briiirussell/cybersecurity-skills) (MIT), partially selected, with `red-team-engagement` renamed to `red-legio`.
+
 ### Agents (`.claude/agents/` or `.cursor/agents/`)
 
 Specialized subagents (spawned by the main agent from their `description`):
@@ -140,10 +159,11 @@ Same steps, swapping `.claude/` for `.cursor/` and rule `.md` for `.mdc`. Cursor
 │   ├── agents/
 │   ├── rules/               # *.md
 │   └── skills/
+│       └── controspia/      # Security block (+ offensive/, report/)
 ├── .cursor/                 # Cursor kit (mirror)
 │   ├── agents/
 │   ├── rules/               # *.mdc
-│   └── skills/
+│   └── skills/              # mirror, includes controspia/
 ├── docs/
 │   ├── harness/             # Templates (incl. features)
 │   └── testsReadme.md

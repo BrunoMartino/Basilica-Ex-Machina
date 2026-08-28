@@ -21,6 +21,10 @@ TDDs document **decisions and contracts**, not code. The doc must survive a fram
 
 Litmus tests: *"If we change frameworks, does this still apply?"* (yes → include). *"Can someone implement this differently and still meet the requirement?"* (yes → document the requirement, not the implementation).
 
+## Language
+
+All text and documents this skill creates must be written in **English**, even when the prompt, plan, or source document is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim.
+
 ## Sections
 
 **Mandatory (1–8)** — if missing, ask via AskQuestion; never skip:
@@ -92,6 +96,47 @@ Do not add a separate trailing "write tests" phase — tests lead each phase, th
 
 Ask instead of guessing. Vague answers get one targeted follow-up, then an explicit `TBD` in the doc.
 
+## Multi-feature mode — `my_docs/implementation.md`
+
+Triggered whenever the run covers **more than one feature** (several `docs/harness/features/feature-{name}.md`, or the user asks for TDDs for multiple features at once). Beyond one TDD per feature, generate `my_docs/implementation.md` with the implementation waves.
+
+- Run the full workflow **per feature** (Context Pillars and design pattern asked one feature at a time); write the TDDs into `my_docs/` next to `implementation.md`.
+- `implementation.md` is derived from the feature harness files and the generated TDDs — never invent features, dependencies or scope.
+- **Wave** = set of features that can be implemented **in parallel by independent agents**: complementary scope, no writes to the same files/modules/tables, and no dependency on an artifact produced by another feature of the same wave.
+- Any dependency (schema, API contract, shared module, migration, feature flag) pushes the dependent feature to a **later** wave.
+- Each feature in a wave is one **agent lane** with an explicit ownership boundary (paths/modules it may touch), so lanes never collide.
+- Waves are sequential: wave N+1 starts only after every lane of wave N is merged and green.
+- **Conflict rule**: two features in the same wave that must write the same file, table or contract → merge them into a single lane or move one to the next wave. Never leave a shared write inside a parallel wave.
+- Each feature row links to its TDD; the Red/Green rule of each TDD Implementation Plan still governs execution.
+
+Template:
+
+````markdown
+# Implementation Waves
+
+| Wave | Features | Parallel agents | Blocked by |
+|------|----------|-----------------|------------|
+| 1 | feature-a, feature-b | 2 | — |
+| 2 | feature-c | 1 | Wave 1 |
+
+## Wave 1 — <goal of the wave>
+
+| Feature | TDD | Agent lane (owned paths/modules) | Depends on | Shared touchpoints |
+|---------|-----|----------------------------------|------------|--------------------|
+| feature-a | [TDD](tdd-feature-a.md) | `src/billing/**` | — | `db/migrations` (serialized within the wave) |
+| feature-b | [TDD](tdd-feature-b.md) | `src/notifications/**` | — | — |
+
+**Exit criteria:** all lanes green (Red/Green per TDD Implementation Plan), no conflicting migrations, contracts published.
+
+## Dependency graph
+
+```mermaid
+graph LR
+  A[feature-a] --> C[feature-c]
+  B[feature-b] --> C
+```
+````
+
 ## Validation checklist
 
 - [ ] Header: tech lead, team, epic link
@@ -105,6 +150,7 @@ Ask instead of guessing. Vague answers get one targeted follow-up, then an expli
 - [ ] Payment/auth → Security section complete (authn, encryption, PII, compliance)
 - [ ] Production → Monitoring (≥3 metrics + alerts) and Rollback (triggers + steps)
 - [ ] Testing: ≥2 test types + critical scenarios
+- [ ] Multi-feature run → `my_docs/implementation.md` with ordered waves, one agent lane per feature, dependency graph, and no shared writes inside a wave
 
 ## Anti-patterns
 
@@ -114,3 +160,4 @@ Ask instead of guessing. Vague answers get one targeted follow-up, then an expli
 - **Payment system without a Security section** — never.
 - **No rollback plan for production** — always define triggers (e.g. error rate > 5% for 5 min → flag off) and steps.
 - **Implementation-level detail** — commands, code, file paths belong in the repo, not the TDD.
+- **Parallel wave with colliding lanes** — two agents writing the same module, migration or contract in the same wave; serialize them instead.

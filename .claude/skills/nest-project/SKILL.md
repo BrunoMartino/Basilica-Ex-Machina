@@ -1,18 +1,20 @@
 ---
 name: nest-project
 description: >-
-  Scaffolds an optimized NestJS installation with npm or bun (asks the user),
-  fast build tooling (SWC recommended or Vite via vite-plugin-node), request
-  validation, Prisma or Drizzle ORM (asks the user), request-optimization and
-  security libs (helmet, throttler, compression, caching), and Jest for
-  automated tests. Use when the user asks to create or bootstrap a NestJS
-  project or API.
+  Scaffolds a NestJS API that stays idiomatically Nest (DI, modules, decorators)
+  while making the dependency graph statically explicit (AI-First / Token-Friendly):
+  feature-first modules, Import First, constructor injection, nest-conventions
+  rule, and CONTEXT.md. npm or bun, SWC or Vite, Prisma or Drizzle, Express or
+  Fastify, validation and security baseline, Jest. Use when the user asks to
+  create or bootstrap a NestJS project or API.
 disable-model-invocation: true
 ---
 
 # Nest Project
 
-Scaffolds an optimized NestJS API. Do not reinvent choices the user already stated in the prompt.
+Scaffolds a NestJS API with **Explicit Dependency Architecture**. Do not reinvent choices the user already stated. Do not fork, bypass, or replace Nest DI.
+
+Canonical spec: [CONTEXT.md](CONTEXT.md). Binding rule: `nest-conventions` (kit `.claude/rules/nest-conventions.md` + `.cursor/rules/nest-conventions.mdc`).
 
 ## Step 1 — Ask (only what's missing)
 
@@ -33,7 +35,7 @@ cd <name>
 Fast tooling (per answer):
 
 ```bash
-# SWC (recommended): builds/tests dramatically faster
+# SWC (recommended)
 npm i -D @swc/cli @swc/core
 # nest-cli.json → "compilerOptions": { "builder": "swc", "typeCheck": true }
 
@@ -57,23 +59,47 @@ npm i @prisma/client && npm i -D prisma && npx prisma init
 npm i drizzle-orm pg && npm i -D drizzle-kit @types/pg
 ```
 
-Jest already comes with the Nest CLI scaffold (unit + e2e). With SWC, switch to `@swc/jest` for fast test runs: `npm i -D @swc/jest` and set `transform: { "^.+\\.(t|j)s$": "@swc/jest" }` in the jest config.
+Jest ships with the Nest CLI scaffold. With SWC: `npm i -D @swc/jest` and `transform: { "^.+\\.(t|j)s$": "@swc/jest" }`.
 
-## Step 3 — Baseline configuration
+## Step 3 — Explicit architecture baseline
 
-`main.ts`:
+Apply [CONTEXT.md](CONTEXT.md). Copy it to the **project root** as `CONTEXT.md`.
 
-```typescript
-app.use(helmet());
-app.use(compression());
-app.enableCors({ origin: [/* allowlist */] });
-app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
+Layout (feature-first; `AppModule` is composition root only):
+
+```text
+src/
+  main.ts
+  app.module.ts
+  health/
+    health.module.ts
+    health.controller.ts
 ```
 
-`app.module.ts`: register `ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }])` with the global `ThrottlerGuard`, and `CacheModule.register({ isGlobal: true })` for hot read endpoints (`@UseInterceptors(CacheInterceptor)`).
+- Move CLI `AppController` / `AppService` into `health/` (or equivalent). Do not grow `AppModule` with feature providers.
+- Never use `src/controllers|services|repositories|entities|modules` as the primary layout.
+- Constructor injection; class-as-provider; no `ModuleRef.get()`; no `@Global()`.
+- `CacheModule`: import in the feature that needs it — **not** `isGlobal: true`.
+- Allowed cross-cutting: `ConfigModule.forRoot()`, `ThrottlerModule.forRoot()` + `APP_GUARD`.
+- No barrels that re-export a whole feature.
 
-DTOs use `class-validator` decorators; the global pipe strips and rejects unknown fields. Update `.env.example` (never `.env`) with `PORT` and `DATABASE_URL` placeholders.
+Install **nest-conventions** into the new project with `alwaysApply: true`:
 
-## Step 4 — Verify & report
+- kit `.claude/rules/nest-conventions.md` → `.claude/rules/nest-conventions.md`
+- kit `.cursor/rules/nest-conventions.mdc` → `.cursor/rules/nest-conventions.mdc`
 
-Run dev server (`npm run start:dev`) and `npm test`. Report: manager, build tooling, ORM and adapter chosen; packages installed; validation/security baseline applied; test result. Feature work follows the [`tester`](../tester/SKILL.md) skill (Red/Green).
+If the kit is not in this repo, fetch via `get-my-tools` / raw GitHub `main`.
+
+## Step 4 — HTTP baseline
+
+`main.ts`: `helmet()`, `compression()`, CORS **allowlist**, `ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true })`.
+
+`app.module.ts`: import `HealthModule`; register `ThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }])` + global `ThrottlerGuard`. Do **not** register global `CacheModule`.
+
+DTOs use `class-validator`. Update `.env.example` (never `.env`) with `PORT` and `DATABASE_URL`.
+
+## Step 5 — Verify & report
+
+Run `start:dev` and tests. Report: manager, build tooling, ORM, adapter; packages; conventions/rule/`CONTEXT.md` installed; test result.
+
+Greenfield harness next: [`harness-create`](../harness-create/SKILL.md) (must follow nest-conventions — not MVC). Feature work: [`tester`](../tester/SKILL.md).

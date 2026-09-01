@@ -6,15 +6,16 @@ description: >-
   domain invariants, operational constraints, per-feature feature-{name}.md
   files) from the Michelangelo-Dev-Toolkit
   templates, asking the user only for what the prompt context does not
-  provide, and installs the all-for-harness rule alongside them. Use when
-  starting a new project, bootstrapping docs/harness/, or when the user asks
-  to create or fill harness docs.
+  provide, and installs the all-for-harness rule alongside them (and
+  nest-conventions when the target is NestJS). Use when starting a new
+  project, bootstrapping docs/harness/, or when the user asks to create or
+  fill harness docs.
 disable-model-invocation: true
 ---
 
 # Harness Create
 
-Builds the `docs/harness/` documents for a project **step by step**, one doc at a time, and finishes by installing the `all-for-harness` rule so the project is bound to them.
+Builds the `docs/harness/` documents for a project **step by step**, one doc at a time, and finishes by installing the `all-for-harness` rule so the project is bound to them. Nest targets also get `nest-conventions` (Explicit Dependency Architecture — not the MVC template default).
 
 For **brownfield** projects with existing code, prefer [`legacy-explainer`](../legacy-explainer/SKILL.md) (evidence from Graphify). This skill is for **greenfield** or docs-first setups.
 
@@ -47,7 +48,7 @@ Copy and track progress:
 - [ ] Step 3: Generate each harness doc, one at a time, confirming with the user
 - [ ] Step 3b: Map features — ask the 4 questions per feature, one feature-{name}.md each
 - [ ] Step 3c: Validate feature files (4 user answers, dependencies, acceptance criteria)
-- [ ] Step 4: Install .claude/rules/all-for-harness.md in the project
+- [ ] Step 4: Install .claude/rules/all-for-harness.md (and nest-conventions if Nest)
 - [ ] Step 5: Summary — docs written, features mapped/pending, open placeholders left for the user
 ```
 
@@ -56,7 +57,8 @@ Copy and track progress:
 Before asking anything, mine the prompt, conversation, and repo (README, manifests, existing code) for:
 
 - Language, framework, runtime, package manager
-- Architectural style (default is simple MVC per the templates)
+- Architectural style (default is simple MVC per the templates; **Nest exception below**)
+- Whether the target is Nest (`@nestjs/core`, `CONTEXT.md` AI-First, or `nest-conventions` rule)
 - Business domain and core entities
 - Test runner and testing culture
 - Deploy target (VPS, k8s, serverless, shared hosting…)
@@ -64,13 +66,15 @@ Before asking anything, mine the prompt, conversation, and repo (README, manifes
 
 **Never ask for something the context already answers.**
 
+**Nest target** (any of: `@nestjs/core`, `CONTEXT.md` with Explicit Dependency Architecture, `.claude/rules/nest-conventions.md` / `.cursor/rules/nest-conventions.mdc`): architectural style is **NestJS Explicit Dependency Architecture** (feature-first). Do **not** ask MVC vs other. Do **not** treat per-feature `application/` `domain/` `infrastructure/` as enabling global DDD/Clean — that locality is allowed by nest-conventions for complex features only. Read kit `nest-conventions` + project/`nest-project` `CONTEXT.md` and encode them into `architecture_rules.md`, `coding_convention.md`, `forbidden_patterns.md`, and `testing_expectation.md` (unit = direct construction; integration = `TestingModule`; e2e = Nest app).
+
 ### Step 2 — Ask only the gaps
 
 Use the AskQuestion tool with the unanswered items. Question bank (pick only what is missing):
 
 | Doc | Questions to fill gaps |
 |-----|------------------------|
-| architecture_rules | Architectural style? (MVC default / other) Modules or bounded areas? Any DDD/Clean exception explicitly enabled? |
+| architecture_rules | Architectural style? (MVC default / other — **skip if Nest**: Explicit Dependency Architecture.) Modules or bounded areas? Any DDD/Clean exception explicitly enabled? (Nest feature folders are not that exception.) |
 | coding_convention | Language + framework conventions? Naming preferences? Lint/format tooling? |
 | forbidden_patterns | Anything forbidden beyond the defaults (DDD/Clean/CQRS global, vague Manager/Helper, etc.)? |
 | testing_expectation | Test runner? Coverage focus (behavior vs implementation)? E2E in scope? |
@@ -115,6 +119,8 @@ Files failing validation go to the pending list — do not silently fill the gap
 
 Write `.claude/rules/all-for-harness.md` into the target project (copy from this kit's `.claude/rules/all-for-harness.md`). This rule makes the docs **binding**: agents must read and follow them before architectural, testing, deployment, or domain changes.
 
+If the target is Nest, also install `nest-conventions` with `alwaysApply: true` (`.claude/rules/nest-conventions.md` and `.cursor/rules/nest-conventions.mdc`) if missing. Nest-conventions must not contradict the generated harness — encode the conventions into the docs.
+
 The rule and the docs are a unit — never leave the docs without the rule.
 
 ### Step 5 — Summary
@@ -124,14 +130,14 @@ Report:
 - Docs written (paths)
 - Features mapped (`docs/harness/features/feature-{name}.md`) and features **pending** user answers
 - Placeholders / open questions left (`TBD:` items per doc)
-- Rule installed at `.claude/rules/all-for-harness.md`
+- Rule installed at `.claude/rules/all-for-harness.md` (and `nest-conventions` if Nest)
 
 ## Guardrails
 
 - Do not fabricate business rules, SLAs, or compliance requirements — ask or leave `TBD:`.
 - Never write a `feature-{name}.md` with invented answers to the 4 questions — only the user answers them.
 - Never consolidate features into a single monolithic file; always one file per feature inside `docs/harness/features/`.
-- Do not enable DDD/Clean/Hexagonal in `architecture_rules.md` unless the user explicitly requested it.
+- Do not enable DDD/Clean/Hexagonal in `architecture_rules.md` unless the user explicitly requested it. **Nest exception**: follow `nest-conventions` (Explicit Dependency Architecture / feature-first). Per-feature `application/domain/infrastructure` for complex features is not global DDD/Clean.
 - Always preserve the unidirectional data flow rule in generated `architecture_rules.md` and `forbidden_patterns.md`: data cycles/loops are only allowed when the alternatives are more complex, more abstract, or require significantly more code, or when the user explicitly requests the loop. Never drop or weaken this rule.
 - Do not overwrite an existing filled harness doc without confirmation; offer a diff first.
 - Keep each generated doc at or below the template's size — the value is in precision, not volume.

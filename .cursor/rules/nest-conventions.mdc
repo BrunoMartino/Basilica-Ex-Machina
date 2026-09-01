@@ -14,6 +14,7 @@ Binding quando o alvo é Nest (`@nestjs/core`, ou esta rule, ou `CONTEXT.md` AI-
 3. Feature-first (`src/<feature>/`). `AppModule` = composition root. Sem layout `controllers/services/repositories`. Sem `@Global()` e sem `ModuleRef.get()`/`resolve()` como DI normal.
 4. Progressive disclosure: Graphify (`graphify-out/`) → folder da feature → deps diretas. Não despejar a app. Grafo é IR **derivado**; código é a fonte da verdade. Não criar `ARCHITECTURE.md` manual.
 5. Novo provider: origem localizável em 1–2 ficheiros; senão simplificar.
+6. DTOs e objectos de `type`/`interface`: sempre `class`. Não usar `interface` nem `type` do TypeScript para esses contratos.
 
 ## harness-create (greenfield Nest)
 

@@ -55,8 +55,20 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `make-etl-project` | Python ETL project (SQLAlchemy, pandas, numpy) with source/target DBs and pytest per E/T/L stage |
 | `create-minio-docker` | Generates MinIO (Dockerfile + docker-compose) and `install.md` for Coolify deploy (API/Console, buckets, credentials) |
 | `database-postgres-mcp` | Installs MCP-explorer-for-Postgress and registers it in the agent’s MCP config |
+| `build-a-castle` | Installs the Coolify MCP [Ingeniarius-Castellorum](https://github.com/BrunoMartino/Ingeniarius-Castellorum) locally; ends by listing the `.env` vars to fill |
 
 Each skill lives in a folder with `SKILL.md` (and `examples.md` when applicable).
+
+### Amaterasu — creative UI (Cursor: `.cursor/skills/amaterasu/`)
+
+Caveman (minimal-token) Cursor port of the genjutsu plugin. Explicit invocation; internal modules under `_jutsu/` (not slash skills).
+
+| Skill | Role |
+|-------|------|
+| `amaterasu-cast` | Motion / micro-interactions: stack scan, design brief (colors/fonts), interaction thesis, implement, quick audit |
+| `amaterasu-paint` | Full visual universe: brainstorm, theses, `MASTER.md`, page-by-page implement, full audit |
+
+Extras vs upstream: Tailwind **and** Bootstrap; brief for primary/secondary/tertiary/success/danger/warning + fonts (self-host woff2 by default, CDN only if asked); framework breakpoints + centered `max-width: 1920px` container; Go CLI under `_jutsu/ui-ux-pro-max/cli` (`search`, `design-system`, `audit`). Cursor kit only for now (no `.claude/skills/` mirror yet).
 
 ### Controspia — security block (`.claude/skills/controspia/` or `.cursor/skills/controspia/`)
 
@@ -101,6 +113,9 @@ Always-on rules that steer agent behavior:
 - **`dont-write-env`** — never edit `.env`; only `.env.example`.
 - **`python-uv-package-manager`** — in Python projects, always use `uv` (`uv add` / `uv run` / `uv sync`); no pip/poetry/conda.
 - **`api-pydantic-schemas`** — API endpoints use explicit Pydantic request/response schemas; no raw `dict`/`Any`.
+- **`enforces-english`** — skills, harness docs, docs, agents, design docs, and TDD phases (`docs/tdd/…`) must be written in **English**, even when the prompt is not (except verbatim quotes/identifiers).
+- **`llm-payloads-toon`** — all data passed to LLMs must be TOON; no exceptions. *(Cursor kit today; mirror under `.claude/rules/` if needed for Claude Code)*
+- **`nest-conventions`** — Nest AI-First architecture (explicit DI, feature-first, Import First); binds on Nest targets; wins over generic MVC on Nest. Used by `nest-project` / `harness-create` / `legacy-explainer`.
 
 ### Harness docs — boilerplate (`docs/harness/`)
 
@@ -163,12 +178,12 @@ Same steps, swapping `.claude/` for `.cursor/` and rule `.md` for `.mdc`. Cursor
 ├── .cursor/                 # Cursor kit (mirror)
 │   ├── agents/
 │   ├── rules/               # *.mdc
-│   └── skills/              # mirror, includes controspia/
+│   └── skills/              # mirror + controspia/ + amaterasu/ (Cursor)
 ├── docs/
 │   ├── harness/             # Templates (incl. features)
 │   └── testsReadme.md
 ├── README.md                # Portuguese
-└── README.en.md             # English
+└── README-ENG.md            # English
 ```
 
 The `drafts/` folder holds work-in-progress drafts and is **not** part of the stable kit (it is in `.gitignore`).

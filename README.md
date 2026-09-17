@@ -20,7 +20,7 @@ O conteúdo (skills, agents, regras) é o mesmo nos dois lados; só muda o camin
 
 **Repositório:** [BrunoMartino/Michelangelo-Dev-Toolkit](https://github.com/BrunoMartino/Michelangelo-Dev-Toolkit)
 
-[English](README.en.md)
+[English](README-ENG.md)
 
 ## O que inclui
 
@@ -55,8 +55,20 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `make-etl-project` | Projeto ETL Python (SQLAlchemy, pandas, numpy) com bancos source/target e pytest por estágio E/T/L |
 | `create-minio-docker` | Gera MinIO (Dockerfile + docker-compose) e `install.md` para deploy no Coolify (API/Console, buckets, credenciais) |
 | `database-postgres-mcp` | Instala o MCP-explorer-for-Postgress e regista-o na config MCP do agente |
+| `build-a-castle` | Instala localmente o MCP Coolify [Ingeniarius-Castellorum](https://github.com/BrunoMartino/Ingeniarius-Castellorum); no fim lista as vars do `.env` a preencher |
 
 Cada skill vive numa pasta com `SKILL.md` (e, quando aplicável, `examples.md`).
+
+### Amaterasu — creative UI (Cursor: `.cursor/skills/amaterasu/`)
+
+Port caveman (tokens mínimos) do plugin genjutsu para Cursor. Invocação explícita; módulos internos em `_jutsu/` (não são slash skills).
+
+| Skill | Função |
+|-------|--------|
+| `amaterasu-cast` | Motion / micro-interações: scan do stack, design brief (cores/fonts), tese de interação, implementação, audit rápido |
+| `amaterasu-paint` | Universo visual completo: brainstorm, teses, `MASTER.md`, implementação página a página, audit completo |
+
+Extras face ao upstream: Tailwind **e** Bootstrap; brief de primary/secondary/tertiary/success/danger/warning + fonts (self-host woff2 por defeito, CDN só a pedido); breakpoints do framework + container `max-width: 1920px` centrado; CLI Go em `_jutsu/ui-ux-pro-max/cli` (`search`, `design-system`, `audit`). Hoje só no kit Cursor (ainda sem espelho em `.claude/skills/`).
 
 ### Controspia — bloco de segurança (`.claude/skills/controspia/` ou `.cursor/skills/controspia/`)
 
@@ -101,6 +113,9 @@ Regras sempre ativas que orientam o comportamento do agente:
 - **`dont-write-env`** — nunca editar `.env`; apenas `.env.example`.
 - **`python-uv-package-manager`** — em projetos Python, usar sempre `uv` (`uv add` / `uv run` / `uv sync`); proíbe pip/poetry/conda.
 - **`api-pydantic-schemas`** — endpoints de API com schemas Pydantic explícitos de request/response; sem `dict`/`Any` crus.
+- **`enforces-english`** — skills, harness docs, docs, agents, design docs e fases TDD (`docs/tdd/…`) escrevem-se em **inglês**, mesmo que o pedido esteja noutra língua (excepto quotes/identificadores verbatim).
+- **`llm-payloads-toon`** — dados enviados a LLMs em formato TOON; sem excepção. *(hoje no kit Cursor; espelhar em `.claude/rules/` se precisar no Claude Code)*
+- **`nest-conventions`** — arquitectura Nest AI-First (DI explícita, feature-first, Import First); activa em alvos Nest; em conflito com MVC genérico no alvo Nest, esta rule vence. Referenciada por `nest-project` / `harness-create` / `legacy-explainer`.
 
 ### Harness docs — boilerplate (`docs/harness/`)
 
@@ -163,11 +178,12 @@ Mesmos passos, trocando `.claude/` por `.cursor/` e rules `.md` por `.mdc`. A sk
 ├── .cursor/                 # Kit Cursor (espelho)
 │   ├── agents/
 │   ├── rules/               # *.mdc
-│   └── skills/              # espelho, inclui controspia/
+│   └── skills/              # espelho + controspia/ + amaterasu/ (Cursor)
 ├── docs/
 │   ├── harness/             # Templates (incl. features)
 │   └── testsReadme.md
-└── README.md
+├── README.md
+└── README-ENG.md
 ```
 
 A pasta `drafts/` contém rascunhos em elaboração e **não** faz parte do kit estável (está no `.gitignore`).

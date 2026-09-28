@@ -18,7 +18,7 @@ Não é uma aplicação executável: é o núcleo de uma construção guiada pel
 
 O conteúdo (skills, agents, regras) é o mesmo nos dois lados; só muda o caminho e a extensão das rules.
 
-**Repositório:** [BrunoMartino/Michelangelo-Dev-Toolkit](https://github.com/BrunoMartino/Michelangelo-Dev-Toolkit)
+**Repositório:** [BrunoMartino/Basilica-Ex-Machina](https://github.com/BrunoMartino/Basilica-Ex-Machina)
 
 [English](README-ENG.md)
 

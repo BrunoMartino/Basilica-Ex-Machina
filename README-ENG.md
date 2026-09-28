@@ -18,7 +18,7 @@ This is not a runnable application: it is the core of a build driven by the proj
 
 Skills, agents, and rules are the same on both sides; only the path and rule file extension differ.
 
-**Repository:** [BrunoMartino/Michelangelo-Dev-Toolkit](https://github.com/BrunoMartino/Michelangelo-Dev-Toolkit)
+**Repository:** [BrunoMartino/Basilica-Ex-Machina](https://github.com/BrunoMartino/Basilica-Ex-Machina)
 
 [Português](README.md)
 

@@ -96,11 +96,15 @@ Do not add a separate trailing "write tests" phase — tests lead each phase, th
 
 Ask instead of guessing. Vague answers get one targeted follow-up, then an explicit `TBD` in the doc.
 
-## Multi-feature mode — `my_docs/implementation.md`
+## Output location
 
-Triggered whenever the run covers **more than one feature** (several `docs/harness/features/feature-{name}.md`, or the user asks for TDDs for multiple features at once). Beyond one TDD per feature, generate `my_docs/implementation.md` with the implementation waves.
+Every TDD is AI-generated, so it goes to `especs/design-docs/tdd-feature-{name}.md` — never under `docs/`. It always derives from `docs/` (the `docs/harness/features/feature-{name}.md` files first).
 
-- Run the full workflow **per feature** (Context Pillars and design pattern asked one feature at a time); write the TDDs into `my_docs/` next to `implementation.md`.
+## Multi-feature mode — `especs/design-docs/implementation.md`
+
+Triggered whenever the run covers **more than one feature** (several `docs/harness/features/feature-{name}.md`, or the user asks for TDDs for multiple features at once). Beyond one TDD per feature, generate `especs/design-docs/implementation.md` with the implementation waves.
+
+- Run the full workflow **per feature** (Context Pillars and design pattern asked one feature at a time); write the TDDs into `especs/design-docs/` next to `implementation.md`.
 - `implementation.md` is derived from the feature harness files and the generated TDDs — never invent features, dependencies or scope.
 - **Wave** = set of features that can be implemented **in parallel by independent agents**: complementary scope, no writes to the same files/modules/tables, and no dependency on an artifact produced by another feature of the same wave.
 - Any dependency (schema, API contract, shared module, migration, feature flag) pushes the dependent feature to a **later** wave.
@@ -150,7 +154,7 @@ graph LR
 - [ ] Payment/auth → Security section complete (authn, encryption, PII, compliance)
 - [ ] Production → Monitoring (≥3 metrics + alerts) and Rollback (triggers + steps)
 - [ ] Testing: ≥2 test types + critical scenarios
-- [ ] Multi-feature run → `my_docs/implementation.md` with ordered waves, one agent lane per feature, dependency graph, and no shared writes inside a wave
+- [ ] Multi-feature run → `especs/design-docs/implementation.md` with ordered waves, one agent lane per feature, dependency graph, and no shared writes inside a wave
 
 ## Anti-patterns
 

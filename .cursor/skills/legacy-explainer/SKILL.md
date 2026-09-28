@@ -113,7 +113,7 @@ If verification fails: stop, report errors and manual recovery commands — do *
 5. **Features harness** (`docs/harness/features/feature-{name}.md`, per `docs/harness/features_template.md`): create/update **one file per feature**, individually — feature files are never part of the full replace above and never consolidated into one file.
    - For features identified in the graph, fill Depende de / Descrição / Fluxo from Graphify evidence, citing the sources.
    - For **new** features (brownfield: the feature being added and how it relates to the existing project), the 4 mandatory questions (describe, problem, solution + trade-offs, example/context) must still be answered **by the user** — graph evidence informs but never replaces the answers. Features without user answers stay pending; do not fabricate them.
-6. Generate `docs/<project-name>_legacy.md` **only** if the user explicitly asked for that narrative.
+6. Generate `especs/<project-name>_legacy.md` **only** if the user explicitly asked for that narrative.
 
 **Nest target** (`@nestjs/core`, `CONTEXT.md` AI-First, or `nest-conventions`): Graphify **is** the derived architecture IR. Progressive disclosure — `GRAPH_REPORT.md` + `graphify query` for the feature, then that feature folder, then direct deps; do not dump the app. Encode kit `nest-conventions` + `CONTEXT.md` into the overwritten templates (Explicit Dependency Architecture, not MVC). Record violations (`@Global()`, distant tokens, god modules, `ModuleRef.get()` as DI). Do not write a hand-maintained `ARCHITECTURE.md` that duplicates the graph.
 

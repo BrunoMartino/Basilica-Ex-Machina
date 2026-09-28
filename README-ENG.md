@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="assets/michelangelo-dev-toolkit.png" alt="Michelangelo-Dev-Toolkit" width="480" />
+  <img src="assets/basilica-ex-machina.png" alt="Basilica Ex Machina" width="480" />
 </p>
 
-# Michelangelo-Dev-Toolkit
+# Basilica Ex Machina
 
 > *“Code is the residual product of the theory of the project’s construction.”*  
 > — adapted from Peter Naur
 
 A collection of **skills**, **rules**, **agents**, and **boilerplates** to start a project with **Claude Code** or **Cursor** already guided by conventions, guardrails, and repeatable workflows.
 
-This is not a runnable application: it is a **starter kit** you copy or adapt into a new repository so the agent has consistent context from the first commit.
+This is not a runnable application: it is the core of a build driven by the project itself — human-written docs, AI-derived especs, and code derived from both.
 
 | IDE / CLI | Kit folder | Rule extension |
 |-----------|------------|----------------|
@@ -24,6 +24,46 @@ Skills, agents, and rules are the same on both sides; only the path and rule fil
 
 ## What’s included
 
+The toolkit organizes the build **around the project as its core**: humans write the project's theory in `docs/` (with the harness in `docs/harness/`), Graphify keeps the code graph in `graphify-out/`, the AI derives the specifications in `especs/` (design docs, waves, Red/Green phases, handoffs, reports) from that theory, and only then generates code, DB, APIs and tests from `docs/harness/` + `especs/`. Skills, rules and agents are the tools; the core is always the project.
+
+### Agents (`.claude/agents/` or `.cursor/agents/`)
+
+The build triad — invoked **only by the user**, as the main thread (`claude --agent <name>`), so each can spawn parallel sub-agents:
+
+| Agent | Role |
+|-------|------|
+| `scultore` | Wave orchestrator: reads `especs/design-docs/implementation.md` and runs each wave — Red with `tester`, Green with `design-patterns-coder` — for the **DB and Backend** layers, with parallel "cinzel" sub-agents per lane. Never writes frontend: hands that layer to Pittore through a manual handoff (`especs/tdd/wave{N}/`) |
+| `pittore` | Frontend and finishing: `/cast` (existing design system) or `/paint` (new design system) with "brush" sub-agents built on the `amaterasu` skill; keeps Graphify up to date, draws the flowchart with `sistina-arch`, checks performance and browser compatibility (Chrome/Safari/Firefox) and audits the code against the harness, flagging backend fixes to Scultore |
+| `ingegnere` | Quality and security: detects the stack, installs the static-analysis toolchain (format, static, dead code, cyclomatic/cognitive complexity, security, duplication) with Lefthook running the same Quality Run, reads only the failures from the SARIF/JSON report and fixes in a loop until the gate passes — without breaking the architecture or the design patterns. Spawns "squadra" sub-agents for the `controspia` audits and `coupling-analizer` |
+
+Specialized subagents (spawned by the main agent from their `description`):
+
+| Agent | Role |
+|-------|------|
+| `test-writer` | TDD Red/Green: only on explicit Red, Green, or (rarely) both; always uses `tester` and `design-patterns-coder`; coverage >50% overall and 80–90% on critical code |
+| `security-auditor` | Exploitable vulnerability analysis in backends (APIs, auth, DB, integrations); real impact over theoretical false positives |
+
+### Using the triad on long projects
+
+**Setup (once):**
+
+1. Generate the harness with `harness-create` (greenfield) or `legacy-explainer` (brownfield), including one `docs/harness/features/feature-{name}.md` per feature.
+2. Generate the graph with `legacy-explainer` (`graphify-out/`).
+3. Invoke `design-docs-creator` for **every listed feature** — one TDD per feature in `especs/design-docs/`. With more than one feature, the skill also writes `especs/design-docs/implementation.md` with the **waves**.
+
+**How waves are built:** a wave is a set of features that independent agents can implement **in parallel** — no writes to the same files, modules or tables, and no dependency on an artifact of another feature in the same wave. Any dependency (schema, API contract, shared module, migration) pushes the feature to a later wave. Each feature is a **lane** with the paths it may touch; waves are sequential (N+1 starts only once N is merged and green).
+
+**Recommended flow — whole project:**
+
+1. `scultore` in `backend-first` mode — all DB/Backend of every wave, without stopping between them.
+2. `pittore` — all the frontend and finishing from the handoffs; backend signals go back to Scultore, which fixes them and closes the final gate.
+3. `ingegnere` — security and code quality over the whole repository.
+
+**Per-wave flow:** in `per-wave` mode (default), each wave goes Scultore (DB/Backend) → Pittore (Frontend) → Scultore (exit gate) before the next one; `ingegnere` can run at the end of each wave scoped to `especs/tdd/wave{N}/`.
+
+**Standalone tasks:** each agent can also be called on its own, outside `implementation.md` — Pittore for a redesign (`/cast`, `/paint`), a flowchart or an audit; Ingegnere for a set of paths or the whole repository; Scultore for a specific wave the user names.
+
+
 ### Skills (`.claude/skills/` or `.cursor/skills/`)
 
 Specialized instructions the agent can invoke for concrete tasks:
@@ -31,7 +71,7 @@ Specialized instructions the agent can invoke for concrete tasks:
 | Skill | Role |
 |-------|------|
 | `harness-create` | Creates harness docs interactively (asks only for what’s missing) and installs the `all-for-harness` rule |
-| `tester` | TDD: failing tests first, then minimal code; triangulation on 4 axes (happy, boundary, negative, adversarial); Green handoff in `docs/tdd/fase{N}.md` + `fase{N}Task.md` |
+| `tester` | TDD: failing tests first, then minimal code; triangulation on 4 axes (happy, boundary, negative, adversarial); Green handoff in `especs/tdd/fase{N}.md` + `fase{N}Task.md` |
 | `design-patterns-coder` | GoF patterns only from the developer’s documentation (docs-mcp `gof-design-patterns`; GitHub fallback); composition over inheritance |
 | `code-commenter` | Block comments and documentation for non-trivial logic |
 | `design-docs-creator` | Technical design docs: specs, RFCs, and architecture proposals via interactive discovery; Red/Green implementation phases |
@@ -56,6 +96,7 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `create-minio-docker` | Generates MinIO (Dockerfile + docker-compose) and `install.md` for Coolify deploy (API/Console, buckets, credentials) |
 | `database-postgres-mcp` | Installs MCP-explorer-for-Postgress and registers it in the agent’s MCP config |
 | `build-a-castle` | Installs the Coolify MCP [Ingeniarius-Castellorum](https://github.com/BrunoMartino/Ingeniarius-Castellorum) locally; ends by listing the `.env` vars to fill |
+| `library` | Installs the [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) MCP locally (docs RAG on SQLite/FTS5) and registers it as `docs-mcp` for the models |
 
 Each skill lives in a folder with `SKILL.md` (and `examples.md` when applicable).
 
@@ -89,15 +130,6 @@ Cybersecurity skills grouped into their own block, with a **dedicated README** (
 
 The `offensive/` skills **require explicit authorization for the target** — they open with an authorization check and refuse ambiguous targets. Upstream: [briiirussell/cybersecurity-skills](https://github.com/briiirussell/cybersecurity-skills) (MIT), partially selected, with `red-team-engagement` renamed to `red-legio`.
 
-### Agents (`.claude/agents/` or `.cursor/agents/`)
-
-Specialized subagents (spawned by the main agent from their `description`):
-
-| Agent | Role |
-|-------|------|
-| `test-writer` | TDD Red/Green: only on explicit Red, Green, or (rarely) both; always uses `tester` and `design-patterns-coder`; coverage >50% overall and 80–90% on critical code |
-| `security-auditor` | Exploitable vulnerability analysis in backends (APIs, auth, DB, integrations); real impact over theoretical false positives |
-
 ### Rules
 
 Always-on rules that steer agent behavior:
@@ -113,7 +145,7 @@ Always-on rules that steer agent behavior:
 - **`dont-write-env`** — never edit `.env`; only `.env.example`.
 - **`python-uv-package-manager`** — in Python projects, always use `uv` (`uv add` / `uv run` / `uv sync`); no pip/poetry/conda.
 - **`api-pydantic-schemas`** — API endpoints use explicit Pydantic request/response schemas; no raw `dict`/`Any`.
-- **`enforces-english`** — skills, harness docs, docs, agents, design docs, and TDD phases (`docs/tdd/…`) must be written in **English**, even when the prompt is not (except verbatim quotes/identifiers).
+- **`enforces-english`** — skills, harness docs, docs, agents, design docs, and TDD phases (`especs/tdd/…`) must be written in **English**, even when the prompt is not (except verbatim quotes/identifiers).
 - **`llm-payloads-toon`** — all data passed to LLMs must be TOON; no exceptions. *(Cursor kit today; mirror under `.claude/rules/` if needed for Claude Code)*
 - **`nest-conventions`** — Nest AI-First architecture (explicit DI, feature-first, Import First); binds on Nest targets; wins over generic MVC on Nest. Used by `nest-project` / `harness-create` / `legacy-explainer`.
 
@@ -132,12 +164,12 @@ Templates for project rules. Copy each `*_template.md`, drop the `_template` suf
 | `operational_constraints_template.md` | `operational_constraints.md` | Operational limits (SLA, quotas, etc.) |
 | `features_template.md` | `features/feature-{name}.md` | One file per feature: description, problem, solution + trade-offs, example/context (user’s 4 answers); feature relations |
 
-These documents are the **source of truth** that skills such as `tester`, `design-patterns-coder`, `audit-guardsman`, and `data-guardsman` consult before implementing. Project design docs derive from the features harness.
+These documents are the **source of truth** that skills such as `tester`, `design-patterns-coder`, `audit-guardsman`, and `data-guardsman` consult before implementing. All AI-generated documentation (design docs, `implementation.md`, TDD, waves, Red/Green phases, handoffs, reports) lives in `especs/` and always derives from `docs/`; `docs/` holds only what humans write. Code, DB, tests and every other artifact derive from `docs/harness/` + `especs/`; the rest of `docs/` is read only when the especs fall short or the user asks.
 
 ### Other boilerplates
 
-- **`docs/testsReadme.md`** — test catalog (table to register suites, files, and how to run them in isolation).
-- **`docs/tdd/`** — created by `tester` / `test-writer` during Red: `fase{N}.md` (Green plan) and `fase{N}Task.md` (checklist).
+- **`especs/testsReadme.md`** — test catalog (table to register suites, files, and how to run them in isolation).
+- **`especs/tdd/`** — created by `tester` / `test-writer` during Red: `fase{N}.md` (Green plan) and `fase{N}Task.md` (checklist).
 
 ## How to use (Claude Code)
 
@@ -146,7 +178,7 @@ These documents are the **source of truth** that skills such as `tester`, `desig
    - `.claude/rules/`
    - `.claude/agents/` (optional)
    - `docs/harness/*_template.md`
-   - `docs/testsReadme.md` (optional)
+   - `especs/testsReadme.md` (optional)
 
    **Alternative (dev container / no local clone):** invoke `get-my-tools` in Claude Code to list and install items from GitHub.
 
@@ -179,8 +211,9 @@ Same steps, swapping `.claude/` for `.cursor/` and rule `.md` for `.mdc`. Cursor
 │   ├── agents/
 │   ├── rules/               # *.mdc
 │   └── skills/              # mirror + controspia/ + amaterasu/ (Cursor)
-├── docs/
-│   ├── harness/             # Templates (incl. features)
+├── docs/                    # Human-written
+│   └── harness/             # Templates (incl. features)
+├── especs/                  # AI-generated (design docs, waves, phases, handoffs, reports)
 │   └── testsReadme.md
 ├── README.md                # Portuguese
 └── README-ENG.md            # English

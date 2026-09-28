@@ -42,7 +42,7 @@ Determine whether the user already named what to install.
 
 - Skill names: `tester`, `code-commenter`, `get-that-task`
 - Rule stems: `all-for-harness`, `less-talk`, `dont-write-env`
-- Doc paths or bundles: `harness templates`, `all rules`, `docs/testsReadme.md`
+- Doc paths or bundles: `harness templates`, `all rules`, `especs/testsReadme.md`
 
 **Show catalog first** when the user invokes the skill without naming items (e.g. "get my tools", "what can I install from Michelangelo-Dev-Toolkit?").
 
@@ -70,7 +70,7 @@ Do **not** write files during inventory.
 | Skills | `.claude/skills/<name>/` | `.claude/skills/<name>/` |
 | Rules | `.claude/rules/*.md` | `.claude/rules/` |
 | Harness templates | `docs/harness/*_template.md` | `docs/harness/` |
-| Test catalog | `docs/testsReadme.md` | `docs/` |
+| Test catalog | `especs/testsReadme.md` | `especs/` |
 
 For each skill folder, read `SKILL.md` frontmatter and include the `description` in the catalog when available.
 
@@ -85,7 +85,7 @@ Present a **categorized** markdown list:
 1. **Skills** — name + one-line description
 2. **Rules** — filename
 3. **Harness templates** — filename
-4. **Other** — e.g. `docs/testsReadme.md`, hooks if present
+4. **Other** — e.g. `especs/testsReadme.md`, hooks if present
 
 Ask which items to install. Support multi-select and bundles.
 

@@ -180,7 +180,7 @@ sh .cursor/skills/sistina-arch/scripts/inject.sh \
   --subtitle "Evidence: graph | workspace-scan" \
   --cards /tmp/sistina-arch-cards.html \
   --views /tmp/sistina-arch-views.json \
-  -o docs/architecture-map.html
+  -o especs/architecture-map.html
 ```
 
 `--preset` defaults to `classic`. `--views` is required for architecture; optional for other types.

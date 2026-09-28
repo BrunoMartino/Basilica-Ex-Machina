@@ -216,7 +216,7 @@ Harness: refreshed templates from existing graph
 
 ---
 
-## Optional: `docs/<project-name>_legacy.md` (only if user requests)
+## Optional: `especs/<project-name>_legacy.md` (only if user requests)
 
 ```markdown
 # <Project> — legacy overview

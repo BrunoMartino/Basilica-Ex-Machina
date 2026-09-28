@@ -1,11 +1,11 @@
 ---
-description: Skills, harness, docs, agents, design docs, and TDD phases must be written in English
+description: Skills, harness, docs, especs, agents, design docs, and TDD phases must be written in English
 alwaysApply: true
 ---
 
 # Enforces English
 
-All **skills**, **harness docs**, **docs**, **agents**, **design docs**, and **TDD phases** (`docs/tdd/fase{N}.md`, `fase{N}Task.md`) must be written in **English**, even when the prompt, plan, or source docs are in another language.
+All **skills**, **harness docs**, **docs**, **especs** (`especs/`), **agents**, **design docs**, and **TDD phases** (`especs/tdd/fase{N}.md`, `fase{N}Task.md`) must be written in **English**, even when the prompt, plan, or source docs are in another language.
 
 ## Required
 

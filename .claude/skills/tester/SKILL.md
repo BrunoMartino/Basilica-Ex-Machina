@@ -136,22 +136,22 @@ Copy and track progress:
 - [ ] Run the new test(s); confirm **Red** (failing as expected); report command and outcome.
 - [ ] Create Green handoff docs for this phase (see below) — **mandatory before any production code**.
 - [ ] Implement the **minimal** production code needed to turn tests green (Green) — own session or follow-up; use `fase{N}Task.md` as checklist.
-- [ ] **Brownfield only:** after Green verification, create `docs/tdd/refactor-fase{N}.md` (see below); do **not** apply the legacy swap in Green.
+- [ ] **Brownfield only:** after Green verification, create `especs/tdd/refactor-fase{N}.md` (see below); do **not** apply the legacy swap in Green.
 - [ ] Refactor if needed without changing observable behavior (Refactor — cleans the **new** Green code only).
-- [ ] Append a row to [`docs/testsReadme.md`](../../../docs/testsReadme.md) (suite/name, purpose, path, isolated run command).
+- [ ] Append a row to [`especs/testsReadme.md`](../../../especs/testsReadme.md) (suite/name, purpose, path, isolated run command).
 
 ## Green handoff docs (mandatory after Red)
 
-When Red for an **implementation phase** is done, always create **both** files under `docs/tdd/` before writing production code:
+When Red for an **implementation phase** is done, always create **both** files under `especs/tdd/` before writing production code:
 
 | File | Purpose |
 |------|---------|
-| `docs/tdd/fase{N}.md` | Detailed step-by-step: minimal code for Green |
-| `docs/tdd/fase{N}Task.md` | Same plan as checkboxes — execution control |
+| `especs/tdd/fase{N}.md` | Detailed step-by-step: minimal code for Green |
+| `especs/tdd/fase{N}Task.md` | Same plan as checkboxes — execution control |
 
-**Language rule (no exception):** every file written under `docs/tdd/` is **always English** — titles, headings, steps, checkboxes, comments in examples — even when the prompt, plan, or chat is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim. This covers `fase{N}.md`, `fase{N}Task.md`, and `refactor-fase{N}.md`.
+**Language rule (no exception):** every file written under `especs/tdd/` is **always English** — titles, headings, steps, checkboxes, comments in examples — even when the prompt, plan, or chat is in another language. Product names, paths, identifiers, and quoted user answers stay verbatim. This covers `fase{N}.md`, `fase{N}Task.md`, and `refactor-fase{N}.md`.
 
-**`N`**: implementation phase number where the skill was invoked (TDD/design doc). If no explicit phase, use the next free integer in `docs/tdd/` (e.g. `fase1*` already exist → use `2`).
+**`N`**: implementation phase number where the skill was invoked (TDD/design doc). If no explicit phase, use the next free integer in `especs/tdd/` (e.g. `fase1*` already exist → use `2`).
 
 ### `fase{N}.md` — minimum content
 
@@ -159,7 +159,7 @@ When Red for an **implementation phase** is done, always create **both** files u
 2. **Red command** — how to run only these tests and confirm expected failure.
 3. **Green steps** — numbered order: files to create/change, symbols, minimal logic per step; what **not** to implement yet.
 4. **Verification** — command to confirm Green; done criteria.
-5. **Brownfield only — post-Green playbook** — after Green verification, create `docs/tdd/refactor-fase{N}.md`; do not execute the legacy swap in Green.
+5. **Brownfield only — post-Green playbook** — after Green verification, create `especs/tdd/refactor-fase{N}.md`; do not execute the legacy swap in Green.
 
 ### `fase{N}Task.md` — minimum content
 
@@ -171,7 +171,7 @@ Checkboxes mirroring the steps in `fase{N}.md`, one actionable line each:
 - [ ] …
 - [ ] …
 - [ ] Phase tests pass: `<command>`
-- [ ] Brownfield only: Create docs/tdd/refactor-fase{N}.md (legacy removal playbook; do not apply it in Green)
+- [ ] Brownfield only: Create especs/tdd/refactor-fase{N}.md (legacy removal playbook; do not apply it in Green)
 ```
 
 Rules:
@@ -191,7 +191,7 @@ Rules:
 
 **Green must not swallow the swap.** In brownfield, Green implements the new tested production (typically new modules/paths the Red tests already import). It does **not** delete legacy, rewire production callers, or "fix" old tests. [`persisted-tester`](../../../.claude/rules/persisted-tester.md) still wins: existing tests are immutable; the playbook only **lists** obsolete tests for the user to remove.
 
-After Green verification passes, create `docs/tdd/refactor-fase{N}.md` (**always English**). Do **not** apply the playbook unless the user explicitly asks in that conversation.
+After Green verification passes, create `especs/tdd/refactor-fase{N}.md` (**always English**). Do **not** apply the playbook unless the user explicitly asks in that conversation.
 
 ### `refactor-fase{N}.md` — minimum content
 
@@ -283,4 +283,4 @@ Full TypeScript-heavy examples remain **guides only**. Use this repository's lan
 
 ## Reporting
 
-Always state what automated tests ran and anything **not** run (e.g. full suite omitted for time), which triangulation axes were skipped and why, the paths `docs/tdd/fase{N}.md` + `docs/tdd/fase{N}Task.md` when Red handoff was produced, and `docs/tdd/refactor-fase{N}.md` when the brownfield playbook was written. When a double is introduced, report answers to both partner questions. Respect project harness agent rules ("report what ran and did not run").
+Always state what automated tests ran and anything **not** run (e.g. full suite omitted for time), which triangulation axes were skipped and why, the paths `especs/tdd/fase{N}.md` + `especs/tdd/fase{N}Task.md` when Red handoff was produced, and `especs/tdd/refactor-fase{N}.md` when the brownfield playbook was written. When a double is introduced, report answers to both partner questions. Respect project harness agent rules ("report what ran and did not run").

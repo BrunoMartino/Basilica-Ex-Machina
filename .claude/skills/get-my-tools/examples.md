@@ -52,7 +52,7 @@ Agent presents:
 - …
 
 ### Other
-- `docs/testsReadme.md`
+- `especs/testsReadme.md`
 ```
 
 Then ask: **Which items should I install?** (multi-select or bundle OK)
@@ -83,7 +83,7 @@ gh api repos/BrunoMartino/Michelangelo-Dev-Toolkit/contents/.claude/skills/teste
 | `all skills` | Every folder under `.claude/skills/` |
 | `all rules` | Every `.md` under `.claude/rules/` |
 | `harness templates` | `docs/harness/*_template.md` |
-| `full kit` | All skills + rules + harness templates + `docs/testsReadme.md` |
+| `full kit` | All skills + rules + harness templates + `especs/testsReadme.md` |
 
 ---
 

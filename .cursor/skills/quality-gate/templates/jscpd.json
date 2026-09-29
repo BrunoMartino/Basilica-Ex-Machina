@@ -1,0 +1,21 @@
+{
+  "minLines": 5,
+  "minTokens": 50,
+  "gitignore": true,
+  "absolute": false,
+  "format": ["go", "python", "typescript", "tsx", "javascript", "jsx", "php"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/.venv/**",
+    "**/venv/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/.quality/**",
+    "**/graphify-out/**",
+    "**/*_test.go",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

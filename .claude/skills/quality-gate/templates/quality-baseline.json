@@ -1,0 +1,8 @@
+{
+  "cyclomatic_max": 10,
+  "cognitive_max": 15,
+  "duplication_max_percent": 3,
+  "security_fail_severity": "medium",
+  "semgrep_configs": ["p/default"],
+  "test_commands": {}
+}

@@ -76,6 +76,7 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `code-commenter` | Block comments and documentation for non-trivial logic |
 | `design-docs-creator` | Technical design docs: specs, RFCs, and architecture proposals via interactive discovery; Red/Green implementation phases |
 | `coupling-analizer` | Module coupling analysis (strength, distance, volatility) |
+| `quality-gate` | Machine-level static-analysis toolchain (PATH, never a project dependency) + Lefthook for Go, Python, TS/JS and PHP; check-only Quality Run (`check.sh`) with a failures-only `.quality/report.json`. Used by `ingegnere` |
 | `legacy-explainer` | Graphify: explains a legacy codebase AND regenerates/updates the graph (`graphify-out/`); fills harness docs |
 | `sistina-arch` | Graphify companion: interactive HTML at file level with visible complex excerpts; AskQuestion for extra depth; orphans and dead code on the canvas |
 | `get-that-task` | Jira lookup: open issues assigned to the user and unassigned |

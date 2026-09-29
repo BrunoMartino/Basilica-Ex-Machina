@@ -1,0 +1,24 @@
+{
+	"jsPlugins": ["eslint-plugin-sonarjs"],
+	"categories": {
+		"correctness": "off",
+		"suspicious": "off",
+		"pedantic": "off",
+		"perf": "off",
+		"style": "off",
+		"restriction": "off",
+		"nursery": "off"
+	},
+	"rules": {
+		"eslint/complexity": ["error", { "max": @CYCLOMATIC_MAX@ }],
+		"sonarjs/cognitive-complexity": ["error", @COGNITIVE_MAX@]
+	},
+	"ignorePatterns": [
+		"**/node_modules/**",
+		"**/vendor/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/coverage/**",
+		"**/.quality/**"
+	]
+}

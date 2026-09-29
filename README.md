@@ -76,6 +76,7 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `code-commenter` | Comentários e documentação em bloco para lógica não trivial |
 | `design-docs-creator` | TDD técnico: specs, RFCs e propostas de arquitetura via descoberta interactiva; fases de implementação em Red/Green |
 | `coupling-analizer` | Análise de acoplamento entre módulos (força, distância, volatilidade) |
+| `quality-gate` | Toolchain de análise estática na máquina (PATH, nunca dependência do projeto) + Lefthook para Go, Python, TS/JS e PHP; Quality Run check-only (`check.sh`) com relatório só de falhas em `.quality/report.json`. Usada pelo `ingegnere` |
 | `legacy-explainer` | Graphify: explica codebase legado E regenera/actualiza o grafo (`graphify-out/`); preenche os docs harness |
 | `sistina-arch` | Companion do Graphify: HTML interactivo ao nível de ficheiro com trechos complexos visíveis; AskQuestion para mais profundidade; órfãos e dead code no canvas |
 | `get-that-task` | Consulta Jira: issues abertas do utilizador e não atribuídas |

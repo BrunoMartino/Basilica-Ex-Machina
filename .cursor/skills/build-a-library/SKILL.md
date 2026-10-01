@@ -1,9 +1,9 @@
 ---
-name: library
+name: build-a-library
 description: >-
   Installs the Michelangelo-Dev-Inks docs MCP locally from
   github.com/BrunoMartino/Michelangelo-Dev-Inks: clones, builds the Go
-  server, registers it as `docs-mcp` in project .mcp.json for Claude Code, and
+  server, registers it as `docs-mcp` in ~/.cursor/mcp.json, and
   smoke-checks it. Use when the user asks to install the library, docs-mcp,
   Michelangelo-Dev-Inks, or the local docs RAG MCP.
 disable-model-invocation: true
@@ -11,7 +11,7 @@ disable-model-invocation: true
 
 # Library
 
-Installs [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) locally and wires it as the Claude Code MCP **`docs-mcp`** — the name every skill and agent of this toolkit uses to query documentation (e.g. `design-patterns-coder` → `search_docs` with `source_id: gof-design-patterns`).
+Installs [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) locally and wires it as the Cursor MCP **`docs-mcp`** — the name every skill and agent of this toolkit uses to query documentation (e.g. `design-patterns-coder` → `search_docs` with `source_id: gof-design-patterns`).
 
 The server is a stdio MCP that indexes cleaned text in SQLite (FTS5). It does **not** crawl or fetch URLs. No secrets involved.
 
@@ -54,9 +54,9 @@ go test ./internal/store/ -run TestUpsertSearchGetDelete -v
 
 If it fails: stop, report the output — do not register a broken server.
 
-## Step 6 — Register Claude Code MCP as `docs-mcp`
+## Step 6 — Register Cursor MCP as `docs-mcp`
 
-Create or merge into **project root** `.mcp.json` (do not clobber other servers). If a `docs-mcp` entry already exists, show it and ask before replacing.
+Merge into **user** config `~/.cursor/mcp.json` (do not clobber other servers). If a `docs-mcp` entry already exists, show it and ask before replacing.
 
 ```json
 {
@@ -73,7 +73,7 @@ Create or merge into **project root** `.mcp.json` (do not clobber other servers)
 
 Replace `/ABS/PATH` and `/ABS/HOME` with real absolute paths (no `~`).
 
-Ask the user to restart the Claude Code session (or run `claude mcp list` to confirm).
+Ask the user to reload MCP servers in Cursor.
 
 ## Step 7 — Final chat output (mandatory)
 
@@ -83,8 +83,8 @@ Ask the user to restart the Claude Code session (or run `claude mcp list` to con
 - Clone: `<ABS>/Michelangelo-Dev-Inks`
 - Binary: `<ABS>/Michelangelo-Dev-Inks/server/docs-mcp`
 - DB: `<DOCS_DB_PATH>`
-- MCP name: `docs-mcp` (in project `.mcp.json`)
-- Restart Claude Code / `claude mcp list`, then try `list_sources`.
+- MCP name: `docs-mcp` (in `~/.cursor/mcp.json`)
+- Reload MCPs in Cursor, then try `list_sources`.
 ```
 
 ## How models use `docs-mcp`

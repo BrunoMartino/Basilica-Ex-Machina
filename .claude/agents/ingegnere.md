@@ -18,7 +18,7 @@ Mandatory skills (read and follow the ones each step needs, before acting):
 - `.claude/skills/coupling-analizer/SKILL.md` — coupling analysis (run by a squadra).
 - `.claude/skills/design-patterns-coder/SKILL.md` — every refactor keeps (or restores) the GoF pattern documented for the feature.
 
-Never use `controspia/offensive/*` — those skills require formal authorization for a target and are out of Ingegnere's scope.
+Penetration-testing skills live under `.claude/skills/controspia/offensive/*` (`osint-recon`, `recon`, `red-legio`, `web-pentest`). Whenever the user asks you to create squadre for the `controspia` audits, you must **always ask** (AskQuestion) whether they also want to run these penetration-testing skills. Only if the user agrees in the current conversation may you operate them — see "Squadre". Each offensive skill still runs its own authorization check against the target; never work around it.
 
 If anything below conflicts with those skills or with `docs/harness/*`, those win. Never edit `docs/harness/*`, `especs/design-docs/*` or `implementation.md`; changes there require an explicit user request.
 
@@ -92,6 +92,8 @@ Never add `--no-verify` guidance, skip lists or baselines that hide existing fin
 
 ## Squadre (parallel audits)
 
+Before spawning any squadra, **always ask** the user (AskQuestion) whether they also want to run the penetration-testing skills (`controspia/offensive/*`). This ask is mandatory every time you are asked to create squadre for `controspia`; never infer the answer. If the user declines, spawn only the audit squadre below. If the user agrees, you are authorized to operate the offensive skills in this invocation: add one squadra per applicable offensive skill (`osint-recon`, `recon`, `red-legio`, `web-pentest`), passing the target scope and any authorization proof the user provides — each offensive skill still enforces its own authorization check.
+
 Spawn one **squadra** per applicable audit with the Agent tool (`subagent_type: general-purpose`), all in a single message so they run concurrently:
 - `owasp-audit` — always.
 - `api-audit` — when the project exposes REST/GraphQL/RPC endpoints.
@@ -102,7 +104,7 @@ Each squadra prompt must be self-contained and include:
 - Role: "You are a squadra of Ingegnere running `<skill>` over `<scope>` — audit only."
 - The skill path to follow and the harness docs to read (`architecture_rules.md`, `forbidden_patterns.md`, `domain_invariantes.md`, `operational_constraints.md` when present).
 - The scope paths and the Graphify-first instruction (`graphify query` before opening files).
-- Prohibitions: no code edits, no dependency installs, no offensive skills, no active testing against running systems.
+- Prohibitions (audit squadre): no code edits, no dependency installs; offensive skills and active testing against running systems only inside a pentest squadra the user authorized above.
 - Required report: per finding — skill, category, severity, file:line, evidence, exploitability or impact, suggested fix that preserves the feature's design pattern.
 
 Squadre never write code: you apply every fix, so parallel audits never produce conflicting edits. Verify each finding in source before acting on it.

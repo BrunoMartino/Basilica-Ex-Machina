@@ -36,13 +36,6 @@ A tríade de construção — invocada **só pelo utilizador**, como thread prin
 | `pittore` | Frontend e acabamento: `/cast` (design system existente) ou `/paint` (design system novo) com sub-agentes "brush" sobre a skill `amaterasu`; mantém o Graphify actualizado, gera o fluxograma com `sistina-arch`, verifica performance e compatibilidade (Chrome/Safari/Firefox) e audita o código contra o harness, sinalizando correcções de backend ao Scultore |
 | `ingegnere` | Qualidade e segurança: detecta o stack, instala a toolchain de análise estática (format, static, dead code, complexidade ciclomática/cognitiva, segurança, duplicação) com Lefthook a correr o mesmo Quality Run, lê só as falhas do relatório SARIF/JSON e corrige em loop até o gate passar — sem quebrar a arquitectura nem os padrões de design. Lança sub-agentes "squadra" para as auditorias `controspia` e `coupling-analizer` |
 
-Subagentes especializados (spawnados pelo agente principal conforme a `description`):
-
-| Agent | Função |
-|-------|--------|
-| `test-writer` | TDD Red/Green: só sob pedido explícito de fase Red, Green ou (raramente) ambas; usa sempre as skills `tester` e `design-patterns-coder`; cobertura >50% global e 80–90% no código crítico |
-| `security-auditor` | Análise de vulnerabilidades exploráveis em backends (APIs, auth, DB, integrações); foco em impacto real, não em falsos positivos teóricos |
-
 ### Como usar a tríade em projetos longos
 
 **Preparação (uma vez):**
@@ -81,9 +74,6 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `sistina-arch` | Companion do Graphify: HTML interactivo ao nível de ficheiro com trechos complexos visíveis; AskQuestion para mais profundidade; órfãos e dead code no canvas |
 | `get-that-task` | Consulta Jira: issues abertas do utilizador e não atribuídas |
 | `get-my-tools` | Inventaria e instala skills, rules e docs deste toolkit no projeto actual (útil em dev containers) |
-| `dependency-guardsman` | Segurança em dependências npm: scan de vulnerabilidades, supply-chain (typosquatting, install scripts) e licenças |
-| `data-guardsman` | Criptografia, classificação de dados, gestão de segredos e acesso a dados injection-safe |
-| `audit-guardsman` | Logs de auditoria JSON em operações privilegiadas, com protecção contra log injection e sem PII |
 | `wordpress-developer` | Scan e mitigação das vulnerabilidades comuns de WordPress via tema local (xmlrpc, feeds, comentários, CORS, …) |
 | `shopify-developer` | Referência completa de desenvolvimento Shopify (Liquid, temas OS 2.0, GraphQL, Hydrogen, Functions) |
 | `learn-live-canvas` | Docs e hooks de LiveCanvas + Picostrap 5 a partir de cache local sincronizada |
@@ -97,7 +87,8 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `create-minio-docker` | Gera MinIO (Dockerfile + docker-compose) e `install.md` para deploy no Coolify (API/Console, buckets, credenciais) |
 | `database-postgres-mcp` | Instala o MCP-explorer-for-Postgress e regista-o na config MCP do agente |
 | `build-a-castle` | Instala localmente o MCP Coolify [Ingeniarius-Castellorum](https://github.com/BrunoMartino/Ingeniarius-Castellorum); no fim lista as vars do `.env` a preencher |
-| `library` | Instala localmente o MCP [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) (RAG de documentação em SQLite/FTS5) e regista-o como `docs-mcp` para os modelos |
+| `build-a-library` | Instala localmente o MCP [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) (RAG de documentação em SQLite/FTS5) e regista-o como `docs-mcp` para os modelos |
+| `statera-quaderno` | Instala localmente o MCP [Statera-Quaderno-MCP](https://github.com/BrunoMartino/Statera-Quaderno-MCP) (conteúdo e cupons WordPress + WooCommerce), um servidor por loja; no fim lista as vars do `.env` a preencher |
 
 Cada skill vive numa pasta com `SKILL.md` (e, quando aplicável, `examples.md`).
 
@@ -165,12 +156,12 @@ Templates para definir as regras do projeto. Copie cada ficheiro `*_template.md`
 | `operational_constraints_template.md` | `operational_constraints.md` | Limites operacionais (SLA, quotas, etc.) |
 | `features_template.md` | `features/feature-{name}.md` | Um ficheiro por feature: descrição, problema, solução + trade-offs, exemplo/contexto (4 respostas do utilizador); relações entre features |
 
-Estes documentos são a **fonte de verdade** que skills como `tester`, `design-patterns-coder`, `audit-guardsman` e `data-guardsman` referenciam antes de implementar. Toda a documentação gerada pela IA (design docs, `implementation.md`, TDD, waves, fases Red/Green, handoffs, reports) vive em `especs/` e deriva sempre de `docs/`; `docs/` fica só com o que o humano escreve. Código, banco, testes e restantes artefactos derivam de `docs/harness/` + `especs/`; o resto de `docs/` só é consultado quando a espec não chega ou o utilizador pede.
+Estes documentos são a **fonte de verdade** que skills como `tester` e `design-patterns-coder` referenciam antes de implementar. Toda a documentação gerada pela IA (design docs, `implementation.md`, TDD, waves, fases Red/Green, handoffs, reports) vive em `especs/` e deriva sempre de `docs/`; `docs/` fica só com o que o humano escreve. Código, banco, testes e restantes artefactos derivam de `docs/harness/` + `especs/`; o resto de `docs/` só é consultado quando a espec não chega ou o utilizador pede.
 
 ### Outros boilerplates
 
 - **`especs/testsReadme.md`** — catálogo de testes (tabela para registar suites, ficheiros e como correr isoladamente).
-- **`especs/tdd/`** — criado pela skill `tester` / agente `test-writer` durante Red: `fase{N}.md` (plano Green) e `fase{N}Task.md` (checklist).
+- **`especs/tdd/`** — criado pela skill `tester` durante Red: `fase{N}.md` (plano Green) e `fase{N}Task.md` (checklist).
 
 ## Como usar (Claude Code)
 
@@ -191,7 +182,7 @@ Estes documentos são a **fonte de verdade** que skills como `tester`, `design-p
 
 5. **Opcional — decisões de arquitectura**: invoque `design-docs-creator` antes de features significativas; use `coupling-analizer` para avaliar acoplamento; use `design-patterns-coder` na implementação Green quando houver padrões GoF.
 
-6. **TDD**: peça explicitamente fase **Red** ou **Green** (ou ambas) ao agente `test-writer`, que segue `tester` + `design-patterns-coder`.
+6. **TDD**: peça explicitamente fase **Red** ou **Green** (ou ambas); o `scultore` executa-as por wave — Red com `tester`, Green com `design-patterns-coder`.
 
 7. **Mantenha** `docs/harness/` e o grafo actualizados quando mudar código, arquitetura ou regras de domínio — invoque `legacy-explainer` após alterações relevantes; as rules `all-for-harness` e `graphify-first` dependem disso.
 

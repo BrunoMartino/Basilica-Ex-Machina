@@ -36,13 +36,6 @@ The build triad — invoked **only by the user**, as the main thread (`claude --
 | `pittore` | Frontend and finishing: `/cast` (existing design system) or `/paint` (new design system) with "brush" sub-agents built on the `amaterasu` skill; keeps Graphify up to date, draws the flowchart with `sistina-arch`, checks performance and browser compatibility (Chrome/Safari/Firefox) and audits the code against the harness, flagging backend fixes to Scultore |
 | `ingegnere` | Quality and security: detects the stack, installs the static-analysis toolchain (format, static, dead code, cyclomatic/cognitive complexity, security, duplication) with Lefthook running the same Quality Run, reads only the failures from the SARIF/JSON report and fixes in a loop until the gate passes — without breaking the architecture or the design patterns. Spawns "squadra" sub-agents for the `controspia` audits and `coupling-analizer` |
 
-Specialized subagents (spawned by the main agent from their `description`):
-
-| Agent | Role |
-|-------|------|
-| `test-writer` | TDD Red/Green: only on explicit Red, Green, or (rarely) both; always uses `tester` and `design-patterns-coder`; coverage >50% overall and 80–90% on critical code |
-| `security-auditor` | Exploitable vulnerability analysis in backends (APIs, auth, DB, integrations); real impact over theoretical false positives |
-
 ### Using the triad on long projects
 
 **Setup (once):**
@@ -81,9 +74,6 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `sistina-arch` | Graphify companion: interactive HTML at file level with visible complex excerpts; AskQuestion for extra depth; orphans and dead code on the canvas |
 | `get-that-task` | Jira lookup: open issues assigned to the user and unassigned |
 | `get-my-tools` | Inventories and installs skills, rules, and docs from this toolkit into the current project (useful in dev containers) |
-| `dependency-guardsman` | npm dependency security: vulnerability scan, supply-chain (typosquatting, install scripts), and licenses |
-| `data-guardsman` | Encryption, data classification, secrets management, and injection-safe data access |
-| `audit-guardsman` | JSON audit logs for privileged operations, with log-injection protection and no PII |
 | `wordpress-developer` | Scan and mitigate common WordPress vulnerabilities via the local theme (xmlrpc, feeds, comments, CORS, …) |
 | `shopify-developer` | Full Shopify development reference (Liquid, OS 2.0 themes, GraphQL, Hydrogen, Functions) |
 | `learn-live-canvas` | LiveCanvas + Picostrap 5 docs and hooks from a synced local cache |
@@ -97,7 +87,8 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `create-minio-docker` | Generates MinIO (Dockerfile + docker-compose) and `install.md` for Coolify deploy (API/Console, buckets, credentials) |
 | `database-postgres-mcp` | Installs MCP-explorer-for-Postgress and registers it in the agent’s MCP config |
 | `build-a-castle` | Installs the Coolify MCP [Ingeniarius-Castellorum](https://github.com/BrunoMartino/Ingeniarius-Castellorum) locally; ends by listing the `.env` vars to fill |
-| `library` | Installs the [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) MCP locally (docs RAG on SQLite/FTS5) and registers it as `docs-mcp` for the models |
+| `build-a-library` | Installs the [Michelangelo-Dev-Inks](https://github.com/BrunoMartino/Michelangelo-Dev-Inks) MCP locally (docs RAG on SQLite/FTS5) and registers it as `docs-mcp` for the models |
+| `statera-quaderno` | Installs the [Statera-Quaderno-MCP](https://github.com/BrunoMartino/Statera-Quaderno-MCP) locally (WordPress + WooCommerce content and coupons), one server per store; ends by listing the `.env` vars to fill |
 
 Each skill lives in a folder with `SKILL.md` (and `examples.md` when applicable).
 
@@ -165,12 +156,12 @@ Templates for project rules. Copy each `*_template.md`, drop the `_template` suf
 | `operational_constraints_template.md` | `operational_constraints.md` | Operational limits (SLA, quotas, etc.) |
 | `features_template.md` | `features/feature-{name}.md` | One file per feature: description, problem, solution + trade-offs, example/context (user’s 4 answers); feature relations |
 
-These documents are the **source of truth** that skills such as `tester`, `design-patterns-coder`, `audit-guardsman`, and `data-guardsman` consult before implementing. All AI-generated documentation (design docs, `implementation.md`, TDD, waves, Red/Green phases, handoffs, reports) lives in `especs/` and always derives from `docs/`; `docs/` holds only what humans write. Code, DB, tests and every other artifact derive from `docs/harness/` + `especs/`; the rest of `docs/` is read only when the especs fall short or the user asks.
+These documents are the **source of truth** that skills such as `tester` and `design-patterns-coder` consult before implementing. All AI-generated documentation (design docs, `implementation.md`, TDD, waves, Red/Green phases, handoffs, reports) lives in `especs/` and always derives from `docs/`; `docs/` holds only what humans write. Code, DB, tests and every other artifact derive from `docs/harness/` + `especs/`; the rest of `docs/` is read only when the especs fall short or the user asks.
 
 ### Other boilerplates
 
 - **`especs/testsReadme.md`** — test catalog (table to register suites, files, and how to run them in isolation).
-- **`especs/tdd/`** — created by `tester` / `test-writer` during Red: `fase{N}.md` (Green plan) and `fase{N}Task.md` (checklist).
+- **`especs/tdd/`** — created by `tester` during Red: `fase{N}.md` (Green plan) and `fase{N}Task.md` (checklist).
 
 ## How to use (Claude Code)
 
@@ -191,7 +182,7 @@ These documents are the **source of truth** that skills such as `tester`, `desig
 
 5. **Optional — architecture decisions**: invoke `design-docs-creator` before significant features; use `coupling-analizer` for coupling; use `design-patterns-coder` in Green when GoF patterns apply.
 
-6. **TDD**: explicitly ask for **Red** or **Green** (or both) via the `test-writer` agent, which follows `tester` + `design-patterns-coder`.
+6. **TDD**: explicitly ask for **Red** or **Green** (or both); `scultore` runs them per wave — Red with `tester`, Green with `design-patterns-coder`.
 
 7. **Keep** `docs/harness/` and the graph up to date when code, architecture, or domain rules change — invoke `legacy-explainer` after relevant changes; `all-for-harness` and `graphify-first` depend on that.
 

@@ -69,7 +69,7 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 | `code-commenter` | Comentários e documentação em bloco para lógica não trivial |
 | `design-docs-creator` | TDD técnico: specs, RFCs e propostas de arquitetura via descoberta interactiva; fases de implementação em Red/Green |
 | `coupling-analizer` | Análise de acoplamento entre módulos (força, distância, volatilidade) |
-| `quality-gate` | Toolchain de análise estática na máquina (PATH, nunca dependência do projeto) + Lefthook para Go, Python, TS/JS e PHP; Quality Run check-only (`check.sh`) com relatório só de falhas em `.quality/report.json`. Usada pelo `ingegnere` |
+| `babylon-gardens` | Toolchain de análise estática na máquina (PATH, nunca dependência do projeto) + Lefthook para Go, Python, TS/JS e PHP; Quality Run check-only (`check.sh`) com relatório só de falhas em `.quality/report.json`. Usada pelo `ingegnere` |
 | `legacy-explainer` | Graphify: explica codebase legado E regenera/actualiza o grafo (`graphify-out/`); preenche os docs harness |
 | `sistina-arch` | Companion do Graphify: HTML interactivo ao nível de ficheiro com trechos complexos visíveis; AskQuestion para mais profundidade; órfãos e dead code no canvas |
 | `get-that-task` | Consulta Jira: issues abertas do utilizador e não atribuídas |
@@ -133,6 +133,7 @@ Regras sempre ativas que orientam o comportamento do agente:
 - **`all-for-harness`** — os docs em `docs/harness/` são vinculativos: o agente lê-os antes de alterações de arquitetura, testes, deploy, domínio ou features, segue-os em caso de conflito com "best practices" genéricas e aplica o fluxo obrigatório docs → código → graphify. Gate de features: nenhuma feature nova sem `docs/harness/features/feature-{name}.md` com as 4 respostas do utilizador. É instalada junto com os docs pela skill `harness-create`.
 - **`graphify-first`** — antes de inferir arquitectura/fluxos/dependências, consultar o Graphify (`graphify-out/`) primeiro; se indisponível, perguntar ao utilizador.
 - **`persisted-tester`** — testes já existentes no repositório não podem ser removidos nem alterados pelo agente; cobrir mudanças com testes novos e avisar o utilizador dos obsoletos.
+- **`babylon-gate`** — nenhum modelo, agente ou sub-agente tem autoridade para sobrescrever, contornar ou alterar o gate (`babylon-gardens`: `lefthook.yml`, hooks, `scripts/quality/*`, `quality-baseline.json`, configs das tools, `--no-verify`, supressões inline, thresholds). Só o utilizador, com pedido explícito; o pedido é registado como violação em `docs/harness/forbidden_patterns.md` (`## Babylon Gate violations`) e commitado antes de ser executado.
 - **`less-talk`** — proíbe explicações não pedidas, extras de escopo e desperdício de tokens em modo Agent/Ask; modo Plan mantém profundidade.
 - **`dont-write-env`** — nunca editar `.env`; apenas `.env.example`.
 - **`python-uv-package-manager`** — em projetos Python, usar sempre `uv` (`uv add` / `uv run` / `uv sync`); proíbe pip/poetry/conda.

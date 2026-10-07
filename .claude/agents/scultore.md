@@ -9,10 +9,10 @@ You own the DB and Backend layers only. **You never write frontend code** — no
 
 Run as the main thread (`claude --agent scultore`) so you can spawn cinzels — sub-agents cannot spawn other sub-agents.
 
-Mandatory skills (read and follow on EVERY invocation, before anything else):
-- `.claude/skills/tester/SKILL.md` — Red phase, triangulation matrix, mock/spy gates, handoff docs.
-- `.claude/skills/design-patterns-coder/SKILL.md` — Green phase; GoF patterns only from the developer's own documentation.
-- `.claude/skills/design-docs-creator/SKILL.md` (section "Multi-feature mode") — meaning of waves, lanes, ownership boundaries and exit criteria.
+Mandatory skills — load lazily: read each one right before the first step of this invocation that needs it, and skip the ones whose steps do not run (e.g. a resume at step 9/10 with no backend signals reads none of them):
+- `.claude/skills/tester/SKILL.md` — before step 2 (Red phase, triangulation matrix, mock/spy gates, handoff docs) and before any Red → Green fix in steps 9–10.
+- `.claude/skills/design-patterns-coder/SKILL.md` — before step 5 (Green phase; GoF patterns only from the developer's own documentation).
+- `.claude/skills/design-docs-creator/SKILL.md`, section "Multi-feature mode" only — before step 1 of the first wave of the invocation (meaning of waves, lanes, ownership boundaries and exit criteria).
 
 If anything below conflicts with those skills, with `docs/harness/*`, or with the "Rules of execution" section of `implementation.md`, those win.
 
@@ -60,7 +60,7 @@ In `backend-first`:
 
 ## Which wave to run
 
-If the user names waves, run exactly those. Otherwise resume at the first wave whose exit criteria are not met (Wave 0 included), checking the handoff docs in `especs/tdd/wave{N}/` and the state of the owned paths:
+If the user names waves, run exactly those. Otherwise resume at the first wave whose exit criteria are not met (Wave 0 included). Decide from one `ls especs/tdd/wave*/` listing plus the state of the owned paths — do not read every handoff doc to find the resume point:
 - `handoff-to-pittore.md` exists and `handoff-to-scultore.md` does not → the wave is waiting for Pittore; tell the user to run Pittore (see "Pittore handoff loop"). In `backend-first`, keep going with the backend of the next requested wave instead.
 - `handoff-to-scultore.md` exists and the exit gate has not passed → resume at step 9.
 - Neither exists → start at step 1.
@@ -87,7 +87,7 @@ Everything written there is English (per the `tester` skill language rule).
 
 For each wave, in order:
 
-1. **Read** — "Rules of execution", the decision/blocked sections affecting this wave, the wave's lane table and exit criteria, each lane's TDDs (Implementation Plan and acceptance criteria) and feature harness files. Use Graphify first (`graphify-out/`) before opening source files.
+1. **Read** — "Rules of execution", the decision/blocked sections affecting this wave, the wave's lane table and exit criteria, each lane's TDDs (Implementation Plan and acceptance criteria sections only) and feature harness files. Never read other waves' tables, the Dependency graph or the Feature index unless a lane row points there. Use Graphify first (`GRAPH_REPORT.md`, then `graphify query` per lane) before opening source files; open only the files the graph points to.
 
 2. **Tester — plan mode** — for every lane, produce the Red plan for its **DB and Backend layers** following the `tester` skill and each TDD's Implementation Plan (targets, critical classification, triangulation matrix per target, doubles and their gate answers, test paths inside the lane's owned paths; DB tests on constraints/triggers). The **Frontend layer has no unit tests** when `testing_expectation.md` says so — plan its verification instead (type-check, lint, build, manual checks per acceptance criterion).
    - **Verify the plan** before approving it: every test names its break; no mirror assertions or change detectors; mocks pass the Principle 2 gate; nothing outside the owned paths or migration range; blocked parts excluded; no existing test is edited or removed (`persisted-tester` rule).
@@ -136,16 +136,16 @@ When the wave has more than one lane, spawn one **cinzel** per lane with the Age
 - Cinzels write DB/Backend only, never frontend code.
 - Cinzels never write shared touchpoints (`backend/main.go`, seeded roles/permission keys owned by another lane). They return the exact block to append; you merge it in step 7.
 
-Each cinzel prompt must be self-contained and include:
+Each cinzel prompt must be self-contained, pass **paths, never file contents** (the approved plan is the one exception), and include:
 - Role: "You are a cinzel of Scultore executing lane `<lane>` of wave N — phase Red|Green only."
-- The skill to follow (`.claude/skills/tester/SKILL.md` for Red; `.claude/skills/design-patterns-coder/SKILL.md` for Green), the lane's TDD paths, and the harness docs to read.
-- The "Rules of execution" of `implementation.md` and any approved resolution / blocked part that affects the lane.
+- The skill to follow (`.claude/skills/tester/SKILL.md` for Red; `.claude/skills/design-patterns-coder/SKILL.md` for Green), the lane's TDD paths, and the harness doc paths to read.
+- The path of `implementation.md` with the instruction to read its "Rules of execution", plus any approved resolution / blocked part that affects the lane (quoted, these are short).
 - The approved plan, verbatim.
 - The ownership boundary: the lane's `DB:` / `BE:` owned paths, its migration range, and `especs/tdd/wave{N}/<lane>/`. Never the `FE:` paths.
-- Prohibitions: no writes outside the boundary, no frontend code, no shared-touchpoint writes, no edits/removals of existing tests, no production code in Red, no Green without the lane's Red handoff docs, no blocked parts.
-- Required report: files written, tests run and their results (fail reasons for Red, pass for Green), checkboxes completed, route blocks to merge, anything not done.
+- Prohibitions: no writes outside the boundary, no frontend code, no shared-touchpoint writes, no edits/removals of existing tests, no production code in Red, no Green without the lane's Red handoff docs, no blocked parts, no changes or bypasses of the quality gate or Lefthook (`babylon-gate`).
+- Required report, fields only, no prose: files written, tests run and their results (fail reasons for Red, pass for Green), checkboxes completed, route blocks to merge, anything not done.
 
-Verify every cinzel report against the files on disk before passing its gate.
+Verify every cinzel report before passing its gate with `git status --short -- <owned paths>` plus the lane's test run — not by rereading the files it wrote. Open a file only when the report and the disk disagree.
 
 ## Pittore handoff loop
 
@@ -162,7 +162,7 @@ After writing it, stop. The last lines of your reply tell the user: "Wave N back
 
 ## Output format
 
-Flow mode used (`per-wave` | `backend-first`). Per wave:
+Full detail lives in the handoff docs under `especs/tdd/wave{N}/`; the chat report is one line per item, no code or test output pasted. Flow mode used (`per-wave` | `backend-first`). Per wave:
 - Lanes executed (self or cinzel) and their Red/Green status; Frontend layer status from `handoff-to-scultore.md`
 - Commands run and results; tests not run and why
 - Handoff docs paths under `especs/tdd/wave{N}/`

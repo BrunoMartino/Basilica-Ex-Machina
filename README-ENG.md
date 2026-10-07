@@ -69,7 +69,7 @@ Specialized instructions the agent can invoke for concrete tasks:
 | `code-commenter` | Block comments and documentation for non-trivial logic |
 | `design-docs-creator` | Technical design docs: specs, RFCs, and architecture proposals via interactive discovery; Red/Green implementation phases |
 | `coupling-analizer` | Module coupling analysis (strength, distance, volatility) |
-| `quality-gate` | Machine-level static-analysis toolchain (PATH, never a project dependency) + Lefthook for Go, Python, TS/JS and PHP; check-only Quality Run (`check.sh`) with a failures-only `.quality/report.json`. Used by `ingegnere` |
+| `babylon-gardens` | Machine-level static-analysis toolchain (PATH, never a project dependency) + Lefthook for Go, Python, TS/JS and PHP; check-only Quality Run (`check.sh`) with a failures-only `.quality/report.json`. Used by `ingegnere` |
 | `legacy-explainer` | Graphify: explains a legacy codebase AND regenerates/updates the graph (`graphify-out/`); fills harness docs |
 | `sistina-arch` | Graphify companion: interactive HTML at file level with visible complex excerpts; AskQuestion for extra depth; orphans and dead code on the canvas |
 | `get-that-task` | Jira lookup: open issues assigned to the user and unassigned |
@@ -133,6 +133,7 @@ Always-on rules that steer agent behavior:
 - **`all-for-harness`** — docs under `docs/harness/` are binding: the agent reads them before architecture, test, deploy, domain, or feature changes; they win over generic “best practices”; mandatory flow docs → code → graphify. Feature gate: no new feature without `docs/harness/features/feature-{name}.md` with the user’s 4 answers. Installed with the docs by `harness-create`.
 - **`graphify-first`** — before inferring architecture/flows/dependencies, consult Graphify (`graphify-out/`) first; if unavailable, ask the user.
 - **`persisted-tester`** — existing tests must not be removed or changed by the agent; cover changes with new tests and flag obsolete ones.
+- **`babylon-gate`** — no model, agent or sub-agent has the authority to overwrite, bypass or alter the gate (`babylon-gardens`: `lefthook.yml`, hooks, `scripts/quality/*`, `quality-baseline.json`, tool configs, `--no-verify`, inline suppressions, thresholds). Only the user may, by explicit request; the request is recorded as a violation in `docs/harness/forbidden_patterns.md` (`## Babylon Gate violations`) and committed before it is executed.
 - **`less-talk`** — no unsolicited explanations, scope extras, or token waste in Agent/Ask mode; Plan mode keeps depth.
 - **`dont-write-env`** — never edit `.env`; only `.env.example`.
 - **`python-uv-package-manager`** — in Python projects, always use `uv` (`uv add` / `uv run` / `uv sync`); no pip/poetry/conda.

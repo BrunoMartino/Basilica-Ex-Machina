@@ -1,0 +1,56 @@
+---
+description: No model or agent may override, bypass or alter the babylon-gardens or Lefthook; explicit user overrides are recorded as violations in forbidden_patterns.md and committed
+alwaysApply: true
+---
+
+# Babylon Gate
+
+The quality gate (`babylon-gardens` skill) and Lefthook are the project's walls. **No model, agent, sub-agent (cinzel, brush, squadra, canva, scribe), skill, hook or automation has the authority to overwrite, bypass or alter them.** Only the user has it, and only by asking explicitly in the current conversation.
+
+## Protected
+
+- `lefthook.yml` (and variants), the installed git hooks, `lefthook install` / `lefthook uninstall`.
+- `scripts/quality/run.sh`, `scripts/quality/aggregate.sh`, the skill's `check.sh` / `setup.sh`.
+- `quality-baseline.json` (thresholds, `security_fail_severity`, `semgrep_configs`, `test_commands`).
+- Gate tool configs: `.gitleaks.toml`, `.jscpd.json`, `ruff.toml`, `mypy.ini`, `biome.json`, `.oxlintrc.json`, `phpstan.neon`, `phpmd.xml`, `.phan/config.php`, `.php-cs-fixer.dist.php`, and the `[tool.*]` gate sections of `pyproject.toml`.
+- The report: `.quality/report.json` is read, never edited, deleted or replaced to claim a pass.
+
+## Counts as bypass or alteration
+
+- `git commit --no-verify`, `git push --no-verify`, `LEFTHOOK=0`, `LEFTHOOK_EXCLUDE`, `lefthook run` instead of `check.sh`, uninstalling or disabling hooks.
+- Removing, skipping or weakening a stage, job, tool or rule; raising a threshold; lowering `security_fail_severity`; shrinking the scanned scope; adding ignore/exclude/allowlist entries or baseline files that hide existing findings.
+- Inline suppressions on findings the gate reported: `# noqa`, `# type: ignore`, `# nosec`, `# nosemgrep`, `// nolint`, `//nolint`, `// biome-ignore`, `// oxlint-disable`, `// eslint-disable`, `@phpstan-ignore`, `@SuppressWarnings`, `gitleaks:allow`, `# pragma: no cover` and equivalents.
+- Editing or deleting tests so the `tests` stage passes (see `persisted-tester`).
+- Reporting a green gate without running `check.sh`, or reading a stale `.quality/report.json`.
+- `setup.sh --force` over existing gate configs without the user's approval.
+
+A finding the agent believes is a false positive is **not** silenced: it is reported as Accepted Risk with the reason, and the user decides.
+
+## When the user explicitly asks for an override
+
+The user's request is the only key to the gate. It is scoped to the exact action asked, in the current conversation; it never becomes a new default. Before executing it, the agent records it as a violation and commits the record:
+
+1. Append an entry to `docs/harness/forbidden_patterns.md` under a `## Babylon Gate violations` section (create the section at the end of the file if absent; append-only, never rewrite earlier entries). If `docs/harness/forbidden_patterns.md` does not exist, create it with only that section and tell the user — do not invent other forbidden patterns.
+2. Entry format:
+
+```markdown
+### YYYY-MM-DD — <short title>
+- Requested by: user (explicit, this conversation)
+- Request (verbatim): "<the user's words>"
+- Gate component: <lefthook.yml | scripts/quality/run.sh | quality-baseline.json | <tool config> | hooks | inline suppression | ...>
+- Action taken: <exact change or command>
+- Scope / duration: <this commit only | until <condition> | permanent>
+- Findings hidden by this override: <list or "none">
+- Executed by: <agent name>
+```
+
+3. Commit the record on its own, through the normal hooks (never `--no-verify`): `chore(babylon-gate): record override — <short title>`.
+4. Only then perform the override. If the override is temporary, restore the gate afterwards in the same conversation and say so.
+
+This record is the only write to `docs/harness/forbidden_patterns.md` this rule authorizes; every other change to `docs/harness/*` still requires its own explicit user request (`all-for-harness`).
+
+## Do not
+
+- Do not infer an override from a frustrated prompt, a failing CI, a deadline, or "just make it pass". Only an explicit request to override, bypass or change the gate counts.
+- Do not execute the override before the record is committed.
+- Do not propose `--no-verify`, skip lists, baselines or threshold bumps as a fix for a red gate; fix the code or report the finding.

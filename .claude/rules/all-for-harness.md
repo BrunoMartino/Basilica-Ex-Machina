@@ -10,7 +10,7 @@ Esta rule é instalada junto com os documentos `docs/harness/` (criados pela ski
 | Tipo de mudança | Ler |
 |-----------------|-----|
 | Arquitetura | `docs/harness/architecture_rules.md` |
-| Estilo / convenções de código | `docs/harness/coding_convention.md` |
+| Estilo / convenções de código | `docs/harness/code_conventions.md` (um único arquivo, 7 pilares obrigatórios) |
 | Anti-padrões | `docs/harness/forbidden_patterns.md` |
 | Testes | `docs/harness/testing_expectation.md` |
 | Deployment | `docs/harness/deployment_rules.md` |

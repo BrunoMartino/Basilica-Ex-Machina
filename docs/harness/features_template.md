@@ -4,7 +4,7 @@
 
 Map the system feature by feature: what each feature is, which problem it solves, and how features relate to each other (composition, inheritance, dependency).
 
-This is a **critical harness**: it must always be created together with `architecture_rules`, `coding_conventions`, `domain_invariants`, `operational_constraints`, and `forbidden_patterns`.
+This is a **critical harness**: it must always be created together with `architecture_rules`, `code_conventions`, `domain_invariants`, `operational_constraints`, and `forbidden_patterns`.
 
 Feature docs are **never monolithic**. They always live inside a `features/` folder, one file per feature:
 

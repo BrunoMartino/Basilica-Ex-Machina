@@ -149,7 +149,7 @@ Templates para definir as regras do projeto. Copie cada ficheiro `*_template.md`
 | Template | Documento final | Conteúdo |
 |----------|-----------------|----------|
 | `architeture_rules_template.md` | `architecture_rules.md` | Estilo arquitetural (MVC por defeito), módulos, padrões permitidos |
-| `coding_conventions_template.md` | `coding_convention.md` | Estilo de código e convenções MVC |
+| `code_conventions/{stack}_template.md` | `code_conventions.md` | Um único ficheiro para o projeto todo, escolhido pela stack detectada no código (greenfield sem código: AskQuestion com os ficheiros da pasta), sempre com 7 pilares — Formatting, Naming, Errors, Structure, Interfaces, Tests, Quality and Static Analysis. Templates opinativos: `go_template.md` (Effective Go + Google Style); `generic_template.md` como fallback para stacks sem template (TS, PHP e Python em breve) |
 | `forbidden_patterns_template.md` | `forbidden_patterns.md` | Anti-padrões e arquiteturas proibidas por defeito |
 | `testing_expectations_template.md` | `testing_expectation.md` | Expectativas de testes e cobertura |
 | `deployment_rules_template.md` | `deployment_rules.md` | Regras de deploy e ambientes |

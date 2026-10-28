@@ -28,7 +28,7 @@ All text and documents this skill creates must be written in **English**, even w
 | Template (this kit) | Target document |
 |---------------------|-----------------|
 | `docs/harness/architeture_rules_template.md` | `docs/harness/architecture_rules.md` |
-| `docs/harness/coding_conventions_template.md` | `docs/harness/coding_convention.md` |
+| `docs/harness/code_conventions/{stack}_template.md` (fallback `generic_template.md`) | `docs/harness/code_conventions.md` (a single file for the whole project) |
 | `docs/harness/forbidden_patterns_template.md` | `docs/harness/forbidden_patterns.md` |
 | `docs/harness/testing_expectations_template.md` | `docs/harness/testing_expectation.md` |
 | `docs/harness/deployment_rules_template.md` | `docs/harness/deployment_rules.md` |
@@ -57,6 +57,7 @@ Copy and track progress:
 Before asking anything, mine the prompt, conversation, and repo (README, manifests, existing code) for:
 
 - Language, framework, runtime, package manager
+- **Stack**, from the code signals (`go.mod`/`*.go` → Go; `package.json` + `tsconfig.json`/`*.ts` → TypeScript; `composer.json`/`*.php` → PHP; `pyproject.toml`/`uv.lock`/`*.py` → Python). With code present, detection is authoritative — never ask; with several stacks, the predominant one (most source files) selects the template. No code yet → ask in Step 2.
 - Architectural style (default is simple MVC per the templates; **Nest exception below**)
 - Whether the target is Nest (`@nestjs/core`, `CONTEXT.md` AI-First, or `nest-conventions` rule)
 - Business domain and core entities
@@ -66,7 +67,7 @@ Before asking anything, mine the prompt, conversation, and repo (README, manifes
 
 **Never ask for something the context already answers.**
 
-**Nest target** (any of: `@nestjs/core`, `CONTEXT.md` with Explicit Dependency Architecture, `.claude/rules/nest-conventions.md` / `.cursor/rules/nest-conventions.mdc`): architectural style is **NestJS Explicit Dependency Architecture** (feature-first). Do **not** ask MVC vs other. Do **not** treat per-feature `application/` `domain/` `infrastructure/` as enabling global DDD/Clean — that locality is allowed by nest-conventions for complex features only. Read kit `nest-conventions` + project/`nest-project` `CONTEXT.md` and encode them into `architecture_rules.md`, `coding_convention.md`, `forbidden_patterns.md`, and `testing_expectation.md` (unit = direct construction; integration = `TestingModule`; e2e = Nest app).
+**Nest target** (any of: `@nestjs/core`, `CONTEXT.md` with Explicit Dependency Architecture, `.claude/rules/nest-conventions.md` / `.cursor/rules/nest-conventions.mdc`): architectural style is **NestJS Explicit Dependency Architecture** (feature-first). Do **not** ask MVC vs other. Do **not** treat per-feature `application/` `domain/` `infrastructure/` as enabling global DDD/Clean — that locality is allowed by nest-conventions for complex features only. Read kit `nest-conventions` + project/`nest-project` `CONTEXT.md` and encode them into `architecture_rules.md`, `code_conventions.md`, `forbidden_patterns.md`, and `testing_expectation.md` (unit = direct construction; integration = `TestingModule`; e2e = Nest app).
 
 ### Step 2 — Ask only the gaps
 
@@ -75,7 +76,7 @@ Use the AskQuestion tool with the unanswered items. Question bank (pick only wha
 | Doc | Questions to fill gaps |
 |-----|------------------------|
 | architecture_rules | Architectural style? (MVC default / other — **skip if Nest**: Explicit Dependency Architecture.) Modules or bounded areas? Any DDD/Clean exception explicitly enabled? (Nest feature folders are not that exception.) |
-| coding_convention | Language + framework conventions? Naming preferences? Lint/format tooling? |
+| code_conventions | **Only when no code exists yet**: one AskQuestion listing every `*_template.md` in `docs/harness/code_conventions/` — "Which file do you want as the project's code conventions?" (single answer). Never pick for the user. With code present: do not ask; detection decides. When the result is `generic_template.md`: its `TBD:` items (formatter, casing table, test suffix, error shape). |
 | forbidden_patterns | Anything forbidden beyond the defaults (DDD/Clean/CQRS global, vague Manager/Helper, etc.)? |
 | testing_expectation | Test runner? Coverage focus (behavior vs implementation)? E2E in scope? |
 | deployment_rules | Deploy target and pipeline? Feature flags available? Migration policy? |
@@ -95,6 +96,14 @@ For each document, in the table order:
 2. Fill it with context + answers; keep it concrete and short — these docs are read by agents on every relevant change, so avoid filler prose.
 3. Replace only what is known; leave unanswered fields as explicit placeholders (`TBD:` + what is needed).
 4. Show the doc (or a diff) and confirm before moving to the next one. If the user says "generate all without confirming", proceed straight through.
+
+**Code conventions** — write the single `docs/harness/code_conventions.md` for the whole project from one template in `docs/harness/code_conventions/`:
+
+- Code present: the template of the detected stack when it exists (today: `go_template.md`); otherwise `generic_template.md`, filled for that stack and keeping cohesion with the conventions already in use in the code.
+- No code yet: the file the user picked in Step 2.
+- Copy the template whole and adapt only what the project context justifies; never dilute an opinionated rule.
+- The file keeps the seven pillars, in order, with the exact headings: Formatting, Naming, Errors, Structure, Interfaces, Tests, Quality and Static Analysis. No section removed, renamed, merged, reordered or added — the generic template included.
+- Never create a new `{stack}_template.md` — stack templates are written manually by the user.
 
 ### Step 3b — Map features (critical harness)
 
@@ -137,6 +146,7 @@ Report:
 - Do not fabricate business rules, SLAs, or compliance requirements — ask or leave `TBD:`.
 - Never write a `feature-{name}.md` with invented answers to the 4 questions — only the user answers them.
 - Never consolidate features into a single monolithic file; always one file per feature inside `docs/harness/features/`.
+- `docs/harness/code_conventions.md` is always one file with the seven pillars, instantiated from a template in `docs/harness/code_conventions/`. Never create a `{stack}_template.md`; never ask which template to use when code already exists.
 - Do not enable DDD/Clean/Hexagonal in `architecture_rules.md` unless the user explicitly requested it. **Nest exception**: follow `nest-conventions` (Explicit Dependency Architecture / feature-first). Per-feature `application/domain/infrastructure` for complex features is not global DDD/Clean.
 - Always preserve the unidirectional data flow rule in generated `architecture_rules.md` and `forbidden_patterns.md`: data cycles/loops are only allowed when the alternatives are more complex, more abstract, or require significantly more code, or when the user explicitly requests the loop. Never drop or weaken this rule.
 - Do not overwrite an existing filled harness doc without confirmation; offer a diff first.

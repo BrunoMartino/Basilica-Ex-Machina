@@ -103,11 +103,11 @@ If verification fails: stop, report errors and manual recovery commands — do *
 ## Step 6 — Explain: read graph, overwrite harness templates
 
 1. Read `graphify-out/GRAPH_REPORT.md`; query gaps: `graphify query "..." --graph graphify-out/graph.json` (auth flow, business rules, central modules).
-2. Read existing non-template harness docs if present (`docs/harness/architecture_rules.md`, `domain_invariantes.md`, `coding_convention.md`) — they override guesswork when reconciling.
+2. Read existing non-template harness docs if present (`docs/harness/architecture_rules.md`, `domain_invariantes.md`, `code_conventions.md`) — they override guesswork when reconciling.
 3. Open and verify important **source files** for security, auth, and money paths; never trust the graph alone there.
 4. **Full replace** (not append) each run:
    - `docs/harness/architeture_rules_template.md`
-   - `docs/harness/coding_conventions_template.md`
+   - `docs/harness/code_conventions.md` — a single file for the whole project, instantiated from the kit's `docs/harness/code_conventions/{stack}_template.md` for the stack detected in the code (predominant stack if several), else from `generic_template.md` keeping cohesion with the conventions the code already uses; always the seven pillars (Formatting, Naming, Errors, Structure, Interfaces, Tests, Quality and Static Analysis). Never ask which template in brownfield; never create a `{stack}_template.md`
    - `docs/harness/domain_invariants_template.md`
    - `docs/harness/operational_constraints_template.md`
 5. **Features harness** (`docs/harness/features/feature-{name}.md`, per `docs/harness/features_template.md`): create/update **one file per feature**, individually — feature files are never part of the full replace above and never consolidated into one file.

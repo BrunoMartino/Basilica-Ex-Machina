@@ -28,7 +28,7 @@ All comments and documentation this skill creates must be written in **English**
 
 If the project defines comment or doc conventions, follow them:
 
-1. If present, read [`docs/harness/coding_convention.md`](../../../docs/harness/coding_convention.md) before bulk commenting.
+1. If present, read `docs/harness/code_conventions.md` before bulk commenting.
 2. If missing, rely on this skill and local file conventions only.
 
 Follow always-apply project rules (including harness gates under `.cursor/rules/`) when they touch documentation style.

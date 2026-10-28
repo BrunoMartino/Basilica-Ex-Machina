@@ -18,7 +18,7 @@ Binding quando o alvo é Nest (`@nestjs/core`, ou esta rule, ou `CONTEXT.md` AI-
 
 ## harness-create (greenfield Nest)
 
-Não perguntar MVC vs outro. Preencher `architecture_rules`, `coding_convention`, `forbidden_patterns` e `testing_expectation` a partir desta rule + `CONTEXT.md`. Instalar esta rule com `alwaysApply: true` (`.claude/rules/` e `.cursor/rules/`). Manter fluxo unidirecional do template.
+Não perguntar MVC vs outro. Preencher `architecture_rules`, `code_conventions.md`, `forbidden_patterns` e `testing_expectation` a partir desta rule + `CONTEXT.md`. Instalar esta rule com `alwaysApply: true` (`.claude/rules/` e `.cursor/rules/`). Manter fluxo unidirecional do template.
 
 ## legacy-explainer (brownfield Nest)
 

@@ -26,7 +26,7 @@ Source layers: `docs/` is human-written (`docs/harness/` included); `especs/` ho
 
 ## Inputs
 
-- `docs/harness/*` — at least `architecture_rules.md`, `coding_convention.md`, `forbidden_patterns.md`, `testing_expectation.md`, and the `features/feature-{name}.md` files in scope. Their thresholds and conventions override the defaults.
+- `docs/harness/*` — at least `architecture_rules.md`, `code_conventions.md`, `forbidden_patterns.md`, `testing_expectation.md`, and the `features/feature-{name}.md` files in scope. Their thresholds and conventions override the defaults.
 - `graphify-out/GRAPH_REPORT.md` and `graphify-out/graph.json` — Graphify First. Read `GRAPH_REPORT.md` once; run `graphify query` **lazily**, only when a fix needs structure (dead-code removal, coupling, complexity refactor), never upfront for every feature. If `graphify-out/` is missing, ask the user whether to generate it (`legacy-explainer`) or proceed with direct reading — fold this into the single AskQuestion of step 1.
 - Scope from the user's prompt: a wave (`especs/tdd/wave{N}/` — the lanes' owned paths), a list of paths/features, or the full repository (default). State it in one line and start; ask only when ambiguous.
 - `especs/tdd/obsolete-tests.md`, if it exists.

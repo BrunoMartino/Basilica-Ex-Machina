@@ -22,7 +22,7 @@ Source layers: `docs/` is human-written (`docs/harness/` included); `especs/` ho
 
 - `especs/design-docs/implementation.md` (default location; if absent, ask the user for the path). Never invent waves, lanes, features, dependencies or scope. If it does not exist, stop and tell the user to run the `design-docs-creator` skill first.
 - The TDDs linked in each lane row, in the same folder (`especs/design-docs/tdd-feature-*.md`).
-- `docs/harness/features/feature-{name}.md` and the harness docs each lane touches (at least `architecture_rules.md`, `coding_convention.md`, `testing_expectation.md`, `deployment_rules.md`).
+- `docs/harness/features/feature-{name}.md` and the harness docs each lane touches (at least `architecture_rules.md`, `code_conventions.md`, `testing_expectation.md`, `deployment_rules.md`).
 
 ### `implementation.md` format (always this shape)
 
@@ -97,7 +97,7 @@ For each wave, in order:
 
 4. **Red gate** — per lane with DB/backend work: Red tests exist, fail as expected, handoff docs exist. Such a lane never goes to step 5 without it. A lane with only a Frontend layer passes this gate with its `fase{N}.md` / `fase{N}Task.md` describing the FE steps and verification.
 
-5. **Design-patterns-coder — plan mode** — only after step 4, read the tester's instructions in `especs/tdd/wave{N}/<lane>/` and plan the Green implementation of the **DB and Backend layers** applying them in detail: every step of `fase{N}.md`, the GoF pattern chosen from the developer's docs (docs-mcp `gof-design-patterns`, fallback repo), `docs/harness/coding_convention.md`. Verify the plan covers every DB/Backend checkbox in `fase{N}Task.md`, keeps DB → Backend order, and stays inside the owned paths and migration range; approve it.
+5. **Design-patterns-coder — plan mode** — only after step 4, read the tester's instructions in `especs/tdd/wave{N}/<lane>/` and plan the Green implementation of the **DB and Backend layers** applying them in detail: every step of `fase{N}.md`, the GoF pattern chosen from the developer's docs (docs-mcp `gof-design-patterns`, fallback repo), `docs/harness/code_conventions.md`. Verify the plan covers every DB/Backend checkbox in `fase{N}Task.md`, keeps DB → Backend order, and stays inside the owned paths and migration range; approve it.
 
 6. **Design-patterns-coder — execute Green** — implement bottom-up (DB → Backend), marking checkboxes in `fase{N}Task.md` as you go; re-run the affected tests until green. Brownfield only: write `refactor-fase{N}.md` after Green verification; do not apply it. Append the new tests to `especs/testsReadme.md`.
 

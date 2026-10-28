@@ -149,7 +149,7 @@ Templates for project rules. Copy each `*_template.md`, drop the `_template` suf
 | Template | Final document | Content |
 |----------|----------------|---------|
 | `architeture_rules_template.md` | `architecture_rules.md` | Architectural style (MVC by default), modules, allowed patterns |
-| `coding_conventions_template.md` | `coding_convention.md` | Code style and MVC conventions |
+| `code_conventions/{stack}_template.md` | `code_conventions.md` | A single file for the whole project, picked by the stack detected in the code (greenfield with no code: AskQuestion over the folder's files), always with 7 pillars — Formatting, Naming, Errors, Structure, Interfaces, Tests, Quality and Static Analysis. Opinionated templates: `go_template.md` (Effective Go + Google Style); `generic_template.md` as fallback for stacks without a template (TS, PHP and Python coming) |
 | `forbidden_patterns_template.md` | `forbidden_patterns.md` | Anti-patterns and architectures forbidden by default |
 | `testing_expectations_template.md` | `testing_expectation.md` | Testing expectations and coverage |
 | `deployment_rules_template.md` | `deployment_rules.md` | Deploy rules and environments |

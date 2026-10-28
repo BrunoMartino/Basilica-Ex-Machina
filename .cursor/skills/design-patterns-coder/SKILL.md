@@ -20,7 +20,7 @@ Garante que todo código com padrões GoF siga a documentação escrita pelo pr�
 - Composição sobre herança; herança apenas quando compor não for possível.
 - Se a linguagem permitir versões simplificadas em functions (ex.: Strategy Function em TypeScript), prefira esse caminho.
 - Priorize classes/objetos reutilizáveis pelas features já listadas ou por features futuras.
-- O código deve seguir o mesmo formato, escrita e organização do exemplo lido (ou o mais parecido possível); `docs/harness/coding_convention.md` tem prioridade sobre o estilo do exemplo.
+- O código deve seguir o mesmo formato, escrita e organização do exemplo lido (ou o mais parecido possível); `docs/harness/code_conventions.md` tem prioridade sobre o estilo do exemplo.
 
 ## Validação
 

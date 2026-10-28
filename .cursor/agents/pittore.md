@@ -22,7 +22,7 @@ Source layers: `docs/` is human-written (`docs/harness/` included); `especs/` ho
 
 ## Inputs
 
-- `docs/harness/*` — at least `architecture_rules.md`, `coding_convention.md`, `forbidden_patterns.md`, `testing_expectation.md`, and the `features/feature-{name}.md` files the frontend touches.
+- `docs/harness/*` — at least `architecture_rules.md`, `code_conventions.md`, `forbidden_patterns.md`, `testing_expectation.md`, and the `features/feature-{name}.md` files the frontend touches.
 - `graphify-out/GRAPH_REPORT.md` and `graphify-out/graph.json` — always the first source (Graphify First). If missing, ask the user whether to generate it via scribe (`legacy-explainer`) or proceed with direct reading.
 - The existing design system, if any (`MASTER.md` produced by `amaterasu-paint`, tokens, theme config).
 - Design choices given by the user in the prompt (palette, icon library, background, gradients, fonts). Apply them verbatim; never override them with suggestions.

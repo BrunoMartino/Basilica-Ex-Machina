@@ -48,7 +48,7 @@ Agent presents:
 
 ### Harness templates
 - `architeture_rules_template.md`
-- `coding_conventions_template.md`
+- `code_conventions/*_template.md`
 - …
 
 ### Other

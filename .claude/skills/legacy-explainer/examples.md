@@ -85,7 +85,7 @@ graphify query "which modules are central to import, payment, or reporting?" --g
 Graph action: incremental update (`graphify update .`)
 graphify-out/: graph.json, GRAPH_REPORT.md, graph.html updated
 Graph mode: full semantic extraction
-Harness: overwrote architeture_rules_template.md, coding_conventions_template.md,
+Harness: overwrote architeture_rules_template.md, code_conventions.md,
   domain_invariants_template.md, operational_constraints_template.md
 ```
 
@@ -135,29 +135,30 @@ Harness: refreshed templates from existing graph
 
 ---
 
-## Skeleton: `docs/harness/coding_conventions_template.md`
+## Skeleton: `docs/harness/code_conventions.md` (seven pillars)
 
 ```markdown
-# Coding conventions (from legacy analysis)
+# Go — Code conventions
 
-## Purpose
-
-## Repo layout
+## Formatting
+<!-- gofmt, comments; legacy divergences cited with graph evidence -->
 
 ## Naming
 
-## Layering (e.g. MVC or actual pattern)
+## Errors
 
-## Error handling
+## Structure
 
-## Dependencies and tooling
+## Interfaces
 
-## Comments and documentation style
+## Tests
+<!-- where the legacy tests actually live vs the target layout -->
 
-## Divergences from ideal (legacy debt)
-
-- …
+## Quality and Static Analysis
+<!-- babylon-gardens tools + thresholds for the stack; legacy debt as Accepted Risk, never silenced -->
 ```
+
+Headings are the seven pillars shared by every template in `docs/harness/code_conventions/`; legacy divergences go inside the section they belong to, never in an extra section.
 
 ---
 

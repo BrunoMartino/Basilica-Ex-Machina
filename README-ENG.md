@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="assets/basilica-ex-machina.png" alt="Basilica Ex Machina" width="480" />
+  <img src="assets/basilica-ex-machina.png" alt="Basilica Ex Machina" width="810" />
 </p>
+
 
 # Basilica Ex Machina
 

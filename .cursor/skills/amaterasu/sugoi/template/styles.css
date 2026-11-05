@@ -1,0 +1,198 @@
+/* amaterasu-sugoi · scoped under body.sugoi so it coexists with Bootstrap/Tailwind/theme CSS. */
+
+/* ── Tokens: map to the client's design system when one exists ─────────── */
+body.sugoi {
+  --bg: #0b0a09;             /* SAME hex used in the image prompts */
+  --bg-2: #14120f;
+  --text: #f2ede4;
+  --text-muted: #b9b1a3;
+  --accent: #c8a46a;
+  --accent-text: #0b0a09;
+  --line: rgb(242 237 228 / .12);
+  --panel: rgb(20 18 15 / .62);
+  --blend: lighten;          /* dark theme: lighten · light theme: multiply */
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter Tight", system-ui, sans-serif;
+
+  --radius: 18px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1240px;
+  --ease: cubic-bezier(.2, .7, .1, 1);
+}
+/* Light theme example:
+body.sugoi { --bg:#f4efe7; --bg-2:#ebe4d8; --text:#1d1a16; --text-muted:#5d564c;
+  --line:rgb(29 26 22 / .12); --panel:rgb(244 239 231 / .7); --blend:multiply; } */
+
+.sugoi *, .sugoi *::before, .sugoi *::after { box-sizing: border-box; }
+html:has(body.sugoi) { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+body.sugoi {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 clamp(16px, 1.05vw, 18px)/1.65 var(--font-body);
+  overflow-x: clip; -webkit-font-smoothing: antialiased;
+}
+/* Film grain: removes the "smooth AI" look */
+body.sugoi::after {
+  content: ""; position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: sugoi-grain 1s steps(4) infinite;
+}
+@keyframes sugoi-grain { 25% { transform: translate(-3%, 2%); } 50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -1%); } }
+
+.sugoi img { max-width: 100%; display: block; }
+.sugoi a { color: inherit; }
+.sugoi h1, .sugoi h2, .sugoi h3 { font-family: var(--font-display); font-weight: 300; line-height: 1.08; margin: 0 0 .5em; letter-spacing: -.01em; text-wrap: balance; }
+.sugoi h1 { font-size: clamp(38px, 6.2vw, 96px); }
+.sugoi h2 { font-size: clamp(32px, 4.2vw, 64px); }
+.sugoi h3 { font-size: clamp(21px, 1.8vw, 27px); font-weight: 500; }
+.sugoi p { margin: 0 0 1em; color: var(--text-muted); text-wrap: pretty; }
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.sugoi .header {
+  position: fixed; inset: 0 0 auto; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px var(--gutter); transition: background .4s var(--ease), backdrop-filter .4s;
+}
+.sugoi .header.scrolled { background: color-mix(in srgb, var(--bg) 55%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.sugoi .brand { text-decoration: none; display: flex; align-items: center; }
+.sugoi .brand-logo { height: 34px; width: auto; }
+.sugoi .brand-text { font-family: var(--font-display); font-size: 22px; letter-spacing: .02em; }
+.sugoi .nav { display: flex; gap: 28px; align-items: center; font-size: 14px; letter-spacing: .04em; }
+.sugoi .nav a { text-decoration: none; opacity: .8; transition: opacity .3s; }
+.sugoi .nav a:hover { opacity: 1; }
+.sugoi .nav-cta { border: 1px solid var(--line); padding: 9px 16px; border-radius: 999px; opacity: 1 !important; }
+@media (max-width: 760px) { .sugoi .nav a:not(.nav-cta) { display: none; } }
+
+/* ── Cinematic hero ────────────────────────────────────────────────────── */
+.sugoi .cine { position: relative; height: var(--height, 400vh); }
+.sugoi .cine-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.sugoi .cine-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sugoi .cine-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgb(0 0 0 / .45) 100%),
+              linear-gradient(to bottom, transparent 70%, var(--bg) 100%);
+}
+.sugoi .moment { position: absolute; inset: auto var(--gutter) 12vh; max-width: 640px; }
+.sugoi .moment--right { left: auto; right: var(--gutter); }
+.sugoi .moment--center { left: 50%; right: auto; transform: translateX(-50%); text-align: center; width: min(640px, calc(100% - 2 * var(--gutter))); }
+.sugoi .hero-title { margin-bottom: .3em; }
+.sugoi .hero-sub { font-size: clamp(16px, 1.3vw, 20px); margin: 0; }
+.sugoi .lead { font-family: var(--font-display); font-size: clamp(24px, 2.8vw, 42px); line-height: 1.2; color: var(--text); margin: 0 0 .6em; }
+.sugoi .lead:last-child { margin: 0; }
+.sugoi .cine-hint {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  display: grid; justify-items: center; gap: 8px; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; opacity: .6;
+}
+.sugoi .cine-hint span { width: 1px; height: 38px; background: linear-gradient(var(--text), transparent); animation: sugoi-hint 2s var(--ease) infinite; }
+@keyframes sugoi-hint { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ── Panels: all text lives in one ─────────────────────────────────────── */
+.sugoi .panel {
+  position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: clamp(24px, 3.2vw, 48px);
+  backdrop-filter: blur(18px) saturate(1.1); -webkit-backdrop-filter: blur(18px) saturate(1.1);
+}
+.sugoi .panel--glass { background: color-mix(in srgb, var(--bg) 38%, transparent); }
+.sugoi .panel > :last-child { margin-bottom: 0; }
+.sugoi .label { display: block; font-size: 12px; letter-spacing: .3em; color: var(--accent); margin-bottom: 18px; }
+
+/* ── Sections ──────────────────────────────────────────────────────────── */
+.sugoi .section { position: relative; isolation: isolate; overflow: clip; min-height: 100vh; padding: 18vh var(--gutter); display: grid; align-content: center; }
+.sugoi .section-grid { width: 100%; max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 560px) 1fr; }
+.sugoi .section-grid--right { grid-template-columns: 1fr minmax(0, 560px); }
+.sugoi .section-grid--right > .panel { grid-column: 2; }
+.sugoi .section--wide { gap: 28px; justify-items: center; }
+.sugoi .panel--heading { width: 100%; max-width: var(--max); }
+.sugoi .cards { width: 100%; max-width: var(--max); display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.sugoi .card h3 { margin-bottom: .4em; }
+.sugoi .card { transition: transform .5s var(--ease), border-color .5s; }
+.sugoi .card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+.sugoi .steps { list-style: none; margin: 8px 0 0; padding: 0; counter-reset: s; display: grid; gap: 22px; }
+.sugoi .steps li { counter-increment: s; display: grid; grid-template-columns: 42px 1fr; column-gap: 12px; }
+.sugoi .steps li::before { content: counter(s, decimal-leading-zero); grid-row: span 2; font-family: var(--font-display); color: var(--accent); font-size: 22px; }
+.sugoi .steps strong { font-weight: 600; }
+.sugoi .steps span { color: var(--text-muted); }
+
+/* ── Art: images fused into the background (never a bordered rectangle) ── */
+.sugoi .art {
+  position: absolute; z-index: -1; pointer-events: none; object-fit: cover;
+  mix-blend-mode: var(--blend); transform: translateZ(0) scale(1.1);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+.sugoi .art--right, .sugoi .art--left { top: 0; bottom: 0; width: 64vw; height: 100%; }
+.sugoi .art--right { right: 0;
+  -webkit-mask-image: linear-gradient(to left, #000 38%, transparent 96%), linear-gradient(to bottom, transparent, #000 18%, #000 80%, transparent);
+          mask-image: linear-gradient(to left, #000 38%, transparent 96%), linear-gradient(to bottom, transparent, #000 18%, #000 80%, transparent); }
+.sugoi .art--left { left: 0;
+  -webkit-mask-image: linear-gradient(to right, #000 38%, transparent 96%), linear-gradient(to bottom, transparent, #000 18%, #000 80%, transparent);
+          mask-image: linear-gradient(to right, #000 38%, transparent 96%), linear-gradient(to bottom, transparent, #000 18%, #000 80%, transparent); }
+.sugoi .art--bg { inset: 0; width: 100%; height: 100%; opacity: .5;
+  -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent 100%), linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+          mask-image: radial-gradient(closest-side, #000 35%, transparent 100%), linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent); }
+.sugoi .art--soft { opacity: .32; }
+
+/* ── Contact ───────────────────────────────────────────────────────────── */
+.sugoi .section--contact { justify-items: center; }
+.sugoi .panel--form { width: 100%; max-width: 760px; }
+.sugoi .form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+.sugoi .field { display: grid; gap: 6px; }
+.sugoi .span-all { grid-column: 1 / -1; }
+.sugoi .field label { font-size: 13px; letter-spacing: .04em; color: var(--text-muted); }
+.sugoi .field input, .sugoi .field textarea {
+  width: 100%; font: inherit; color: var(--text); background: rgb(255 255 255 / .04); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 16px; transition: border-color .3s, background .3s; resize: vertical;
+}
+.sugoi .field input:focus-visible, .sugoi .field textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: var(--accent); }
+.sugoi .field.error input { border-color: #d9776b; }
+.sugoi .honey { position: absolute; left: -9999px; }
+.sugoi .form-status { min-height: 1.4em; margin: 0; font-size: 14px; }
+.sugoi .form-status.ok { color: var(--accent); }
+.sugoi .form-status.fail { color: #e39a90; }
+@media (max-width: 640px) { .sugoi .form { grid-template-columns: 1fr; } }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.sugoi .button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font: 600 15px/1 var(--font-body); letter-spacing: .02em; text-decoration: none; cursor: pointer;
+  color: var(--accent-text); background: var(--accent); border: 0; border-radius: 999px; padding: 17px 30px;
+  transition: transform .4s var(--ease), filter .3s;
+}
+.sugoi .button:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.sugoi .button:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+.sugoi .button[disabled] { opacity: .6; cursor: progress; }
+
+/* ── Floating WhatsApp ─────────────────────────────────────────────────── */
+.sugoi .whats {
+  position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 60;
+  width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center;
+  background: #25d366; color: #fff; box-shadow: 0 10px 30px rgb(0 0 0 / .35);
+  transform: scale(0); transition: transform .5s var(--ease);
+}
+.sugoi .whats.visible { transform: scale(1); }
+.sugoi .whats.visible:hover { transform: scale(1.07); }
+.sugoi .whats svg { width: 30px; height: 30px; }
+.sugoi .whats::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #25d366; animation: sugoi-pulse 2.6s ease-out infinite; }
+@keyframes sugoi-pulse { from { transform: scale(1); opacity: .7; } to { transform: scale(1.6); opacity: 0; } }
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+.sugoi .footer { padding: 0 var(--gutter) 40px; }
+.sugoi .footer-panel { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: center; justify-content: space-between; font-size: 14px; color: var(--text-muted); padding: 24px 32px; }
+
+/* ── Mobile ────────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .sugoi .section { padding: 14vh var(--gutter); min-height: auto; }
+  .sugoi .section-grid, .sugoi .section-grid--right { grid-template-columns: 1fr; }
+  .sugoi .section-grid--right > .panel { grid-column: 1; }
+  .sugoi .art--right, .sugoi .art--left { left: 0; right: 0; width: 100%; height: 70%; opacity: .55;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 55%, transparent);
+            mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 55%, transparent); }
+  .sugoi .moment, .sugoi .moment--right { left: var(--gutter); right: var(--gutter); bottom: 10vh; }
+}
+
+/* ── Reduced motion (JS also skips the timeline via gsap.matchMedia) ───── */
+@media (prefers-reduced-motion: reduce) {
+  .sugoi *, .sugoi *::before, .sugoi *::after { animation: none !important; transition: none !important; }
+  .sugoi .cine { height: 100svh; }
+  .sugoi .moment:not(:first-of-type), .sugoi .cine-hint { display: none; }
+  .sugoi .whats { transform: scale(1); }
+}

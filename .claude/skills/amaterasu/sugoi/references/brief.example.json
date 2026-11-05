@@ -1,0 +1,29 @@
+{
+  "name": "Brasa Aberta",
+  "slug": "brasa-aberta",
+  "stack": "static | frontend+backend | wordpress+livecanvas | wordpress",
+  "business": "Open-fire kitchen, tasting menu",
+  "audience": "Couples and executives, 30-55, Pinheiros, São Paulo",
+  "lang": "pt-BR",
+  "identity": {
+    "colors": { "bg": "#0b0a09", "text": "#f2ede4", "accent": "#c8a46a" },
+    "fonts": { "display": "Fraunces", "body": "Inter Tight" },
+    "mood": ["intimate", "warm", "artisanal"],
+    "theme": "dark",
+    "existing_tokens": ""
+  },
+  "logo": "",
+  "copy": {
+    "opening_line": "",
+    "claims": ["everything goes through fire", "menu changes weekly"],
+    "texts": "",
+    "real_testimonials": []
+  },
+  "references": ["Chef's Table"],
+  "whatsapp": { "number": "5511999998888", "message": "Olá! Quero reservar uma mesa." },
+  "contact": { "email": "", "endpoint": "", "existing_form": "" },
+  "assets": { "video": "", "frames": "", "images": [] },
+  "sections": ["about", "menu", "how-to-book", "contact"],
+  "concept": "",
+  "models": { "video": "google/veo-3.1", "image": "google/gemini-3-pro-image", "seed": 7 }
+}

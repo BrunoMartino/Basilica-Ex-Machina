@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{NAME}}</title>
+  <meta name="description" content="{{SEO_DESCRIPTION}}">
+  <meta property="og:title" content="{{NAME}}">
+  <meta property="og:description" content="{{SEO_DESCRIPTION}}">
+  <meta property="og:image" content="assets/frames/desktop/f_0001.webp">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Swap families per art-direction.md; or self-host woff2 + @font-face -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/frames/desktop/f_0001.webp">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="sugoi">
+
+<header class="header">
+  <a href="#top" class="brand" aria-label="{{NAME}}">
+    <!-- With logo: <img src="assets/logo.svg" alt="{{NAME}}" class="brand-logo"> -->
+    <span class="brand-text">{{NAME}}</span>
+  </a>
+  <nav class="nav" aria-label="Seções">
+    <a href="#about">Sobre</a>
+    <a href="#services">Serviços</a>
+    <a href="#process">Como funciona</a>
+    <a href="#contact" class="nav-cta">Fale conosco</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO: scroll scrubs the sequence. Each .moment shows between data-from and data-to (0..1). -->
+  <section id="top" class="cine" style="--height: 420vh">
+    <div class="cine-stage">
+      <canvas class="cine-canvas" aria-hidden="true"></canvas>
+      <div class="cine-vignette"></div>
+
+      <div class="moment" data-from="0" data-to="0.28">
+        <div class="panel panel--glass">
+          <h1 class="hero-title">{{OPENING_LINE}}</h1>
+          <p class="hero-sub">{{OPENING_SUPPORT}}</p>
+        </div>
+      </div>
+      <div class="moment moment--right" data-from="0.36" data-to="0.64">
+        <div class="panel panel--glass"><p class="lead">{{MOMENT_2}}</p></div>
+      </div>
+      <div class="moment moment--center" data-from="0.72" data-to="1">
+        <div class="panel panel--glass">
+          <p class="lead">{{MOMENT_3}}</p>
+          <a href="#contact" class="button">{{CTA}}</a>
+        </div>
+      </div>
+
+      <div class="cine-hint" aria-hidden="true"><span></span>role</div>
+    </div>
+  </section>
+
+  <!-- ABOUT: art fused on the right, text panel on the left -->
+  <section id="about" class="section">
+    <img class="art art--right" src="assets/img/about.webp" alt="" loading="lazy">
+    <div class="section-grid">
+      <div class="panel reveal">
+        <span class="label">01</span>
+        <h2>{{ABOUT_TITLE}}</h2>
+        <p>{{ABOUT_TEXT}}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES: dissolved background art, cards on top -->
+  <section id="services" class="section section--wide">
+    <img class="art art--bg" src="assets/img/services.webp" alt="" loading="lazy">
+    <div class="panel panel--heading reveal">
+      <span class="label">02</span>
+      <h2>{{SERVICES_TITLE}}</h2>
+    </div>
+    <div class="cards">
+      <article class="panel card reveal"><h3>{{SERVICE_1}}</h3><p>{{SERVICE_1_TEXT}}</p></article>
+      <article class="panel card reveal"><h3>{{SERVICE_2}}</h3><p>{{SERVICE_2_TEXT}}</p></article>
+      <article class="panel card reveal"><h3>{{SERVICE_3}}</h3><p>{{SERVICE_3_TEXT}}</p></article>
+    </div>
+  </section>
+
+  <!-- PROCESS: art fused on the left, steps on the right -->
+  <section id="process" class="section">
+    <img class="art art--left" src="assets/img/process.webp" alt="" loading="lazy">
+    <div class="section-grid section-grid--right">
+      <div class="panel reveal">
+        <span class="label">03</span>
+        <h2>{{PROCESS_TITLE}}</h2>
+        <ol class="steps">
+          <li><strong>{{STEP_1}}</strong><span>{{STEP_1_TEXT}}</span></li>
+          <li><strong>{{STEP_2}}</strong><span>{{STEP_2_TEXT}}</span></li>
+          <li><strong>{{STEP_3}}</strong><span>{{STEP_3_TEXT}}</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT: form posts per config.js (endpoint > Web3Forms > FormSubmit). Add action="" to submit natively. -->
+  <section id="contact" class="section section--contact">
+    <img class="art art--bg art--soft" src="assets/img/contact.webp" alt="" loading="lazy">
+    <div class="panel panel--form reveal">
+      <span class="label">04</span>
+      <h2>{{CONTACT_TITLE}}</h2>
+      <p>{{CONTACT_TEXT}}</p>
+      <form class="form" novalidate>
+        <div class="field"><label for="f-name">Nome</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-phone">WhatsApp</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
+        <div class="field span-all"><label for="f-msg">Como podemos ajudar?</label><textarea id="f-msg" name="message" rows="4"></textarea></div>
+        <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="button span-all">Enviar</button>
+        <p class="form-status span-all" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="panel footer-panel">
+    <span class="brand-text">{{NAME}}</span>
+    <span>{{ADDRESS_OR_CITY}}</span>
+    <span>© <span data-year></span> {{NAME}}</span>
+  </div>
+</footer>
+
+<a class="whats" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.7L3 29l6.9-2.1c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.6 12.7-12.6S23 3 16 3Zm0 23.1c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.1 1.2 1.3-4-.3-.4a10.4 10.4 0 0 1-1.6-5.6C5.5 9.8 10.2 5.2 16 5.2s10.5 4.6 10.5 10.4S21.8 26.1 16 26.1Zm5.8-7.8c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.6-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.7 5 .8.4 1.4.6 1.9.7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4Z"/></svg>
+</a>
+
+<!-- Static mode: vendored by scripts/vendor_gsap.sh. npm/WordPress modes: remove these two lines (see stacks.md). -->
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

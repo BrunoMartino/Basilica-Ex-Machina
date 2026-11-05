@@ -6,7 +6,7 @@ A Claude Code skill that guides agents to create comprehensive **Technical Desig
 
 ## What It Does
 
-The agent produces well-structured TDDs with up to **21 sections**, adapted to project size and type:
+The agent produces well-structured TDDs for two kinds of work item — **features** and **fixes** (issues, tickets, tasks that correct code without necessarily changing a feature) — with up to **21 sections**, adapted to project size and type:
 
 | Category | Sections |
 |----------|----------|
@@ -31,6 +31,17 @@ TDDs document **decisions and contracts**, not code:
 
 If the implementation stack changes (NestJS → Express, TypeORM → Prisma), the TDD should still be valid.
 
+### Feature vs. fix
+
+Planning and implementation are identical; only the **Context Pillars** (the verbatim source) change:
+
+| Type | Context Pillars | Where the answers come from |
+|------|-----------------|-----------------------------|
+| **Feature** | 4 questions | `docs/harness/features/feature-{name}.md`, or the user |
+| **Fix** | 2 questions — Problem description, Solution description | Problem: the user or the originating card/ticket/task. Solution: the user, or the place the user points to |
+
+If the type is not stated and cannot be inferred, the agent **asks "feature or fix?" first**.
+
 ## When to Use
 
 ```
@@ -38,11 +49,13 @@ Create a TDD for Stripe payment integration
 Write a design doc for the API redesign
 Create a tech spec for migrating to microservices
 Help me document the payment integration architecture
+Create a design doc for ticket PROJ-123 (checkout total rounding bug)
 ```
 
 Also use when:
 
 - Starting a new feature or integration
+- Fixing an issue / ticket / task that corrects code
 - Planning a migration or system replacement
 - Needing stakeholder approval before implementation
 
@@ -50,26 +63,27 @@ Also use when:
 
 - README files or general project documentation
 - API reference docs (endpoint catalogs)
-- Bug fixes, trivial config changes, or refactors without architectural impact
+- Trivial config changes without code correction
 
 ## Interactive Workflow
 
-The skill runs an **8-step** process:
+The skill runs a **9-step** process:
 
-1. **Initial gathering** — Project name, size, type, context clarity (via `AskQuestion` when useful)
-2. **Context Pillars** — Read the 4 questions/answers from `docs/harness/features/feature-{name}.md`; if missing, ask the user the 4 questions (answers are never invented by the agent)
-3. **Design pattern choice** — Mandatory `AskQuestion`: the user picks which of the patterns suggested in the feature file will be used in the implementation
-4. **Mandatory information** — Problem statement, scope, technical approach, risks, implementation plan
-5. **Critical sections** — Security, monitoring, rollback (enforced by project type)
-6. **Suggested sections** — Success metrics, glossary, alternatives, etc. (offered, not forced)
-7. **Generate document** — Markdown TDD from section templates in `SKILL.md`
-8. **Confluence integration** — Optionally publish if a Confluence Assistant skill is available
+1. **Work item type** — Feature or fix: stated by the user, inferred unambiguously, or asked via `AskQuestion` first
+2. **Initial gathering** — Project name, size, type, context clarity (via `AskQuestion` when useful)
+3. **Context Pillars** — Feature: read the 4 questions/answers from `docs/harness/features/feature-{name}.md`; if missing, ask the user the 4 questions. Fix: Problem description from the user or the originating ticket; Solution description from the user or the source the user points to. Answers are copied verbatim and never invented by the agent
+4. **Design pattern choice** — Mandatory `AskQuestion`: the user picks the pattern (feature: among those suggested in the feature file; fix: the existing pattern or "keep existing structure")
+5. **Mandatory information** — Problem statement, scope, technical approach, risks, implementation plan
+6. **Critical sections** — Security, monitoring, rollback (enforced by project type)
+7. **Suggested sections** — Success metrics, glossary, alternatives, etc. (offered, not forced)
+8. **Generate document** — Markdown TDD from section templates in `SKILL.md` (`especs/design-docs/tdd-feature-{name}.md` or `tdd-fix-{name}.md`)
+9. **Confluence integration** — Optionally publish if a Confluence Assistant skill is available
 
 Mandatory sections **cannot be skipped**. The agent asks clarifying questions instead of guessing.
 
-### Multi-feature runs → implementation waves
+### Multi-item runs → implementation waves
 
-When the run covers **more than one** harness feature, the agent also writes `especs/design-docs/implementation.md` (next to the per-feature TDDs): ordered **waves** grouping the features that can be implemented **in parallel by independent agents** — one agent lane per feature with owned paths/modules, dependencies pushing features to later waves, exit criteria per wave, and a Mermaid dependency graph. Two features that write the same file, table or contract are never placed in the same wave.
+When the run covers **more than one** work item (features, fixes or a mix), the agent also writes `especs/design-docs/implementation.md` (next to the per-item TDDs): ordered **waves** grouping the items that can be implemented **in parallel by independent agents** — one agent lane per item with owned paths/modules, dependencies pushing items to later waves, exit criteria per wave, and a Mermaid dependency graph. Two items that write the same file, table or contract are never placed in the same wave.
 
 ### Critical sections by project type
 
@@ -138,7 +152,9 @@ Create a TDD for migrating our database from PostgreSQL to MongoDB
 
 The agent will ask targeted questions, for example:
 
-- **Context Pillars (when `feature-{name}.md` is missing):** How do you describe the feature? What problem does it objectively solve? What is the expected solution and its trade-offs? What example or context do we have?
+- **Work item type (when not stated or inferable):** Is this design doc for a feature or a fix?
+- **Context Pillars — feature (when `feature-{name}.md` is missing):** How do you describe the feature? What problem does it objectively solve? What is the expected solution and its trade-offs? What example or context do we have?
+- **Context Pillars — fix:** What is the problem (or which ticket/card describes it)? What is the solution (or where is it already written)?
 - **Problem:** What problem are we solving? Why now? Impact if we don't?
 - **Scope:** What is in V1? What is explicitly out of scope?
 - **Technical approach:** Main components, data flow, APIs affected?

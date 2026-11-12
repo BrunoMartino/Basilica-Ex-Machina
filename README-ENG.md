@@ -29,10 +29,11 @@ The toolkit organizes the build **around the project as its core**: humans write
 
 ### Agents (`.claude/agents/` or `.cursor/agents/`)
 
-The build triad — invoked **only by the user**, as the main thread (`claude --agent <name>`), so each can spawn parallel sub-agents:
+`inventore` (ideation) and the build triad — invoked **only by the user**, as the main thread (`claude --agent <name>`), so each can spawn parallel sub-agents:
 
 | Agent | Role |
 |-------|------|
+| `inventore` | Ideation, upstream of the triad: operates the `scuola` skill to turn a raw concept into a researched, stress-tested Schizzo (`especs/scuola/<projectName>Schizzo.md`) — clarifies the problem with the user, spawns "astrolabio" sub-agents for web research (community evidence mainly from Reddit, Substack and Medium) and "avversario" sub-agents for the adversarial review through the 7 lenses, and refines until the idea survives. Writes no specs, code or harness docs |
 | `scultore` | Wave orchestrator: reads `especs/design-docs/implementation.md` and runs each wave — Red with `tester`, Green with `design-patterns-coder` — for the **DB and Backend** layers, with parallel "cinzel" sub-agents per lane. Never writes frontend: hands that layer to Pittore through a manual handoff (`especs/tdd/wave{N}/`) |
 | `pittore` | Frontend and finishing: `/cast` (existing design system) or `/paint` (new design system) with "brush" sub-agents built on the `amaterasu` skill; keeps Graphify up to date, draws the flowchart with `sistina-arch`, checks performance and browser compatibility (Chrome/Safari/Firefox) and audits the code against the harness, flagging backend fixes to Scultore |
 | `ingegnere` | Quality and security: detects the stack, installs the static-analysis toolchain (format, static, dead code, cyclomatic/cognitive complexity, security, duplication) with Lefthook running the same Quality Run, reads only the failures from the SARIF/JSON report and fixes in a loop until the gate passes — without breaking the architecture or the design patterns. Spawns "squadra" sub-agents for the `controspia` audits and `coupling-analizer` |
@@ -64,6 +65,7 @@ Specialized instructions the agent can invoke for concrete tasks:
 
 | Skill | Role |
 |-------|------|
+| `scuola` | Ideation before the feature harness: open-ended questions, web research, adversarial review through 7 lenses in fresh contexts, and refinement; compiles everything asked, researched, debated and decided, plus the Mermaid drawing of the project, into `especs/scuola/<projectName>Schizzo.md`. Operated by `inventore` |
 | `harness-create` | Creates harness docs interactively (asks only for what’s missing) and installs the `all-for-harness` rule |
 | `tester` | TDD: failing tests first, then minimal code; triangulation on 4 axes (happy, boundary, negative, adversarial); Green handoff in `especs/tdd/fase{N}.md` + `fase{N}Task.md` |
 | `design-patterns-coder` | GoF patterns only from the developer’s documentation (docs-mcp `gof-design-patterns`; GitHub fallback); composition over inheritance |

@@ -29,10 +29,11 @@ O toolkit organiza a construção **à volta do projeto como núcleo**: o humano
 
 ### Agents (`.claude/agents/` ou `.cursor/agents/`)
 
-A tríade de construção — invocada **só pelo utilizador**, como thread principal (`claude --agent <nome>`), para poder lançar sub-agentes em paralelo:
+O `inventore` (ideação) e a tríade de construção — invocados **só pelo utilizador**, como thread principal (`claude --agent <nome>`), para poderem lançar sub-agentes em paralelo:
 
 | Agent | Função |
 |-------|--------|
+| `inventore` | Ideação, a montante da tríade: opera a skill `scuola` para transformar um conceito cru num Schizzo pesquisado e posto à prova (`especs/scuola/<nomeProjeto>Schizzo.md`) — clarifica o problema com o utilizador, lança sub-agentes "astrolabio" para a pesquisa na web (evidência de comunidade sobretudo em Reddit, Substack e Medium) e sub-agentes "avversario" para a revisão adversarial pelas 7 lentes, e refina até a ideia sobreviver. Não escreve specs, código nem docs harness |
 | `scultore` | Orquestrador de waves: lê `especs/design-docs/implementation.md` e executa cada wave — Red com `tester`, Green com `design-patterns-coder` — para as camadas **DB e Backend**, com sub-agentes "cinzel" por lane em paralelo. Nunca escreve frontend: entrega essa camada ao Pittore por handoff manual (`especs/tdd/wave{N}/`) |
 | `pittore` | Frontend e acabamento: `/cast` (design system existente) ou `/paint` (design system novo) com sub-agentes "brush" sobre a skill `amaterasu`; mantém o Graphify actualizado, gera o fluxograma com `sistina-arch`, verifica performance e compatibilidade (Chrome/Safari/Firefox) e audita o código contra o harness, sinalizando correcções de backend ao Scultore |
 | `ingegnere` | Qualidade e segurança: detecta o stack, instala a toolchain de análise estática (format, static, dead code, complexidade ciclomática/cognitiva, segurança, duplicação) com Lefthook a correr o mesmo Quality Run, lê só as falhas do relatório SARIF/JSON e corrige em loop até o gate passar — sem quebrar a arquitectura nem os padrões de design. Lança sub-agentes "squadra" para as auditorias `controspia` e `coupling-analizer` |
@@ -64,6 +65,7 @@ Instruções especializadas que o agente pode invocar em tarefas concretas:
 
 | Skill | Função |
 |-------|--------|
+| `scuola` | Ideação antes do harness de features: perguntas abertas, pesquisa na web, revisão adversarial por 7 lentes em contextos limpos e refinamento; compila tudo o que foi perguntado, pesquisado, debatido e decidido, mais o desenho Mermaid do projeto, em `especs/scuola/<nomeProjeto>Schizzo.md`. Operada pelo `inventore` |
 | `harness-create` | Cria os docs harness interactivamente (perguntas só para o que falta) e instala a rule `all-for-harness` |
 | `tester` | TDD: testes a falhar primeiro, depois código mínimo; triangulação em 4 eixos (happy, boundary, negative, adversarial); handoff Green em `especs/tdd/fase{N}.md` + `fase{N}Task.md` |
 | `design-patterns-coder` | Padrões GoF só a partir da documentação do desenvolvedor (docs-mcp `gof-design-patterns`; fallback no GitHub); composição sobre herança |

@@ -40,14 +40,24 @@ Adding a workshop later = one row. Do not invent workshops. Do not fetch a repo 
 6. One AskQuestion: connect the hook bridge? (multi-select: claude, codex, cursor, none)
 7. If any agent was picked: node scripts/install-hooks.mjs <picked agents>
 8. herdr-app do layout.switch --name <layout>
-9. One-line summary: workshop id, repo, Herdr home, bridge agents connected
+9. One-line summary: workshop id, repo, Herdr home (native or Windows via WSL), bridge agents connected
 ```
 
 ### 2. Preflight
 
-- Herdr home = `$HERDR_APP_HOME`, else `~/.config/herdr-app`. Missing → stop and report; do not create it.
-- `herdr-app --version` must be at or above the row's min version. Missing or older → stop and report; do not install or upgrade Herdr.
+Resolve `HERDR` (the binary) and `HOME_H` (the Herdr home) in this order and stop at the first hit:
+
+| # | Where | `HERDR` | `HOME_H` |
+|---|-------|---------|----------|
+| 1 | Native (Linux/macOS/Windows) | `herdr-app` on PATH | `$HERDR_APP_HOME`, else `~/.config/herdr-app` |
+| 2 | WSL with Herdr installed on Windows (`/proc/version` contains `microsoft`) | `/mnt/c/Users/<win-user>/AppData/Local/Programs/herdr-app/herdr-app.exe` | `/mnt/c/Users/<win-user>/.config/herdr-app` |
+
+- `<win-user>`: `cmd.exe /c 'echo %USERNAME%' 2>/dev/null | tr -d '\r'`. If that returns nothing, fall back to the only folder under `/mnt/c/Users/*/AppData/Local/Programs/herdr-app/`.
+- WSL + Windows Herdr: export `HERDR_APP_HOME=$HOME_H` for steps 4 and 7. Run `"$HERDR"` from a Windows directory (`cd /mnt/c/Users/<win-user>`) and pass Windows paths to `check` (`wslpath -w "$HOME_H/mods/<layout>"`). The hook bridge stays on the WSL agents (`~/.claude`, `~/.cursor`, `~/.codex` in WSL); its command runs `node` on the mod script under `/mnt/c/...`, which works without extra setup.
+- No row matches, or `HOME_H` is missing → stop and report; do not create it.
+- `"$HERDR" --version` must be at or above the row's min version. Older → stop and report; do not install or upgrade Herdr.
 - `node` is required only for step 7. Missing → skip step 6 and 7 and say so.
+- Every later step uses `"$HERDR"` and `HOME_H` in place of `herdr-app` and `<herdr home>`.
 
 ### 4. Install
 
@@ -84,7 +94,7 @@ These are user-level config files: never run step 7 without the answer from step
 Only when the user asks:
 
 ```
-1. node scripts/install-hooks.mjs --remove   (from a fresh clone)
+1. node scripts/install-hooks.mjs --remove   (from a fresh clone; same HERDR_APP_HOME as the install)
 2. Delete from the Herdr home: layouts/<layout>.json, layouts/<layout>.png, mods/<layout>/, themes/<layout>.json
 ```
 
